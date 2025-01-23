@@ -1,16 +1,31 @@
-import React, { ReactNode, MouseEvent } from 'react';
+import React, { ReactNode, MouseEvent, CSSProperties } from 'react';
 import { createPortal } from 'react-dom';
+import cn from 'clsx';
 import s from './Modal.module.scss';
+
+type Transform = 'capitalize' | 'uppercase';
+
+type ModalCSS = CSSProperties & {
+  '--modal-title-transform': Transform;
+};
+
+type Title = {
+  text: string;
+  transform?: Transform;
+  full?: boolean;
+};
 
 type ModalProps = {
   visible: boolean;
   children?: ReactNode;
-  title?: string;
+  title?: Title;
   onClose?: (event: MouseEvent<HTMLButtonElement>) => void;
 };
 
-const Modal = ({ children, title, onClose, visible = true }: ModalProps) =>
-  visible
+const Modal = ({ children, title, onClose, visible = true }: ModalProps) => {
+  const modalStyle: ModalCSS = { '--modal-title-transform': title.transform };
+
+  return visible
     ? createPortal(
         <div className={s.container}>
           <div className={s.modal}>
@@ -18,7 +33,11 @@ const Modal = ({ children, title, onClose, visible = true }: ModalProps) =>
               &times;
             </span>
             <div className={s.content}>
-              {title && <div className={s.title}>{title}</div>}
+              {title && (
+                <div className={cn(s.title, { [s['title-short']]: !title.full })} style={modalStyle}>
+                  {title.text}
+                </div>
+              )}
               {children && <div>{children}</div>}
             </div>
           </div>
@@ -26,5 +45,6 @@ const Modal = ({ children, title, onClose, visible = true }: ModalProps) =>
         document.body
       )
     : null;
+};
 
 export default Modal;

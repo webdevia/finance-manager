@@ -12,6 +12,7 @@
   background-color: rgba(0, 0, 0, 0.4);
 
   .modal {
+    position: relative;
     background-color: #fefefe;
     border: 1px solid #888;
     border-radius: 0.5rem;
@@ -26,13 +27,21 @@
 
       .title {
         font-size: 1.2rem;
+        text-transform: var(--modal-title-transform, capitalize);
+      }
+
+      .title-short {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
       }
     }
 
     .close {
-      padding: 5px 15px;
+      position: absolute;
+      padding: 3px 12px;
       color: #aaa;
-      float: right;
+      right: 0;
       font-size: 28px;
       font-weight: 900;
 
@@ -47,13 +56,13 @@
 
   @media (max-width: 768px) {
     .modal {
-      width: 90%; /* Adjust width for smaller screens */
+      width: 90%;
     }
   }
 
   @media (max-width: 480px) {
     .modal {
-      width: 100%; /* Full width for very small screens */
+      width: 100%;
     }
   }
 }
