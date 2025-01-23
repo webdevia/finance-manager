@@ -12,7 +12,7 @@ const meta: Meta<typeof Collapse> = {
 
 export default meta;
 
-export const Test = {
+export const Sample = {
   args: {
     title: 'Collapsable content',
     children: (
