@@ -1,7 +1,7 @@
 import React from "react";
 import cn from "clsx";
 import style from "./OperationsForm.module.css";
-import { OperationListProps, OperationListWithButton } from "src/shared/banking/OperationList/OperationListWithButton";
+import { OperationListProps, OperationListWithButton } from "src/widgets/OperationList/OperationListWithButton";
 import { createRandomOperation } from 'src/entities/operation/Operation';
 
 const initOperations: OperationListProps = {
