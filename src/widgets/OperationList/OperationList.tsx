@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Operation } from "../operation/Operation";
-import { AbstractOperation } from "../operation/OperationTypes";
+import { OperationCard } from "../OperationCard/OperationCard";
+import { AbstractOperation } from "src/entities/operation/Operation";
 
 export interface OperationListProps {
     operations: AbstractOperation[];
@@ -13,7 +13,7 @@ export const OperationList: React.FC<OperationListProps> = ({ operations }) => {
         <div>
             {items.map((item, index) => (
                 <div key={item.id}>
-                    <Operation {...item} />
+                    <OperationCard {...item} />
                 </div>
             ))}
         </div>

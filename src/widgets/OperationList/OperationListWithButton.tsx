@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import style from "./OperationListWithButton.module.scss";
-import { Operation } from "../operation/Operation";
-import { AbstractOperation, createRandomOperation } from "../operation/OperationTypes";
+import { OperationCard } from "../OperationCard/OperationCard";
+import { AbstractOperation, createRandomOperation } from "src/entities/operation/Operation";
 
 export interface OperationListProps {
     operations: AbstractOperation[];
@@ -14,7 +14,7 @@ export const OperationListWithButton: React.FC<OperationListProps> = ({ operatio
         <div>
             {items.map((item) => (
                 <div key={item.name}>
-                    <Operation {...item} />
+                    <OperationCard {...item} />
                 </div>
             ))}
             <button className={style["add-button"]} onClick={() => setItems([...items, createRandomOperation(new Date().toISOString())])}>Add</button>

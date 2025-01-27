@@ -1,9 +1,9 @@
 import type { Meta } from '@storybook/react';
-import { Operation } from './OperationCard';
+import { OperationCard } from './OperationCard';
 
-const meta: Meta<typeof Operation> = {
+const meta: Meta<typeof OperationCard> = {
     title: 'Example/Banking/Operation',
-    component: Operation,
+    component: OperationCard,
     tags: ['autodocs'],
 };
 

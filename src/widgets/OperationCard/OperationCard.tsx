@@ -11,14 +11,14 @@ export interface OperationProps {
     date: string;
 }
 
-export const Operation: React.FC<AbstractOperation> = ({ id, amount, category, name, description, date }) => {
+export const OperationCard: React.FC<AbstractOperation> = ({ id, amount, category, name, description, date }) => {
 
-    const navigate = useNavigate();
-    const location = useLocation();
+    // const navigate = useNavigate();
+    // const location = useLocation();
 
     const editHandler = () => {
         // navigate(location.pathname + "/edit/" + id, { state: { id, backgroundLocation: location } });
-        navigate("/modal" + id, { state: { id, backgroundLocation: location } });
+        // navigate("/modal" + id, { state: { id, backgroundLocation: location } });
     }
 
     return (

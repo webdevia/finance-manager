@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Operation } from "../operation/Operation";
-import { AbstractOperation, createRandomOperation } from "../operation/OperationTypes";
+import { OperationCard } from "../OperationCard/OperationCard";
+import { AbstractOperation, createRandomOperation } from "src/entities/operation/Operation";
 
 export interface OperationListProps {
     operations: AbstractOperation[];
@@ -43,7 +43,7 @@ export const OperationListWithIntersectionObserver: React.FC<OperationListProps>
         <div>
             {items.map((item, index) => (
                 <div key={item.id} ref={index === items.length - 1 ? lastItemRef : null}>
-                    <Operation {...item} />
+                    <OperationCard {...item} />
                 </div>
             ))}
         </div>
