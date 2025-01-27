@@ -28,7 +28,7 @@ module.exports = (_, args) => {
       },
     },
 
-    entry: './index.tsx',
+    entry: './app/index.tsx',
     output: {
       path: dist,
       publicPath:

@@ -1,0 +1,5 @@
+.center {
+  display: flex;
+  justify-content: center;
+  gap: var(--layout-elements-gap, 5px);
+}

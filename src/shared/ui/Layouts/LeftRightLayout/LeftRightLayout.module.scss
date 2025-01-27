@@ -1,0 +1,10 @@
+.space-between {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--layout-blocks-gap, 5px);
+
+  > div {
+    display: flex;
+    gap: var(--layout-elements-gap, 5px);
+  }
+}

@@ -9,9 +9,13 @@
   cursor: pointer;
   user-select: none;
 
+  &:active {
+    opacity: 0.85;
+  }
+
   &:hover {
     &:not([disabled]) {
-      background-color: #0056b3;
+      background-color: #0066d3;
     }
   }
 

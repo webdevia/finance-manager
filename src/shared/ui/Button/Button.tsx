@@ -1,7 +1,7 @@
-import React, { ReactNode, MouseEvent, memo, ButtonHTMLAttributes } from 'react';
+import React, { ReactNode, MouseEvent, ButtonHTMLAttributes } from 'react';
 import s from './Button.module.scss';
 
-type ButtonProps = {
+export type ButtonProps = {
   children: ReactNode;
   onClick?: (event: MouseEvent<HTMLButtonElement>) => void;
 } & ButtonHTMLAttributes<HTMLButtonElement>;
