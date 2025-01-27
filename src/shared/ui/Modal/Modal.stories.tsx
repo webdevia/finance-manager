@@ -16,11 +16,7 @@ const TestModal = () => {
     <div>
       <Input value={value} onInput={saveValue} />
       <Button onClick={toggleModal}>Open Modal</Button>
-      <Modal
-        title={{text: "All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary", full: true}} 
-        visible={isOpen}
-        onClose={toggleModal}
-      >
+      <Modal visible={isOpen} onClose={toggleModal}>
         {value}
       </Modal>
     </div>

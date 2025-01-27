@@ -1,9 +1,29 @@
-import React from "react";
-import s from "./Title.scss";
+import React, { CSSProperties, ReactNode } from 'react';
+import cn from 'clsx';
 
-type TitleProps = {
-    text: string;
-    transform: "capitalize" | "uppercase";
-}
+import shortStyle from '../styles/Shortener.module.scss';
+import s from './Title.module.scss';
 
-const Title = ({text, transform}: TitleProps) => <span className={s[transform]}>{text}</span>
+type Transform = 'capitalize' | 'uppercase';
+
+type TitleCSS = CSSProperties & {
+  '--title-transform': Transform;
+};
+
+export type TitleProps = {
+  children: ReactNode;
+  transform?: Transform;
+  full?: boolean;
+};
+
+const Title = ({ children, transform, full }: TitleProps) => {
+  const titleTransformStyle: TitleCSS = { '--title-transform': transform };
+
+  return (
+    <h2 className={cn(s.title, { [shortStyle.short]: !full })} style={titleTransformStyle}>
+      {children}
+    </h2>
+  );
+};
+
+export default Title;
