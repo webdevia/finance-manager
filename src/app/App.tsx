@@ -1,16 +1,25 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+// import { ThemeProvider } from '../shared/common/theme/ThemeProvider';
+// import { LanguageProvider } from '../shared/common/language/LanguageProvider';
+import { BrowserRouter } from 'react-router-dom';
+// import { Layout } from 'src/shared/common/layout/Layout';
+import { Routing } from 'src/pages/Routing';
 
-function App() {
+const App: React.FC = () => {
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Текст писать тут</p>
-      </header>
-    </div>
+    <BrowserRouter>
+      {/* <LanguageProvider> */}
+      {/* <ThemeProvider> */}
+      {/* <Layout> */}
+      <Routing />
+      {/* </Layout> */}
+      {/* </ThemeProvider> */}
+      {/* </LanguageProvider> */}
+    </BrowserRouter>
   );
 }
 
 export default App;
+

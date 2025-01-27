@@ -1,0 +1,30 @@
+$light-theme: (
+    background-color: #fff,
+    color: #000
+);
+
+$dark-theme: (
+    background-color: #333,
+    color: #fff
+);
+
+@mixin theme($theme) {
+    background-color: map-get($theme, background-color);
+    color: map-get($theme, color);
+}
+
+.light {
+
+    div,
+    p {
+        @include theme($light-theme);
+    }
+}
+
+.dark {
+
+    div,
+    p {
+        @include theme($dark-theme);
+    }
+}
