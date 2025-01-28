@@ -1,6 +1,6 @@
 import React from 'react';
 import cn from 'clsx';
-import style from './OperationListForm.module.scss';
+import style from './OperationListPage.module.scss';
 import { OperationListProps, OperationListWithButton } from 'src/widgets/OperationList/OperationListWithButton';
 import { createRandomOperation } from 'src/entities/operation/Operation';
 
