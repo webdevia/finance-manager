@@ -1,5 +1,5 @@
 import React, { MouseEvent } from 'react';
-import SignInForm, { OnSubmit } from '../../Forms/SignInForm/SignInForm';
+import SignInForm, { OnSubmit } from '../../Forms/SignInFormDemo/SignInForm';
 import ActionButtons from '../../ActionButtons/ActionButtons';
 import Button from '../../Button/Button';
 import Modal from '../../Modal/Modal';

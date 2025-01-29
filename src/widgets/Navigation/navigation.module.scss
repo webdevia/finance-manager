@@ -1,11 +1,10 @@
-.button {
-  padding: 0.375rem 0.75rem;
+.nav-btn {
+  padding: 1rem 0.75rem;
   font-size: 1rem;
-  color: #fff;
-  background-color: #007bff;
+  // color: #fff;
+  // background-color: #007bff;
   line-height: 1.5;
   border: none;
-  border-radius: 0.375rem;
   cursor: pointer;
   user-select: none;
 
@@ -15,7 +14,8 @@
 
   &:hover {
     &:not([disabled]) {
-      background-color: #0066d3;
+      // background-color: #0066d3;
+      filter: brightness(0.95);
     }
   }
 
