@@ -32,13 +32,13 @@ const SignInForm = () => {
   const isRequired = useIsFieldRequired(SignInSchema);
 
   const LoginButton = () => (
-      <Button type="submit" stretch>Login</Button>
+      <Button type="submit" stretch>Submit</Button>
   );
 
   return (
     <div className={style.container}>
       <div className={style['sign-in-form']}>
-        <Title>Login</Title>
+        <span className={style.title}><Title>Sign In</Title></span> 
         <Form
           onSubmit={handleSubmit(OnLogin)}
           fields={

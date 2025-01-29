@@ -1,0 +1,34 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .profile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    padding: 1.2rem;
+    width: 80%;
+    max-width: 600px;
+  }
+  
+  @media (max-width: 768px) {
+    .profile {
+      width: 90%;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .profile {
+      width: 100%;
+    }
+  }
+  
+  .title {
+    text-align: center;
+    font-size: larger;
+  }

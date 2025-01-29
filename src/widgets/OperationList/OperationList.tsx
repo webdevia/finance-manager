@@ -1,21 +1,20 @@
-import React, { useState } from "react";
-import { OperationCard } from "../OperationCard/OperationCard";
-import { AbstractOperation } from "src/entities/operation/Operation";
-// import style from "./OperationList.module.scss";
-import "./OperationList.module.scss";
+import React from 'react';
+import { OperationCard } from '../OperationCard/OperationCard';
+import { AbstractOperation } from 'src/entities/operation/Operation';
+import style from './OperationList.module.scss';
 
 export interface OperationListProps {
-    operations: AbstractOperation[];
+  operations: AbstractOperation[];
 }
 
 export const OperationList: React.FC<OperationListProps> = ({ operations }) => {
-    return (
-        <div className={"operation-list"}>
-            {operations.map((operation) => (
-                <div key={operation.id}>
-                    <OperationCard {...operation} />
-                </div>
-            ))}
-        </div>
-    );
-}
+  return (
+      <div className={style['operation-list']}>
+        {operations.map((operation) => (
+          <div key={operation.id}>
+            <OperationCard {...operation} />
+          </div>
+        ))}
+      </div>
+  );
+};
