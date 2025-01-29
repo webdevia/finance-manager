@@ -12,6 +12,7 @@ type InputFieldProps<T extends FieldValues> = {
   name: Path<T>;
   isNumber?: boolean;
   errors?: FieldError;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
 const InputField = <T extends FieldValues>({
@@ -22,11 +23,13 @@ const InputField = <T extends FieldValues>({
   isNumber,
   name,
   errors,
+  onChange,
 }: InputFieldProps<T>) => (
   <FormField label={{ children: label, required }} errors={errors}>
     <input
       className={cn(s.input, { [s.error]: errors })}
       type={type}
+      onChange={onChange}
       {...register(name, { valueAsNumber: isNumber })}
     />
   </FormField>

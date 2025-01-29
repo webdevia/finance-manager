@@ -1,5 +1,5 @@
-import React from 'react';
-import { useForm } from 'react-hook-form';
+import React, { useState } from 'react';
+import { set, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { useIsFieldRequired } from '../../../zod';
@@ -8,6 +8,9 @@ import InputField from '../FormFields/InputField/InputField';
 import Button from '../../Button/Button';
 import ActionButtons from '../../ActionButtons/ActionButtons';
 import Title from '../../Title/Title';
+
+import { useDispatch } from 'react-redux';
+import { setToken, setProfile, clearToken, clearProfile } from 'src/features/authSlice';
 
 import { SignInSchema, SignInSchemaType } from './signin-schema';
 
@@ -24,7 +27,13 @@ const SignInForm = () => {
     resolver: zodResolver(SignInSchema),
   });
 
+  const [username, setUsername] = useState('');
+  const dispatch = useDispatch();
+
   const OnLogin = (data: SignInSchemaType) => {
+    const fakeToken = '123456';
+    dispatch(setToken(fakeToken));
+    dispatch(setProfile({ username, isAdmin: username.startsWith('admin') }));
     console.log(data);
     reset();
   };
@@ -50,6 +59,7 @@ const SignInForm = () => {
                 type="email"
                 errors={errors.email}
                 required={isRequired('email')}
+                onChange={(e) => setUsername(e.target.value)}
               />
               <InputField
                 label="Пароль"
