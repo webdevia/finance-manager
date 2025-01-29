@@ -1,9 +1,9 @@
 import type { Meta } from '@storybook/react';
-import { ProfileForm } from './ProfileForm';
+import { Profile } from './Profile';
 
-const meta: Meta<typeof ProfileForm> = {
+const meta: Meta<typeof Profile> = {
     title: 'Example/Forms/ProfileForm',
-    component: ProfileForm,
+    component: Profile,
     tags: ['autodocs'],
 };
 

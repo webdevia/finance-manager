@@ -18,7 +18,6 @@ export const Header: React.FC = () => {
         //     [style.light]: themeContext.theme === Theme.light
         // })}>
         <header className={style.header} >
-            
             <LeftRightLayout left={"HEADER"} right={<Navigation />} />
             {/* <Logo />
             <Navigation />
