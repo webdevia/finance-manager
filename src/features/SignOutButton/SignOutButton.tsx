@@ -13,8 +13,8 @@ export const SignOutButton: React.FC<SignOutButtonProps> = ({ className }) => {
     dispatch(clearToken());
   };
   return (
-    <button className={className} onClick={handleSignOut}>
+    <a className={className} onClick={handleSignOut}>
       Sign out
-    </button>
+    </a>
   );
 };

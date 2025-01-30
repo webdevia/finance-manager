@@ -4,7 +4,6 @@ import React from 'react';
 // import { LanguageSwitcher } from "../language/LanguageSwitcher";
 // import { useThemeContext, Theme } from "../theme/ThemeProvider";
 import style from './header.module.scss';
-import cn from 'clsx';
 import LeftRightLayout from '../../shared/ui/Layouts/LeftRightLayout/LeftRightLayout';
 import { Navigation } from '../Navigation/Navigation';
 import Logo from 'src/shared/ui/Logo/Logo';
