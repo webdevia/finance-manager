@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 import { FieldError, UseFormRegister, Path, FieldValues } from 'react-hook-form';
-import { FormField } from '../Field/Field';
+import  Field  from '../Field/Field';
 import cn from 'clsx';
 import s from './InputField.module.scss';
 
@@ -25,14 +25,14 @@ const InputField = <T extends FieldValues>({
   errors,
   onChange,
 }: InputFieldProps<T>) => (
-  <FormField label={{ children: label, required }} errors={errors}>
+  <Field label={{ children: label, required }} errors={errors}>
     <input
       className={cn(s.input, { [s.error]: errors })}
       type={type}
       onChange={onChange}
       {...register(name, { valueAsNumber: isNumber })}
     />
-  </FormField>
+  </Field>
 );
 
 export default InputField

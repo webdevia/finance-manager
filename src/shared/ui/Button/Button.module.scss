@@ -11,11 +11,13 @@
 
   &:active {
     opacity: 0.85;
+    transform: translateY(2px);
   }
 
   &:hover {
     &:not([disabled]) {
-      background-color: #0066d3;
+      // background-color: #0066d3;
+      filter: brightness(0.95);
     }
   }
 

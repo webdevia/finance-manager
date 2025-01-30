@@ -16,6 +16,8 @@
     --container-bg-color: #585858;
     --header-bg-color: #333;
     --footer-bg-color: #333;
+    --sidebar-bg-color: #333;
+    --logo-svg: invert(1) brightness(1.5);
   }
 
   @media (prefers-color-scheme: light) {
@@ -26,6 +28,8 @@
       --container-bg-color: #ececec;
       --header-bg-color: #dadada;
       --footer-bg-color: #dadada;
+      --sidebar-bg-color: #dadada;
+      --logo-svg: none;
     }
   }
 
