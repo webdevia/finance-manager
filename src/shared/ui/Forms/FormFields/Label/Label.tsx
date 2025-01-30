@@ -6,5 +6,9 @@ export type LabelProps = {
   required: boolean;
 };
 
-const Label = ({ children, required }: LabelProps) => <label className={s.label}>{children} {required && <span className={s.required}>*</span>}</label>;
-export default Label
+const Label = ({ children, required }: LabelProps) => (
+  <label className={s.label}>
+    {children} {required && <span className={s.required}>*</span>}
+  </label>
+);
+export default Label;

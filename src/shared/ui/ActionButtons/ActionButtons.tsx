@@ -13,7 +13,6 @@ type LeftRightButton = CenterButton & {
 };
 type ActionButtons = CenterButton[] | LeftRightButton[];
 
-
 const isLeftRightButton = (buttons: ActionButtons): buttons is LeftRightButton[] => {
   return (buttons[0] as LeftRightButton).buttonPosition !== undefined;
 };
@@ -25,9 +24,9 @@ const leftButtonFilter = buttonFilter('left');
 const rightButtonFilter = buttonFilter('right');
 
 export type ActionButtonsProps = {
-    buttons: ActionButtons;
-  };
-  
+  buttons: ActionButtons;
+};
+
 const ActionButtons = ({ buttons }: ActionButtonsProps) =>
   isLeftRightButton(buttons) ? (
     <LeftRightLayout

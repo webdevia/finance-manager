@@ -27,27 +27,29 @@ const SignInForm = () => {
     resolver: zodResolver(SignInSchema),
   });
 
-  const [username, setUsername] = useState('');
   const dispatch = useDispatch();
 
   const OnLogin = (data: SignInSchemaType) => {
     const fakeToken = '123456';
     dispatch(setToken(fakeToken));
-    dispatch(setProfile({ username, isAdmin: username.startsWith('admin') }));
-    console.log(data);
+    dispatch(setProfile({ username: data.email, isAdmin: data.email.startsWith('admin') }));
     reset();
   };
 
   const isRequired = useIsFieldRequired(SignInSchema);
 
   const LoginButton = () => (
-      <Button type="submit" stretch>Submit</Button>
+    <Button type="submit" stretch>
+      Submit
+    </Button>
   );
 
   return (
     <div className={style.container}>
       <div className={style['sign-in-form']}>
-        <span className={style.title}><Title>Sign In</Title></span> 
+        <span className={style.title}>
+          <Title>Sign In</Title>
+        </span>
         <Form
           onSubmit={handleSubmit(OnLogin)}
           fields={
@@ -59,7 +61,6 @@ const SignInForm = () => {
                 type="email"
                 errors={errors.email}
                 required={isRequired('email')}
-                onChange={(e) => setUsername(e.target.value)}
               />
               <InputField
                 label="Пароль"

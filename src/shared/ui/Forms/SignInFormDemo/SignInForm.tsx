@@ -34,32 +34,34 @@ const SignInForm = ({ onSubmit, buttons }: SignInFormProps) => {
 
   const isRequired = useIsFieldRequired(SignInSchema);
 
-  return (<>
-    <Title>Login</Title>
-    <Form
-      onSubmit={handleSubmit(withReset(onSubmit))}
-      fields={
-        <>
-          <InputField
-            label="Email"
-            name="email"
-            register={register}
-            type="email"
-            errors={errors.email}
-            required={isRequired('email')}
-          />
-          <InputField
-            label="Пароль"
-            name="password"
-            register={register}
-            type="password"
-            errors={errors.password}
-            required={isRequired('password')}
-          />
-        </>
-      }
-      buttons={buttons}
-    /></>
+  return (
+    <>
+      <Title>Login</Title>
+      <Form
+        onSubmit={handleSubmit(withReset(onSubmit))}
+        fields={
+          <>
+            <InputField
+              label="Email"
+              name="email"
+              register={register}
+              type="email"
+              errors={errors.email}
+              required={isRequired('email')}
+            />
+            <InputField
+              label="Пароль"
+              name="password"
+              register={register}
+              type="password"
+              errors={errors.password}
+              required={isRequired('password')}
+            />
+          </>
+        }
+        buttons={buttons}
+      />
+    </>
   );
 };
 

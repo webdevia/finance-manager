@@ -12,8 +12,6 @@ import Title from '../../Title/Title';
 
 import { OperationSchema, OperationSchemaType } from './operation-schema';
 
-import style from './OperationForm.module.scss';
-
 const costOperationOption: SelectOptionProps = {
   text: 'Cost',
   value: 'Cost',

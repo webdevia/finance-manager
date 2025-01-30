@@ -2,11 +2,9 @@ import React from 'react';
 import styles from './ErrorLabel.module.scss';
 
 interface ErrorLabelProps {
-    message: string;
+  message: string;
 }
 
 export const ErrorLabel: React.FC<ErrorLabelProps> = ({ message }) => {
-    return (
-        <span className={styles.error}>{message}</span>
-    );
-}
+  return <span className={styles.error}>{message}</span>;
+};

@@ -1,76 +1,68 @@
-import React from "react";
+import React from 'react';
 import { Navigate, Outlet, RouterProvider as ReactRouterProvider, createBrowserRouter } from 'react-router-dom';
 
 import { Home } from 'src/pages/Home/Home';
 import { SignIn } from 'src/pages/SignIn/SignIn';
-// import { SignUp } from 'src/pages/SignUp/SignUp';
 import { Profile } from 'src/pages/ProfilePage/Profile';
 import { Layout } from 'src/widgets/Layout/Layout';
 
-import { OperationListPage } from "src/pages/OperationListPage/OperationListPage";
-import { useSelector } from "react-redux";
-import { RootState } from "../store";
+import { OperationListPage } from 'src/pages/OperationListPage/OperationListPage';
+import { useSelector } from 'react-redux';
+import { RootState } from '../store';
 
 export const ProtectedRoute: React.FC = () => {
-    const token = useSelector((state: RootState) => state.auth.token);
-    const isAuthenticated = !!token;
+  const token = useSelector((state: RootState) => state.auth.token);
+  const isAuthenticated = !!token;
 
-    if (!isAuthenticated) {
-        return <Navigate to="/signin" replace />;
-    }
+  if (!isAuthenticated) {
+    return <Navigate to="/signin" replace />;
+  }
 
-    return <Outlet />;
+  return <Outlet />;
 };
 
 export const ProtectedAdminRoute: React.FC = () => {
-    const token = useSelector((state: RootState) => state.auth.token);
-    const isAuthenticated = !!token;
+  const isAdmin = useSelector((state: RootState) => state.auth.profile.isAdmin);
 
-    if (!isAuthenticated) {
-        return <Navigate to="/signin" replace />;
-    }
+  if (!isAdmin) {
+    return <Navigate to="/signin" replace />;
+  }
 
-    return <Outlet />;
+  return <Outlet />;
 };
 
-import OperationDialog from "src/shared/ui/Dialogs/OperationDialog/OperationDialog";
+import OperationDialogPage from 'src/pages/OperationDialogPage/OperationDialogPage';
 
 const router = createBrowserRouter([
-    {
-        path: '/',
-        element: <Layout />,
+  {
+    path: '/',
+    element: <Layout />,
+    children: [
+      { index: true, element: <Home /> },
+      { path: 'signin', element: <SignIn /> },
+      {
+        element: <ProtectedRoute />,
         children: [
-            { index: true, element: <Home /> },
-            { path: 'signin', element: <SignIn /> },
-            { path: 'signup', element: <SignIn /> },
-            { path: "operation-new-test", element: <OperationDialog visible /> },
-            {
-                element: <ProtectedRoute />,
+          { path: 'profile', element: <Profile /> },
+          {
+            path: 'operations',
+            element: <OperationListPage />,
+            children: [
+              {
+                element: <ProtectedAdminRoute />,
                 children: [
-                    { path: 'profile', element: <Profile /> },
-                    {
-                        path: 'operations',
-                        element: <OperationListPage />,
-                        children: [
-                            {
-                                //index: true,
-                                element: <ProtectedAdminRoute />,
-                                children: [
-                                    { path: ':id/edit', element: <OperationListPage /> },
-                                    { path: 'add', element: <OperationListPage /> },
-                                ]
-                            }
-                        ]
-                    },
-                ]
-            }
+                  { path: 'add', element: <OperationDialogPage /> },
+                  { path: ':id/edit', element: <OperationDialogPage /> },
+                ],
+              },
+            ],
+          },
         ],
-    },
+      },
+    ],
+  },
 ]);
 
-
 export const RouterProvider: React.FC = () => {
-    return (
-        <ReactRouterProvider router={router} />
-    );
-}
+  return <ReactRouterProvider router={router} />;
+};
