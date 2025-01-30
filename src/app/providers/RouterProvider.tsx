@@ -1,5 +1,5 @@
 import React from 'react';
-import { Navigate, Outlet, RouterProvider as ReactRouterProvider, createBrowserRouter } from 'react-router-dom';
+import { Navigate, Outlet, RouterProvider as ReactRouterProvider, createHashRouter } from 'react-router-dom';
 
 import { Home } from 'src/pages/Home/Home';
 import { SignIn } from 'src/pages/SignIn/SignIn';
@@ -33,7 +33,7 @@ export const ProtectedAdminRoute: React.FC = () => {
 
 import OperationDialogPage from 'src/pages/OperationDialogPage/OperationDialogPage';
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: '/',
     element: <Layout />,
