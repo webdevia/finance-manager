@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { set, useForm } from 'react-hook-form';
+import React from 'react';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { useIsFieldRequired } from '../../../zod';
@@ -10,7 +10,7 @@ import ActionButtons from '../../ActionButtons/ActionButtons';
 import Title from '../../Title/Title';
 
 import { useDispatch } from 'react-redux';
-import { setToken, setProfile, clearToken, clearProfile } from 'src/features/authSlice';
+import { setToken, setProfile } from 'src/features/authSlice';
 
 import { SignInSchema, SignInSchemaType } from './signin-schema';
 

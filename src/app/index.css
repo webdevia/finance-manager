@@ -19,6 +19,7 @@
     --sidebar-bg-color: #333;
     --logo-svg: invert(1) brightness(1.5);
     --modal-bg-color: #272727;
+    --navlink-bg-color: #727272;
   }
 
   @media (prefers-color-scheme: light) {
@@ -30,8 +31,9 @@
       --header-bg-color: #dadada;
       --footer-bg-color: #dadada;
       --sidebar-bg-color: #dadada;
-      --modal-bg-color: #ececec;
       --logo-svg: none;
+      --modal-bg-color: #ececec;
+      --navlink-bg-color: #b1b1b1;;
     }
   }
 

@@ -1,25 +1,41 @@
 import React from 'react';
-import style from './navigation.module.scss';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { SignOutButton } from 'src/features/SignOutButton/SignOutButton';
+import { useSelector } from 'react-redux';
+import { RootState } from 'src/app/store';
 
-export const Navigation = () => (
-  <>
-    <Link to={'/'}>
-      <button className={style['nav-btn']}>Home</button>
-    </Link>
-    <Link to={'/signin'}>
-      <button className={style['nav-btn']}>Sign In</button>
-    </Link>
-    <Link to={'/signup'}>
-      <button className={style['nav-btn']}>Sign Up</button>
-    </Link>
-    <Link to={'/profile'}>
-      <button className={style['nav-btn']}>Profile</button>
-    </Link>
-    <Link to={'/operations'}>
-      <button className={style['nav-btn']}>Operations</button>
-    </Link>
-    <SignOutButton className={style['nav-btn']} />
-  </>
-);
+import style from './navigation.module.scss';
+
+export const getNavLinkStyle = ({ isActive }: { isActive: boolean }) => {
+  return {
+    fontWeight: isActive ? 'bold' : 'normal',
+  };
+};
+
+export const Navigation = () => {
+  const token = useSelector((state: RootState) => state.auth.token);
+  const isAuthenticated = !!token;
+
+  return (
+    <>
+      <NavLink to={'/'} className={style['nav-btn']} style={getNavLinkStyle} end>
+        Home
+      </NavLink>
+      {isAuthenticated ? (
+        <>
+          <NavLink to={'/profile'} className={style['nav-btn']} style={getNavLinkStyle}>
+            Profile
+          </NavLink>
+          <NavLink to={'/operations'} className={style['nav-btn']} style={getNavLinkStyle}>
+            Operations
+          </NavLink>
+          <SignOutButton className={style['nav-btn']} />
+        </>
+      ) : (
+        <NavLink to={'/signin'} className={style['nav-btn']} style={getNavLinkStyle}>
+          Sign In
+        </NavLink>
+      )}
+    </>
+  );
+};
