@@ -15,6 +15,7 @@ import { setToken, setProfile } from 'src/features/authSlice';
 import { SignInSchema, SignInSchemaType } from './signin-schema';
 
 import style from './signInForm.module.scss';
+import { useNavigate } from 'react-router-dom';
 
 const SignInForm = () => {
   const {
@@ -28,12 +29,14 @@ const SignInForm = () => {
   });
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const OnLogin = (data: SignInSchemaType) => {
     const fakeToken = '123456';
     dispatch(setToken(fakeToken));
     dispatch(setProfile({ username: data.email, isAdmin: data.email.startsWith('admin') }));
     reset();
+    navigate('/operations');
   };
 
   const isRequired = useIsFieldRequired(SignInSchema);
