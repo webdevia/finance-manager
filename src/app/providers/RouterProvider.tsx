@@ -43,7 +43,6 @@ const router = createBrowserRouter([
             { index: true, element: <Home /> },
             { path: 'signin', element: <SignIn /> },
             { path: 'signup', element: <SignIn /> },
-            { path: 'profile', element: <Profile /> },
             { path: "operation-new-test", element: <OperationDialog visible /> },
             {
                 element: <ProtectedRoute />,
