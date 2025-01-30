@@ -1,6 +1,6 @@
 import React, { ReactNode, MouseEvent, ButtonHTMLAttributes } from 'react';
 import s from './Button.module.scss';
-import cn from "clsx";
+import cn from 'clsx';
 
 export type ButtonProps = {
   children: ReactNode;
@@ -9,7 +9,7 @@ export type ButtonProps = {
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
 const Button = ({ children, onClick, stretch, disabled = false, ...props }: ButtonProps) => (
-  <button className={cn(s.button, {[s.stretch]: stretch})} onClick={onClick} disabled={disabled} {...props}>
+  <button className={cn(s.button, { [s.stretch]: stretch })} onClick={onClick} disabled={disabled} {...props}>
     {children}
   </button>
 );

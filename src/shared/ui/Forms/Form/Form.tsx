@@ -16,4 +16,4 @@ const Form = ({ onSubmit, fields, buttons }: FormProps) => {
   );
 };
 
-export default Form
+export default Form;

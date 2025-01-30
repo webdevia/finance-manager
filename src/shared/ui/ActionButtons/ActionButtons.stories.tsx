@@ -27,11 +27,7 @@ export const LeftAndRight = {
 };
 
 export const Center = {
-    args: {
-      buttons: [
-        { button: <TestButton key="1" /> },
-        { button: <TestButton2 key="2" /> },
-      ],
-    },
-  };
-  
+  args: {
+    buttons: [{ button: <TestButton key="1" /> }, { button: <TestButton2 key="2" /> }],
+  },
+};

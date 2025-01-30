@@ -41,7 +41,7 @@ const Collapse = ({ title, children }: CollapseProps) => {
         }}
       >
         <div ref={contentRef} className={s.content}>
-        {isOpen && children}
+          {isOpen && children}
         </div>
       </div>
     </div>

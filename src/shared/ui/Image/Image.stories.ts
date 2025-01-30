@@ -10,8 +10,8 @@ const meta: Meta<typeof Image> = {
 export default meta;
 
 export const Sample = {
-    args: {
-        title: "Test image",
-        url: "https://placehold.co/600x400?text=Hello+World"
-    }
+  args: {
+    title: 'Test image',
+    url: 'https://placehold.co/600x400?text=Hello+World',
+  },
 };

@@ -34,7 +34,7 @@ const SelectField = <T extends FieldValues>({
         <SelectOption key={index} {...option} />
       ))}
     </select>
-</Field>
+  </Field>
 );
 
 export default SelectField;

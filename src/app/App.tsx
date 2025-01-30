@@ -3,12 +3,7 @@ import './App.css';
 import { Providers } from 'src/app/providers';
 
 const App: React.FC = () => {
-
-  return (
-    <Providers />
-  );
-
-}
+  return <Providers />;
+};
 
 export default App;
-

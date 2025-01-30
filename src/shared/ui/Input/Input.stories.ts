@@ -1,5 +1,5 @@
 import type { Meta } from '@storybook/react';
-import Input from "./Input";
+import Input from './Input';
 
 const meta: Meta<typeof Input> = {
   title: 'Example/Common/Input',
@@ -11,6 +11,6 @@ export default meta;
 
 export const Sample = {
   args: {
-    value: "TEST",
+    value: 'TEST',
   },
 };
