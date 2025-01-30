@@ -11,9 +11,6 @@ export const Navigation = () => (
     <Link to={'/signin'}>
       <button className={style['nav-btn']}>Sign In</button>
     </Link>
-    <Link to={'/signup'}>
-      <button className={style['nav-btn']}>Sign Up</button>
-    </Link>
     <Link to={'/profile'}>
       <button className={style['nav-btn']}>Profile</button>
     </Link>
