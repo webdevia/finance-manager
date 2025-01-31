@@ -22,7 +22,7 @@ export const ProtectedRoute: React.FC = () => {
 };
 
 export const ProtectedAdminRoute: React.FC = () => {
-  const isAdmin = useSelector((state: RootState) => state.auth.profile.isAdmin);
+  const isAdmin = useSelector((state: RootState) => state.profile.profile.isAdmin);
 
   if (!isAdmin) {
     return <Navigate to="/signin" replace />;
