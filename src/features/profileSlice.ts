@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 interface Profile {
   username: string;
@@ -12,7 +12,7 @@ interface ProfileState {
 }
 
 const initialState: ProfileState = {
-    profile: null
+  profile: null,
 };
 
 const profileSlice = createSlice({
