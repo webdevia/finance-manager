@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { ReactNode, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../store';
-import { ReactNode, useEffect } from 'react';
+
 import { fakeProfile } from 'src/shared/services/authService';
 import { setToken } from 'src/features/authSlice';
 import { setProfile } from 'src/features/profileSlice';
@@ -26,7 +26,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
       dispatch(initializeApp());
     }
-  }, [dispatch, isAppInitialized]);
+  }, [dispatch, isAppInitialized, token]);
 
-  return (<>{children}</>);
+  return <>{children}</>;
 };

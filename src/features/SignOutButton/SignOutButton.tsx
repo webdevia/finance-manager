@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { clearToken } from '../authSlice';
-import { clearProfile } from "../profileSlice";
+import { clearProfile } from '../profileSlice';
 
 interface SignOutButtonProps {
   className?: string;

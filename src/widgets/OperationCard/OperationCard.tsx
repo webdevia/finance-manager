@@ -27,9 +27,11 @@ export const OperationCard: React.FC<OperationCardProps> = ({
       </div>
       <div className={style['card-footer']}>
         <span className={style['date']}>{date}</span>
-        {onEditClick && <button className={style['edit-button']} onClick={() => onEditClick(id)}>
-          Edit
-        </button>}
+        {onEditClick && (
+          <button className={style['edit-button']} onClick={() => onEditClick(id)}>
+            Edit
+          </button>
+        )}
       </div>
     </div>
   );
