@@ -44,7 +44,7 @@ export const fakeProfile = async (token: string): Promise<ProfileResponse | null
       const user = users.find((user) => user.token === token);
       user
         ? resolve(user)
-        : reject(new Error('Invalid username or password', { cause: { code: 401, message: 'Unauthorized' } }));
+        : reject(new Error('Invalid token', { cause: { code: 401, message: 'Unauthorized' } }));
     }, 1000);
   });
 };

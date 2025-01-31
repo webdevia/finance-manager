@@ -10,13 +10,13 @@ import { initializeApp } from 'src/features/appSlice';
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { isAppInitialized } = useSelector((state: RootState) => state.app);
-  const { token } = useSelector((state: RootState) => state.auth);
-
+  
   useEffect(() => {
     if (!isAppInitialized) {
       const storedToken = localStorage.getItem('token');
+      console.log(storedToken);
       if (storedToken) {
-        fakeProfile(token).then((data) => {
+        fakeProfile(storedToken).then((data) => {
           if (data) {
             dispatch(setToken(data.token));
             dispatch(setProfile(data));
@@ -26,7 +26,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
       dispatch(initializeApp());
     }
-  }, [dispatch, isAppInitialized, token]);
+  }, [dispatch, isAppInitialized]);
 
   return <>{children}</>;
 };
