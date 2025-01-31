@@ -1,16 +1,11 @@
-import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface AuthState {
   token: string;
-  profile: {
-    username?: string;
-    isAdmin?: boolean;
-  };
 }
 
 const initialState: AuthState = {
-  token: '',
-  profile: {},
+  token: "",
 };
 
 const authSlice = createSlice({
@@ -21,17 +16,10 @@ const authSlice = createSlice({
       state.token = action.payload;
     },
     clearToken: (state) => {
-      state.token = '';
-      state.profile = {};
-    },
-    setProfile: (state, action: PayloadAction<{ username: string; isAdmin: boolean }>) => {
-      state.profile = action.payload;
-    },
-    clearProfile: (state) => {
-      state.profile = {};
+      state.token = "";
     },
   },
 });
 
-export const { setToken, clearToken, setProfile, clearProfile } = authSlice.actions;
+export const { setToken, clearToken } = authSlice.actions;
 export default authSlice.reducer;
