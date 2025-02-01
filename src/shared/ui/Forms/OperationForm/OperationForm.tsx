@@ -1,7 +1,6 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-
 import { useIsFieldRequired } from '../../../zod';
 import Form from '../Form/Form';
 import InputField from '../FormFields/InputField/InputField';
@@ -22,7 +21,13 @@ const profitOperationOption: SelectOptionProps = {
   value: 'Profit',
 };
 
-const OperationForm = () => {
+export type OnSubmit = (data: OperationSchemaType) => void;
+
+type OperationFromProps = {
+  onSubmit: OnSubmit;
+};
+
+const OperationForm = ({ onSubmit }: OperationFromProps) => {
   const {
     reset,
     register,
@@ -33,8 +38,8 @@ const OperationForm = () => {
     resolver: zodResolver(OperationSchema),
   });
 
-  const onSubmit = (data: OperationSchemaType) => {
-    console.log(data);
+  const withReset = (onSubmit: OnSubmit) => (data: OperationSchemaType) => {
+    onSubmit(data);
     reset();
   };
 
@@ -50,7 +55,7 @@ const OperationForm = () => {
     <>
       <Title>Operation</Title>
       <Form
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(withReset(onSubmit))}
         fields={
           <>
             <SelectField

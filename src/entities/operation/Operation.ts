@@ -141,7 +141,7 @@ const getRandomNumber = (min: number, max: number): number => Math.round(Math.ra
 
 const getRandomQuality = (): string => productQuality[getRandomNumber(0, productQuality.length - 1)];
 
-const getRandomId = (): string => getRandomNumber(1, 99999999).toString();
+export const getRandomId = (): string => getRandomNumber(1, 99999999).toString();
 
 const getRandomProductCategory = (): string => productCategories[getRandomNumber(0, productCategories.length - 1)];
 
