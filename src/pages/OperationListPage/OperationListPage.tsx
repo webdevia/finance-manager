@@ -1,14 +1,14 @@
 import React from 'react';
-import style from './OperationListPage.module.scss';
+import { useSelector, useDispatch } from 'react-redux';
 import { OperationList } from 'src/widgets/OperationList/OperationList';
 import { createRandomOperation } from 'src/entities/operation/Operation';
 import AddOperationButton from 'src/features/AddOperationButton/AddOperationButton';
 import { Outlet, useNavigate } from 'react-router-dom';
 import Button from 'src/shared/ui/Button/Button';
-import { useSelector, useDispatch } from 'react-redux';
-import { addOperation } from 'src/features/operationSlice';
-import { RootState } from 'src/app/store';
+import { addOperation } from 'src/features/operation/operationSlice';
 import { selectIsAdmin } from 'src/features/profile/selectors';
+import style from './OperationListPage.module.scss';
+import { selectOperations } from 'src/features/operation/selectors';
 
 const Sidebar = () => {
   const dispatch = useDispatch();
@@ -33,7 +33,7 @@ const Sidebar = () => {
 
 export const OperationListPage: React.FC = () => {
   const navigate = useNavigate();
-  const { operations } = useSelector((state: RootState) => state.operations);
+  const { operations } = useSelector(selectOperations);
   const isAdmin = useSelector(selectIsAdmin);
 
   const onEditClick = (id: string) => {

@@ -1,13 +1,13 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useIsFieldRequired } from '../../../zod';
-import Form from '../Form/Form';
-import InputField from '../FormFields/InputField/InputField';
-import SelectField, { SelectOptionProps } from '../FormFields/SelectField/SelectField';
-import Button from '../../Button/Button';
-import ActionButtons from '../../ActionButtons/ActionButtons';
-import Title from '../../Title/Title';
+import { useIsFieldRequired } from 'src/shared/zod';
+import Form from 'src/shared/ui/Forms/Form/Form';
+import InputField from 'src/shared/ui/Forms/FormFields/InputField/InputField';
+import SelectField, { SelectOptionProps } from 'src/shared/ui/Forms/FormFields/SelectField/SelectField';
+import Button from 'src/shared/ui/Button/Button';
+import ActionButtons from 'src/shared/ui/ActionButtons/ActionButtons';
+import Title from 'src/shared/ui/Title/Title';
 
 import { OperationSchema, OperationSchemaType } from './operation-schema';
 
