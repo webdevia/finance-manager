@@ -9,6 +9,8 @@ import { Layout } from 'src/widgets/Layout/Layout';
 import { OperationListPage } from 'src/pages/OperationListPage/OperationListPage';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store';
+import { selectIsAuth } from 'src/features/auth/selectors';
+import OperationDialogPage from 'src/pages/OperationDialogPage/OperationDialogPage';
 
 export const ProtectedRoute: React.FC = () => {
   const token = useSelector((state: RootState) => state.auth.token);
@@ -31,7 +33,15 @@ export const ProtectedAdminRoute: React.FC = () => {
   return <Outlet />;
 };
 
-import OperationDialogPage from 'src/pages/OperationDialogPage/OperationDialogPage';
+const SignInWrapper: React.FC = () => {
+  const isAuthenticated = useSelector(selectIsAuth);
+
+  if (isAuthenticated) {
+    return <Navigate to="/" replace />; 
+  }
+
+  return <SignIn />;
+}
 
 const router = createHashRouter([
   {
@@ -39,7 +49,7 @@ const router = createHashRouter([
     element: <Layout />,
     children: [
       { index: true, element: <Home /> },
-      { path: 'signin', element: <SignIn /> },
+      { path: 'signin', element: <SignInWrapper /> },
       {
         element: <ProtectedRoute />,
         children: [
