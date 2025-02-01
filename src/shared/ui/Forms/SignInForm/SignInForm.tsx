@@ -10,8 +10,8 @@ import ActionButtons from '../../ActionButtons/ActionButtons';
 import Title from '../../Title/Title';
 
 import { useDispatch } from 'react-redux';
-import { setToken } from 'src/features/authSlice';
-import { setProfile } from 'src/features/profileSlice';
+import { setToken } from 'src/features/auth/authSlice';
+import { setProfile } from 'src/features/profile/profileSlice';
 import { fakeAuth } from 'src/shared/services/authService';
 
 import { SignInSchema, SignInSchemaType } from './signin-schema';

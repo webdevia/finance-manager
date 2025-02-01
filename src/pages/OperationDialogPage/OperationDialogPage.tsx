@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { BankOperation, getRandomId } from 'src/entities/operation/Operation';
+import { addOperation } from 'src/features/operationSlice';
+import { OnSubmit } from 'src/shared/ui/Forms/OperationForm/OperationForm';
 
-import OperationDialog from 'src/shared/ui/Dialogs/OperationDialog/OperationDialog';
+import OperationDialog from 'src/widgets/Dialogs/OperationDialog/OperationDialog';
 
 const OperationDialogPage = () => {
   const [isOperationDialogOpen, setIsOperationDialogOpen] = useState(false);
@@ -9,6 +13,22 @@ const OperationDialogPage = () => {
   const location = useLocation();
   const isAddRoute = location.pathname.endsWith('/operations/add');
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+
+  const onSubmit: OnSubmit = (data) => {
+    const newOperation: BankOperation = {
+      id: getRandomId(),
+      amount: data.amount,
+      category: { id: getRandomId(), name: data.name },
+      date: data.createdAt,
+      name: data.name,
+      description: data.desc,
+      type: data.type,
+    };
+    dispatch(addOperation(newOperation));
+    navigate('/operations');
+  };
 
   useEffect(() => {
     if (isAddRoute || id) {
@@ -24,7 +44,9 @@ const OperationDialogPage = () => {
     }
   }, [id, isAddRoute]);
 
-  return <OperationDialog visible={isOperationDialogOpen} onClose={() => navigate('/operations')} />;
+  return (
+    <OperationDialog visible={isOperationDialogOpen} onClose={() => navigate('/operations')} onSubmit={onSubmit} />
+  );
 };
 
 export default OperationDialogPage;

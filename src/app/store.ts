@@ -2,8 +2,8 @@ import { configureStore } from '@reduxjs/toolkit';
 import { combineReducers } from 'redux';
 
 import appReducer from 'src/features/appSlice';
-import authReducer from 'src/features/authSlice';
-import profileReducer from 'src/features/profileSlice';
+import authReducer from 'src/features/auth/authSlice';
+import profileReducer from 'src/features/profile/profileSlice';
 import operationsReducer from 'src/features/operationSlice';
 
 const rootReducer = combineReducers({
@@ -12,7 +12,6 @@ const rootReducer = combineReducers({
   operations: operationsReducer,
   app: appReducer,
 });
-
 
 export const store = configureStore({
   reducer: rootReducer,

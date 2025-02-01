@@ -1,17 +1,9 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
-export interface Operation {
-  id: string;
-  name: string;
-  desc?: string;
-  createdAt: string;
-  amount: number;
-  category: string;
-  type: 'Cost' | 'Profit';
-}
+import { BankOperation } from 'src/entities/operation/Operation';
 
 interface OperationsState {
-  operations: Operation[];
+  operations: BankOperation[];
 }
 
 const initialState: OperationsState = {
@@ -22,10 +14,10 @@ const operationsSlice = createSlice({
   name: 'operations',
   initialState,
   reducers: {
-    addOperation: (state, action: PayloadAction<Operation>) => {
+    addOperation: (state, action: PayloadAction<BankOperation>) => {
       state.operations.push(action.payload);
     },
-    updateOperation: (state, action: PayloadAction<Operation>) => {
+    updateOperation: (state, action: PayloadAction<BankOperation>) => {
       const index = state.operations.findIndex((op) => op.id === action.payload.id);
       if (index !== -1) {
         state.operations[index] = action.payload;
@@ -34,7 +26,7 @@ const operationsSlice = createSlice({
     deleteOperation: (state, action: PayloadAction<string>) => {
       state.operations = state.operations.filter((op) => op.id !== action.payload);
     },
-    setOperations: (state, action: PayloadAction<Operation[]>) => {
+    setOperations: (state, action: PayloadAction<BankOperation[]>) => {
       state.operations = action.payload;
     },
   },
