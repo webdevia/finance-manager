@@ -2,12 +2,14 @@ import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 import { BankOperation } from 'src/entities/operation/Operation';
 
+import { createRandomOperation } from 'src/entities/operation/Operation'; 
+
 interface OperationsState {
   operations: BankOperation[];
 }
 
 const initialState: OperationsState = {
-  operations: [],
+  operations: [...Array(10)].map(() => createRandomOperation(new Date().toISOString())),
 };
 
 const operationsSlice = createSlice({
