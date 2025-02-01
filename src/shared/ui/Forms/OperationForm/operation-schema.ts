@@ -1,11 +1,13 @@
 import { z } from 'zod';
 
+const requiredField = z.string().nonempty('Required field');
+
 export const OperationSchema = z.object({
-  name: z.string().nonempty('Обязательное поле'),
+  name: requiredField,
   desc: z.string().optional(),
-  createdAt: z.string().nonempty('Обязательное поле'),
-  amount: z.number({ invalid_type_error: 'Обязательное поле' }).positive('Сумма должна быть больше 0'),
-  category: z.string().nonempty('Обязательное поле'),
+  createdAt: requiredField,
+  amount: z.number({ invalid_type_error: 'Required field' }).positive('Amount must be greater than 0'),
+  category: requiredField,
   type: z.enum(['Cost', 'Profit']),
 });
 

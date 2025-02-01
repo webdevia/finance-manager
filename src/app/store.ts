@@ -4,7 +4,7 @@ import { combineReducers } from 'redux';
 import appReducer from 'src/features/appSlice';
 import authReducer from 'src/features/auth/authSlice';
 import profileReducer from 'src/features/profile/profileSlice';
-import operationsReducer from 'src/features/operationSlice';
+import operationsReducer from 'src/features/operation/operationSlice';
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -14,7 +14,7 @@ const rootReducer = combineReducers({
 });
 
 export const store = configureStore({
-  reducer: rootReducer
+  reducer: rootReducer,
 });
 
 export type RootState = ReturnType<typeof store.getState>;

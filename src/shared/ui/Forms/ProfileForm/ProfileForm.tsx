@@ -1,24 +1,21 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-
-import { useIsFieldRequired } from '../../../zod';
-import Form from '../Form/Form';
-import InputField from '../FormFields/InputField/InputField';
-import Button from '../../Button/Button';
-import ActionButtons from '../../ActionButtons/ActionButtons';
-import Title from '../../Title/Title';
-
+import { useIsFieldRequired } from 'src/shared/zod';
+import Form from 'src/shared/ui/Forms/Form/Form';
+import InputField from 'src/shared/ui/Forms/FormFields/InputField/InputField';
+import Button from 'src/shared/ui/Button/Button';
+import ActionButtons from 'src/shared/ui/ActionButtons/ActionButtons';
+import Title from 'src/shared/ui/Title/Title';
+import TextareaField from '../FormFields/TextareaField/TextareaField';
+import { ZodEffects, ZodObject } from 'zod';
 import {
   ChangeProfileSchema,
   ChangeProfileSchemaType,
   ChangePasswordSchema,
   ChangePasswordSchemaType,
 } from './profile-schema';
-
 import style from './ProfileForm.module.scss';
-import TextareaField from '../FormFields/TextareaField/TextareaField';
-import { ZodEffects, ZodObject } from 'zod';
 
 type ChangeProfileFormProps = {
   initialData?: ChangeProfileSchemaType;
@@ -145,9 +142,9 @@ const ChangePasswordForm = () => {
 
 type ProfileFormProps = {
   profileInitialData: ChangeProfileSchemaType;
-}
+};
 
-const ProfileForm = ({profileInitialData}: ProfileFormProps) => (
+const ProfileForm = ({ profileInitialData }: ProfileFormProps) => (
   <div className={style.container}>
     <ChangeProfileForm initialData={profileInitialData} />
     <ChangePasswordForm />

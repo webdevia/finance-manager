@@ -1,7 +1,7 @@
 import React from 'react';
-import style from './Home.module.scss';
+import style from './HomePage.module.scss';
 
-export const Home = () => (
+export const HomePage = () => (
   <section className={style.container}>
     <h2>Finance Manager</h2>
     <p>

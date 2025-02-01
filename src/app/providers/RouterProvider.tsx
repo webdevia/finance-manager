@@ -1,33 +1,32 @@
 import React from 'react';
 import { Navigate, Outlet, RouterProvider as ReactRouterProvider, createHashRouter } from 'react-router-dom';
-
-import { Home } from 'src/pages/Home/Home';
-import { SignIn } from 'src/pages/SignIn/SignIn';
-import { Profile } from 'src/pages/ProfilePage/Profile';
-import { Layout } from 'src/widgets/Layout/Layout';
-
-import { OperationListPage } from 'src/pages/OperationListPage/OperationListPage';
 import { useSelector } from 'react-redux';
-import { RootState } from '../store';
-import { selectIsAuth } from 'src/features/auth/selectors';
+import { HomePage } from 'src/pages/HomePage/HomePage';
+import { SignInPage } from 'src/pages/SignInPage/SignInPage';
+import { ProfilePage } from 'src/pages/ProfilePage/ProfilePage';
+import { GenericLayout } from 'src/widgets/Layout/GenericLayout';
+import { OperationListPage } from 'src/pages/OperationListPage/OperationListPage';
 import OperationDialogPage from 'src/pages/OperationDialogPage/OperationDialogPage';
+import { selectIsAuth } from 'src/features/auth/selectors';
+import { selectIsAdmin } from 'src/features/profile/selectors';
+
+const NavigateToSignIn = () => <Navigate to="/signin" replace />;
 
 export const ProtectedRoute: React.FC = () => {
-  const token = useSelector((state: RootState) => state.auth.token);
-  const isAuthenticated = !!token;
+  const isAuthenticated = useSelector(selectIsAuth);
 
   if (!isAuthenticated) {
-    return <Navigate to="/signin" replace />;
+    return <NavigateToSignIn />;
   }
 
   return <Outlet />;
 };
 
 export const ProtectedAdminRoute: React.FC = () => {
-  const isAdmin = useSelector((state: RootState) => state.profile.profile.isAdmin);
+  const isAdmin = useSelector(selectIsAdmin);
 
   if (!isAdmin) {
-    return <Navigate to="/signin" replace />;
+    return <NavigateToSignIn />;
   }
 
   return <Outlet />;
@@ -37,23 +36,23 @@ const SignInWrapper: React.FC = () => {
   const isAuthenticated = useSelector(selectIsAuth);
 
   if (isAuthenticated) {
-    return <Navigate to="/" replace />; 
+    return <Navigate to="/" replace />;
   }
 
-  return <SignIn />;
-}
+  return <SignInPage />;
+};
 
 const router = createHashRouter([
   {
     path: '/',
-    element: <Layout />,
+    element: <GenericLayout />,
     children: [
-      { index: true, element: <Home /> },
+      { index: true, element: <HomePage /> },
       { path: 'signin', element: <SignInWrapper /> },
       {
         element: <ProtectedRoute />,
         children: [
-          { path: 'profile', element: <Profile /> },
+          { path: 'profile', element: <ProfilePage /> },
           {
             path: 'operations',
             element: <OperationListPage />,

@@ -7,7 +7,7 @@ export const ChangeProfileSchema = z.object({
 
 export type ChangeProfileSchemaType = z.infer<typeof ChangeProfileSchema>;
 
-const passwordZodType = z.string().nonempty('Required field').min(6, 'Too short password');
+const passwordZodType = z.string().nonempty('Required field').min(6, 'Password is too short');
 
 export const ChangePasswordSchema = z
   .object({
@@ -16,7 +16,7 @@ export const ChangePasswordSchema = z
     confirmPassword: passwordZodType,
   })
   .refine((data) => data.newPassword === data.confirmPassword, {
-    message: 'Passwords are not equal',
+    message: 'Passwords do not match',
     path: ['confirmPassword'],
   });
 

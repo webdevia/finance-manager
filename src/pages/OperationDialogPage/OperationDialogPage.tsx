@@ -2,26 +2,25 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { BankOperation, getRandomId } from 'src/entities/operation/Operation';
-import { addOperation } from 'src/features/operationSlice';
-import { OnSubmit } from 'src/shared/ui/Forms/OperationForm/OperationForm';
-import { updateOperation } from 'src/features/operationSlice';
-import OperationDialog from 'src/widgets/Dialogs/OperationDialog/OperationDialog';
-import { RootState } from 'src/app/store';
+import { addOperation, updateOperation } from 'src/features/operation/operationSlice';
+import OperationForm, { OnSubmit } from 'src/shared/ui/Forms/OperationForm/OperationForm';
 import { OperationSchemaType } from 'src/shared/ui/Forms/OperationForm/operation-schema';
 import { normalizeDateString } from 'src/shared/datetime-utils';
+import { selectOperations } from 'src/features/operation/selectors';
+import Modal from 'src/shared/ui/Modal/Modal';
 
 const OperationDialogPage = () => {
   const [isOperationDialogOpen, setIsOperationDialogOpen] = useState(false);
   const [initialData, setInitialData] = useState<OperationSchemaType>(null);
   const [onSubmit, setOnSubmit] = useState<OnSubmit>(null);
-  const { id } = useParams();
-  const location = useLocation();
-  const isAddRoute = location.pathname.endsWith('/operations/add');
-
-  const { operations } = useSelector((state: RootState) => state.operations);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const navigateToOpeartions = () => navigate('/operations');
+
+  const { id } = useParams();
+  const location = useLocation();
+  const { operations } = useSelector(selectOperations);
 
   const handleAddOperation: OnSubmit = (data) => {
     const newOperation: BankOperation = {
@@ -34,7 +33,7 @@ const OperationDialogPage = () => {
       type: data.type,
     };
     dispatch(addOperation(newOperation));
-    navigate('/operations');
+    navigateToOpeartions();
   };
 
   const handleUpdateOperation =
@@ -50,8 +49,10 @@ const OperationDialogPage = () => {
         type: data.type,
       };
       dispatch(updateOperation(updatedOperation));
-      navigate('/operations');
+      navigateToOpeartions();
     };
+
+  const isAddRoute = location.pathname.endsWith('/operations/add');
 
   useEffect(() => {
     if (isAddRoute || id) {
@@ -67,6 +68,7 @@ const OperationDialogPage = () => {
               type: operationToEdit.type,
             }
           : null;
+
         setInitialData(initialFormData);
         setOnSubmit(() => handleUpdateOperation(id));
       } else {
@@ -79,12 +81,9 @@ const OperationDialogPage = () => {
   }, [id, isAddRoute]);
 
   return (
-    <OperationDialog
-      visible={isOperationDialogOpen}
-      onClose={() => navigate('/operations')}
-      onSubmit={onSubmit}
-      initialData={initialData}
-    />
+    <Modal visible={isOperationDialogOpen} onClose={navigateToOpeartions}>
+      <OperationForm onSubmit={onSubmit} initialData={initialData} />
+    </Modal>
   );
 };
 

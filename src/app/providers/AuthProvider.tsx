@@ -16,41 +16,45 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     dispatch(clearProfile());
   }, [dispatch]);
 
-  const login = useCallback(async (token: string) => {
-    try {
-      const data = await fakeProfile(token);
-      if (data) {
-        dispatch(setToken(data.token));
-        dispatch(setProfile(data));
+  const login = useCallback(
+    async (token: string) => {
+      try {
+        const data = await fakeProfile(token);
+        if (data) {
+          dispatch(setToken(data.token));
+          dispatch(setProfile(data));
+        }
+      } catch (error) {
+        logout();
       }
-    } catch (error) {
-      logout();
-    }
-  }, [dispatch, logout]);
-    
+    },
+    [dispatch, logout]
+  );
 
   useEffect(() => {
     if (!isAppInitialized) {
       const storedToken = localStorage.getItem('token');
       if (storedToken) {
-        fakeProfile(storedToken).then((data) => {
-          if (data) {
-            dispatch(setToken(data.token));
-            dispatch(setProfile(data));
-          }
-        }).catch(logout);
+        fakeProfile(storedToken)
+          .then((data) => {
+            if (data) {
+              dispatch(setToken(data.token));
+              dispatch(setProfile(data));
+            }
+          })
+          .catch(logout);
       }
 
       dispatch(initializeApp());
     }
   }, [dispatch, logout, isAppInitialized]);
-  
+
   useEffect(() => {
     const handleStorageChange = (event: StorageEvent) => {
       if (event.key === 'token') {
         const newToken = event.newValue;
         if (newToken) {
-          login(newToken)
+          login(newToken);
         } else {
           logout();
         }
@@ -61,7 +65,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
     return () => {
       window.removeEventListener('storage', handleStorageChange);
-    }
+    };
   }, [login, logout]);
 
   return <>{children}</>;

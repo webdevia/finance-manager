@@ -1,27 +1,24 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-
-import { useIsFieldRequired } from '../../../zod';
-import Form from '../Form/Form';
-import InputField from '../FormFields/InputField/InputField';
-import Button from '../../Button/Button';
-import ActionButtons from '../../ActionButtons/ActionButtons';
-import Title from '../../Title/Title';
-
-import { useDispatch } from 'react-redux';
-import { setToken } from 'src/features/auth/authSlice';
-import { setProfile } from 'src/features/profile/profileSlice';
-import { fakeAuth } from 'src/shared/services/authService';
-
+import { useIsFieldRequired } from 'src/shared/zod';
+import Form from 'src/shared/ui/Forms/Form/Form';
+import InputField from 'src/shared/ui/Forms/FormFields/InputField/InputField';
+import Button from 'src/shared/ui/Button/Button';
+import ActionButtons from 'src/shared/ui/ActionButtons/ActionButtons';
+import Title from 'src/shared/ui/Title/Title';
+import { ErrorLabel } from 'src/shared/ui/ErrorLabel/ErrorLabel';
 import { SignInSchema, SignInSchemaType } from './signin-schema';
 
 import style from './signInForm.module.scss';
-import { useNavigate } from 'react-router-dom';
 
-import { ErrorLabel } from 'src/shared/ErrorLabel/ErrorLabel';
+export type OnSubmit = (data: SignInSchemaType) => Promise<void>;
 
-const SignInForm = () => {
+type SignInFormProps = {
+  onSubmit: OnSubmit;
+};
+
+const SignInForm = ({ onSubmit }: SignInFormProps) => {
   const {
     reset,
     register,
@@ -33,17 +30,9 @@ const SignInForm = () => {
     resolver: zodResolver(SignInSchema),
   });
 
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  const OnLogin = (data: SignInSchemaType) => {
-    fakeAuth(data.email, data.password)
-      .then((user) => {
-        dispatch(setToken(user.token));
-        dispatch(setProfile(user));
-        reset();
-        navigate('/operations');
-      })
+  const withResetAndSetError = (onSubmit: OnSubmit) => (data: SignInSchemaType) => {
+    onSubmit(data)
+      .then(() => reset())
       .catch((error) =>
         setError('root', {
           type: 'manual',
@@ -67,7 +56,7 @@ const SignInForm = () => {
           <Title>Sign In</Title>
         </span>
         <Form
-          onSubmit={handleSubmit(OnLogin)}
+          onSubmit={handleSubmit(withResetAndSetError(onSubmit))}
           fields={
             <>
               <InputField
