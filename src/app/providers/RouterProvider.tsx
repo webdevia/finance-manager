@@ -34,7 +34,6 @@ export const ProtectedAdminRoute: React.FC = () => {
 };
 
 const SignInWrapper: React.FC = () => {
-  const token = useSelector((state: RootState) => state.auth.token);
   const isAuthenticated = useSelector(selectIsAuth);
 
   if (isAuthenticated) {

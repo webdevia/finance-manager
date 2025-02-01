@@ -11,8 +11,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const dispatch = useDispatch<AppDispatch>();
   const { isAppInitialized } = useSelector((state: RootState) => state.app);
 
-  const { token } = useSelector((state: RootState) => state.auth);
-  
   const logout = useCallback(() => {
     dispatch(clearToken());
     dispatch(clearProfile());
@@ -45,7 +43,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
       dispatch(initializeApp());
     }
-  }, [dispatch, isAppInitialized]);
+  }, [dispatch, logout, isAppInitialized]);
   
   useEffect(() => {
     const handleStorageChange = (event: StorageEvent) => {
