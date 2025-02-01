@@ -25,9 +25,10 @@ export type OnSubmit = (data: OperationSchemaType) => void;
 
 type OperationFromProps = {
   onSubmit: OnSubmit;
+  initialData?: OperationSchemaType;
 };
 
-const OperationForm = ({ onSubmit }: OperationFromProps) => {
+const OperationForm = ({ onSubmit, initialData }: OperationFromProps) => {
   const {
     reset,
     register,
@@ -36,6 +37,7 @@ const OperationForm = ({ onSubmit }: OperationFromProps) => {
   } = useForm<OperationSchemaType>({
     shouldUnregister: true,
     resolver: zodResolver(OperationSchema),
+    defaultValues: initialData,
   });
 
   const withReset = (onSubmit: OnSubmit) => (data: OperationSchemaType) => {

@@ -20,7 +20,11 @@ import style from './ProfileForm.module.scss';
 import TextareaField from '../FormFields/TextareaField/TextareaField';
 import { ZodEffects, ZodObject } from 'zod';
 
-const ChangeProfileForm = () => {
+type ChangeProfileFormProps = {
+  initialData?: ChangeProfileSchemaType;
+};
+
+const ChangeProfileForm = ({ initialData }: ChangeProfileFormProps) => {
   const {
     register,
     handleSubmit,
@@ -28,6 +32,7 @@ const ChangeProfileForm = () => {
   } = useForm<ChangeProfileSchemaType>({
     shouldUnregister: true,
     resolver: zodResolver(ChangeProfileSchema),
+    defaultValues: initialData,
   });
 
   const onChangeProfile = (data: ChangeProfileSchemaType) => {
@@ -138,9 +143,13 @@ const ChangePasswordForm = () => {
   );
 };
 
-const ProfileForm = () => (
+type ProfileFormProps = {
+  profileInitialData: ChangeProfileSchemaType;
+}
+
+const ProfileForm = ({profileInitialData}: ProfileFormProps) => (
   <div className={style.container}>
-    <ChangeProfileForm />
+    <ChangeProfileForm initialData={profileInitialData} />
     <ChangePasswordForm />
   </div>
 );
