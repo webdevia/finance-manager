@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useIsFieldRequired } from 'src/shared/zod';
@@ -8,30 +8,37 @@ import Button from 'src/shared/ui/Button/Button';
 import ActionButtons from 'src/shared/ui/ActionButtons/ActionButtons';
 import Title from 'src/shared/ui/Title/Title';
 import { ErrorLabel } from 'src/shared/ui/ErrorLabel/ErrorLabel';
-import { SignInSchema, SignInSchemaType } from './signin-schema';
+import { InfoLabel } from 'src/shared/ui/InfoLabel/InfoLabel';
+import { SignUpSchema, SignUpSchemaType } from './signup-schema';
 
-import style from './signInForm.module.scss';
+import style from './signUpForm.module.scss';
 
-export type OnSubmit = (data: SignInSchemaType) => Promise<void>;
+export type OnSubmit = (data: SignUpSchemaType) => Promise<string>;
 
-type SignInFormProps = {
+type SignUpFormProps = {
   onSubmit: OnSubmit;
+  signUpButtonText?: string;
+  formTitle?: string;
 };
 
-const SignInForm = ({ onSubmit }: SignInFormProps) => {
+const SignUpForm = ({ onSubmit, signUpButtonText, formTitle }: SignUpFormProps) => {
+  const [info, setInfo] = useState<string>('');
+
   const {
     reset,
     register,
     handleSubmit,
     setError,
     formState: { errors },
-  } = useForm<SignInSchemaType>({
+  } = useForm<SignUpSchemaType>({
     shouldUnregister: true,
-    resolver: zodResolver(SignInSchema),
+    resolver: zodResolver(SignUpSchema),
   });
 
-  const withResetAndSetError = (onSubmit: OnSubmit) => (data: SignInSchemaType) => {
+  const withResetAndSetError = (onSubmit: OnSubmit) => (data: SignUpSchemaType) => {
+    setInfo("");
     onSubmit(data)
+      .then((info) => setInfo(info))
       .then(() => reset())
       .catch((error) =>
         setError('root', {
@@ -41,19 +48,23 @@ const SignInForm = ({ onSubmit }: SignInFormProps) => {
       );
   };
 
-  const isRequired = useIsFieldRequired(SignInSchema);
+  const isRequired = useIsFieldRequired(SignUpSchema);
 
-  const LoginButton = () => (
+  type SignUpButtonProps = {
+    text: string;
+  };
+
+  const SignUpButton = ({ text }: SignUpButtonProps) => (
     <Button type="submit" stretch>
-      Submit
+      {text}
     </Button>
   );
 
   return (
     <div className={style.container}>
-      <div className={style['sign-in-form']}>
+      <div className={style['sign-up-form']}>
         <span className={style.title}>
-          <Title>Sign In</Title>
+          <Title>{formTitle || "Sign Up"}</Title>
         </span>
         <Form
           onSubmit={handleSubmit(withResetAndSetError(onSubmit))}
@@ -76,13 +87,16 @@ const SignInForm = ({ onSubmit }: SignInFormProps) => {
                 required={isRequired('password')}
               />
               {errors.root && <ErrorLabel message={errors.root.message} />}
+              {info && <InfoLabel message={info} />}
             </>
           }
-          buttons={<ActionButtons buttons={[{ button: <LoginButton key="loginButton" /> }]} />}
+          buttons={
+            <ActionButtons buttons={[{ button: <SignUpButton text={signUpButtonText || "Submit"} key="signUpButton" /> }]} />
+          }
         />
       </div>
     </div>
   );
 };
 
-export default SignInForm;
+export default SignUpForm;
