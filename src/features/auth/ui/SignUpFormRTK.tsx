@@ -1,53 +1,31 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useSignUpUserMutation, ServerErrors } from '../authApi';
 import { COMMAND_ID } from 'src/shared/consts';
+import SignUpForm, { OnSubmit } from 'src/shared/ui/Forms/SignUpForm/SignUpForm';
 
 const SignUpFormRTK: React.FC = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [signUpUser, { isLoading, error }] = useSignUpUserMutation();
-    const [info, setInfo] = useState<string | null>(null);
+  const [signUpUser, { isLoading }] = useSignUpUserMutation();
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setInfo(null);
+  const onSubmit: OnSubmit = async (data) => {
+    const { email, password } = data;
 
-        try {
-            const result = await signUpUser({ email, password, commandId: COMMAND_ID }).unwrap();
-            setInfo(`Registration successful. Token: ${result.token}`);
-        } catch (err) {
-            console.error('Registration failed:', err);
-        }
-    };
+    try {
+      const result = await signUpUser({ email, password, commandId: COMMAND_ID }).unwrap();
+      return `Registration successful. Token: ${result.token}`;
+    } catch (err) {
+      if (err && 'data' in err) {
+        throw new Error(`Registration failed: ${(err.data as ServerErrors).errors[0].message}`);
+      }
+    }
+  };
 
-    return (
-        <form onSubmit={handleSubmit}>
-            <div>
-                <label>Email:</label>
-                <input
-                    type="string"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                />
-            </div>
-            <div>
-                <label>Password:</label>
-                <input
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
-            </div>
-            <button type="submit" disabled={isLoading}>
-                {isLoading ? 'Registering...' : 'Sign Up'}
-            </button>
-
-            {error && 'data' in error && (
-                <div style={{ color: 'red' }}>{(error.data as ServerErrors).errors.map((error) => error.message)}</div>
-            )}
-            {info && <div style={{ color: 'green' }}>{info}</div>}
-        </form>
-    );
+  return (
+    <SignUpForm
+      formTitle="Sign Up RTK"
+      onSubmit={onSubmit}
+      signUpButtonText={isLoading ? 'Registering...' : 'Submit'}
+    />
+  );
 };
 
 export default SignUpFormRTK;
