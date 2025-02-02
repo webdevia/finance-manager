@@ -74,7 +74,7 @@ const SignUpForm = ({ onSubmit, signUpButtonText, formTitle }: SignUpFormProps) 
                 label="Email"
                 name="email"
                 register={register}
-                type="email"
+                type="text"
                 errors={errors.email}
                 required={isRequired('email')}
               />
