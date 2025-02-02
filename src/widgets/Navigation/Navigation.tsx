@@ -32,9 +32,17 @@ export const Navigation = () => {
           <SignOutButton className={style['nav-btn']} />
         </>
       ) : (
-        <NavLink to={'/signin'} className={style['nav-btn']} style={getNavLinkStyle}>
-          Sign In
-        </NavLink>
+          <>
+            <NavLink to={'/signin'} className={style['nav-btn']} style={getNavLinkStyle}>
+              Sign In
+            </NavLink>
+            <NavLink to={'/signuprtk'} className={style['nav-btn']} style={getNavLinkStyle}>
+              Sign Up RTK
+            </NavLink>
+            <NavLink to={'/signupfetch'} className={style['nav-btn']} style={getNavLinkStyle}>
+              Sign Up Fetch
+            </NavLink>
+          </>
       )}
     </>
   );
