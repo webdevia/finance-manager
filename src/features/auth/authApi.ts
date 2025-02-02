@@ -19,17 +19,19 @@ export type SignUpUserResponse = {
     }
 }
 
-export type ServerErrors = {
-    errors: {
-        extensions: {
-            code: string;
-        };
+export type ServerError = {
+    extensions: {
+        code: string;
+    };
 
-        name: string;
-        fieldName?: string;
-        stack: string;
-        message: string;
-    }[];
+    name: string;
+    fieldName?: string;
+    stack: string;
+    message: string;
+}
+
+export type ServerErrors = {
+    errors: ServerError[];
 }
 
 export const api = createApi({

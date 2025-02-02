@@ -2,6 +2,7 @@ import React from 'react';
 import { useSignUpUserMutation, ServerErrors } from '../authApi';
 import { COMMAND_ID } from 'src/shared/consts';
 import SignUpForm, { OnSubmit } from 'src/shared/ui/Forms/SignUpForm/SignUpForm';
+import { handleError } from './handleError';
 
 const SignUpFormRTK: React.FC = () => {
   const [signUpUser, { isLoading }] = useSignUpUserMutation();
@@ -14,7 +15,8 @@ const SignUpFormRTK: React.FC = () => {
       return `Registration successful. Token: ${result.token}`;
     } catch (err) {
       if (err && 'data' in err) {
-        throw new Error(`Registration failed: ${(err.data as ServerErrors).errors[0].message}`);
+        const {message, fieldName} = handleError(err.data);
+        throw new Error(`Registration failed. Error message: ${message}`);
       }
     }
   };
