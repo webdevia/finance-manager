@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { BankOperation, getRandomId } from 'src/entities/operation/Operation';
@@ -16,31 +16,16 @@ const OperationDialogPage = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const navigateToOpeartions = () => navigate('/operations');
+  const navigateToOpeartions = useCallback(() => navigate('/operations'), [navigate]);
 
   const { id } = useParams();
   const location = useLocation();
   const { operations } = useSelector(selectOperations);
 
-  const handleAddOperation: OnSubmit = (data) => {
-    const newOperation: BankOperation = {
-      id: getRandomId(),
-      amount: data.amount,
-      category: { id: getRandomId(), name: data.name },
-      date: data.createdAt,
-      name: data.name,
-      description: data.desc,
-      type: data.type,
-    };
-    dispatch(addOperation(newOperation));
-    navigateToOpeartions();
-  };
-
-  const handleUpdateOperation =
-    (id: string): OnSubmit =>
+  const handleAddOperation: OnSubmit = useCallback(
     (data) => {
-      const updatedOperation: BankOperation = {
-        id,
+      const newOperation: BankOperation = {
+        id: getRandomId(),
         amount: data.amount,
         category: { id: getRandomId(), name: data.name },
         date: data.createdAt,
@@ -48,9 +33,29 @@ const OperationDialogPage = () => {
         description: data.desc,
         type: data.type,
       };
-      dispatch(updateOperation(updatedOperation));
+      dispatch(addOperation(newOperation));
       navigateToOpeartions();
-    };
+    },
+    [dispatch, navigateToOpeartions]
+  );
+
+  const handleUpdateOperation = useCallback(
+    (id: string): OnSubmit =>
+      (data) => {
+        const updatedOperation: BankOperation = {
+          id,
+          amount: data.amount,
+          category: { id: getRandomId(), name: data.name },
+          date: data.createdAt,
+          name: data.name,
+          description: data.desc,
+          type: data.type,
+        };
+        dispatch(updateOperation(updatedOperation));
+        navigateToOpeartions();
+      },
+    [dispatch, navigateToOpeartions]
+  );
 
   const isAddRoute = location.pathname.endsWith('/operations/add');
 
@@ -78,7 +83,7 @@ const OperationDialogPage = () => {
     } else {
       setIsOperationDialogOpen(false);
     }
-  }, [id, isAddRoute]);
+  }, [id, isAddRoute, operations, handleAddOperation, handleUpdateOperation]);
 
   return (
     <Modal visible={isOperationDialogOpen} onClose={navigateToOpeartions}>

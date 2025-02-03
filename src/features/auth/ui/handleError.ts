@@ -1,15 +1,25 @@
-import { ServerErrors } from "../authApi";
+import { ServerErrors } from 'src/shared/api/authTypes';
 
-export type SignUpUserError = { 
-    message: string, 
-    fieldName: string 
-}
+export type SignUpField = 'email' | 'password';
 
-export const handleError = (errors: ServerErrors): SignUpUserError => {
-    const error = errors.errors.length > 0 ? errors.errors[0] : null;
-    const message = error ? error.message : 'Unknown error';
-    const fieldName = error.extensions.code === 'ERR_VALIDATION_ERROR' &&
-        error.message.includes('email') ? 'email' : 
-        error.message.includes('password') ? 'password' : undefined; 
-    return {message, fieldName};
-}
+export type SignUpUserError = {
+  message: string;
+  fieldName?: SignUpField;
+};
+
+const fieldValidator = (source: string) => (fieldName: string) => source.includes(fieldName);
+
+export const handleSignUpErrors = (serverErrors: ServerErrors): SignUpUserError[] => {
+  return serverErrors.errors.map((error) => {
+    const validateField = fieldValidator(error.message);
+    const fieldName =
+      error.extensions.code === 'ERR_VALIDATION_ERROR'
+        ? ['email', 'password'].find((field) => validateField(field))
+        : error.extensions.code === 'ERR_ACCOUNT_ALREADY_EXIST'
+        ? 'email'
+        : '';
+    const message = error.message || 'Unknown error';
+
+    return fieldName ? { message, fieldName: fieldName as SignUpField } : { message };
+  });
+};
