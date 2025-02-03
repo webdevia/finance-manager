@@ -44,7 +44,9 @@ export const OperationListPage: React.FC = () => {
     navigate(`${id}/edit`);
   };
 
-  const getContainerStyle = (visible: boolean): ColumnsWidthCSS => ({ '--columns-width': visible ? '250px 1fr' : '1fr' });
+  const getContainerStyle = (visible: boolean): ColumnsWidthCSS => ({
+    '--columns-width': visible ? '250px 1fr' : '1fr',
+  });
 
   return (
     <div className={style.container} style={getContainerStyle(isAdmin)}>

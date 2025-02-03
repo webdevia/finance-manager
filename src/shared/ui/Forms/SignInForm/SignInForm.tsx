@@ -68,7 +68,7 @@ const SignInForm = ({ onSubmit }: SignInFormProps) => {
                 required={isRequired('email')}
               />
               <InputField
-                label="Пароль"
+                label="Password"
                 name="password"
                 register={register}
                 type="password"

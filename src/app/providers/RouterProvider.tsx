@@ -9,6 +9,8 @@ import { OperationListPage } from 'src/pages/OperationListPage/OperationListPage
 import OperationDialogPage from 'src/pages/OperationDialogPage/OperationDialogPage';
 import { selectIsAuth } from 'src/features/auth/selectors';
 import { selectIsAdmin } from 'src/features/profile/selectors';
+import SignUpFormRTK from 'src/features/auth/ui/SignUpFormRTK';
+import SignUpFormFetch from 'src/features/auth/ui/SignUpFormFetch';
 
 const NavigateToSignIn = () => <Navigate to="/signin" replace />;
 
@@ -49,6 +51,8 @@ const router = createHashRouter([
     children: [
       { index: true, element: <HomePage /> },
       { path: 'signin', element: <SignInWrapper /> },
+      { path: 'signuprtk', element: <SignUpFormRTK /> },
+      { path: 'signupfetch', element: <SignUpFormFetch /> },
       {
         element: <ProtectedRoute />,
         children: [
