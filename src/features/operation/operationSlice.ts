@@ -1,8 +1,6 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
-import { BankOperation } from 'src/entities/operation/Operation';
-
-import { createRandomOperation } from 'src/entities/operation/Operation'; 
+import { BankOperation, createRandomOperation } from 'src/entities/operation/Operation';
 
 interface OperationsState {
   operations: BankOperation[];

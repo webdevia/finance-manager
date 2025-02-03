@@ -10,8 +10,10 @@ import Title from 'src/shared/ui/Title/Title';
 import { ErrorLabel } from 'src/shared/ui/ErrorLabel/ErrorLabel';
 import { InfoLabel } from 'src/shared/ui/InfoLabel/InfoLabel';
 import { SignUpSchema, SignUpSchemaType } from './signup-schema';
+import { ServerError } from 'src/shared/api/authTypes';
 
 import style from './signUpForm.module.scss';
+import { SignUpField } from 'src/features/auth/ui/handleError';
 
 export type OnSubmit = (data: SignUpSchemaType) => Promise<string>;
 
@@ -36,16 +38,18 @@ const SignUpForm = ({ onSubmit, signUpButtonText, formTitle }: SignUpFormProps) 
   });
 
   const withResetAndSetError = (onSubmit: OnSubmit) => (data: SignUpSchemaType) => {
-    setInfo("");
+    setInfo('');
     onSubmit(data)
       .then((info) => setInfo(info))
       .then(() => reset())
-      .catch((error) =>
-        setError('root', {
-          type: 'manual',
-          message: error.message,
-        })
-      );
+      .catch((error) => {
+        const serverErrors: ServerError[] = error?.cause?.serverErrors ?? [];
+        serverErrors.length
+          ? serverErrors.forEach((serverError) => {
+              setError((serverError.fieldName as SignUpField) || 'root', { message: serverError.message });
+            })
+          : error.message && setError('root', { message: error.message });
+      });
   };
 
   const isRequired = useIsFieldRequired(SignUpSchema);
@@ -64,7 +68,7 @@ const SignUpForm = ({ onSubmit, signUpButtonText, formTitle }: SignUpFormProps) 
     <div className={style.container}>
       <div className={style['sign-up-form']}>
         <span className={style.title}>
-          <Title>{formTitle || "Sign Up"}</Title>
+          <Title>{formTitle || 'Sign Up'}</Title>
         </span>
         <Form
           onSubmit={handleSubmit(withResetAndSetError(onSubmit))}
@@ -91,7 +95,9 @@ const SignUpForm = ({ onSubmit, signUpButtonText, formTitle }: SignUpFormProps) 
             </>
           }
           buttons={
-            <ActionButtons buttons={[{ button: <SignUpButton text={signUpButtonText || "Submit"} key="signUpButton" /> }]} />
+            <ActionButtons
+              buttons={[{ button: <SignUpButton text={signUpButtonText || 'Submit'} key="signUpButton" /> }]}
+            />
           }
         />
       </div>

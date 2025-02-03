@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { API_URL, COMMAND_ID } from 'src/shared/consts';
-import { ServerErrors, SignUpUserResponse } from '../authApi';
+import { ServerErrors, SignUpUserResponse } from 'src/shared/api/authTypes';
 import SignUpForm, { OnSubmit } from 'src/shared/ui/Forms/SignUpForm/SignUpForm';
-import { handleError } from './handleError';
+import { handleSignUpErrors } from './handleError';
 
 const SignUpFormFetch: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -21,8 +21,8 @@ const SignUpFormFetch: React.FC = () => {
 
       if (!response.ok) {
         const errorData: ServerErrors = await response.json();
-        const {message, fieldName} = handleError(errorData);
-        throw new Error(`Registration failed. Error message: ${message}`);
+        const serverErrors = handleSignUpErrors(errorData);
+        throw new Error(`Registration failed`, { cause: { serverErrors } });
       }
 
       const data: SignUpUserResponse = await response.json();
