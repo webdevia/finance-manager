@@ -1,5 +1,5 @@
-import React from 'react';
-import { useForm } from 'react-hook-form';
+import React, { useEffect } from 'react';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useIsFieldRequired } from 'src/shared/zod';
 import Form from 'src/shared/ui/Forms/Form/Form';
@@ -11,14 +11,16 @@ import { ErrorLabel } from 'src/shared/ui/ErrorLabel/ErrorLabel';
 import { SignInSchema, SignInSchemaType } from './signin-schema';
 
 import style from './signInForm.module.scss';
+import { SignInUserError } from 'src/features/auth/authSlice';
 
-export type OnSubmit = (data: SignInSchemaType) => Promise<void>;
+export type OnSubmit = SubmitHandler<SignInSchemaType>;
 
 type SignInFormProps = {
   onSubmit: OnSubmit;
+  signInError: SignInUserError;
 };
 
-const SignInForm = ({ onSubmit }: SignInFormProps) => {
+const SignInForm = ({ onSubmit, signInError }: SignInFormProps) => {
   const {
     reset,
     register,
@@ -30,15 +32,31 @@ const SignInForm = ({ onSubmit }: SignInFormProps) => {
     resolver: zodResolver(SignInSchema),
   });
 
+  useEffect(() => {
+    signInError &&
+      signInError.fields.forEach((field) =>
+        setError(field, {
+          type: 'manual',
+          message: signInError.message,
+        })
+      );
+  }, [signInError]);
+
   const withResetAndSetError = (onSubmit: OnSubmit) => (data: SignInSchemaType) => {
-    onSubmit(data)
-      .then(() => reset())
+    onSubmit(data);
+    // const userError = onSubmit(data) as SignInUserError;
+    // userError.fields.forEach((field) => setError(field, {
+    //   type: 'manual',
+    //   message: userError.message,
+    // }));
+
+    /*  .then(() => reset())
       .catch((error) =>
         setError('root', {
           type: 'manual',
           message: error.message,
         })
-      );
+      );*/
   };
 
   const isRequired = useIsFieldRequired(SignInSchema);

@@ -6,7 +6,7 @@ import AddOperationButton from 'src/features/AddOperationButton/AddOperationButt
 import { Outlet, useNavigate } from 'react-router-dom';
 import Button from 'src/shared/ui/Button/Button';
 import { addOperation } from 'src/features/operation/operationSlice';
-import { selectIsAdmin } from 'src/features/profile/selectors';
+// import { selectIsAdmin } from 'src/features/profile/selectors';
 import style from './OperationListPage.module.scss';
 import { selectOperations } from 'src/features/operation/selectors';
 
@@ -38,7 +38,7 @@ const Sidebar = () => {
 export const OperationListPage: React.FC = () => {
   const navigate = useNavigate();
   const { operations } = useSelector(selectOperations);
-  const isAdmin = useSelector(selectIsAdmin);
+  // const isAdmin = useSelector(selectIsAdmin);
 
   const onEditClick = (id: string) => {
     navigate(`${id}/edit`);
@@ -49,10 +49,10 @@ export const OperationListPage: React.FC = () => {
   });
 
   return (
-    <div className={style.container} style={getContainerStyle(isAdmin)}>
-      {isAdmin && <Sidebar />}
+    <div className={style.container} style={getContainerStyle(true)}>
+      {true && <Sidebar />}
       <div className={style['operation-list']}>
-        <OperationList operations={operations} onEdit={isAdmin && onEditClick} />
+        <OperationList operations={operations} onEdit={true && onEditClick} />
       </div>
       <Outlet />
     </div>
