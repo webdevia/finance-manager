@@ -8,7 +8,7 @@ import { GenericLayout } from 'src/widgets/Layout/GenericLayout';
 import { OperationListPage } from 'src/pages/OperationListPage/OperationListPage';
 import OperationDialogPage from 'src/pages/OperationDialogPage/OperationDialogPage';
 import { selectIsAuth } from 'src/features/auth/selectors';
-import { selectIsAdmin } from 'src/features/profile/selectors';
+// import { selectIsAdmin } from 'src/features/profile/selectors';
 import SignUpFormRTK from 'src/features/auth/ui/SignUpFormRTK';
 import SignUpFormFetch from 'src/features/auth/ui/SignUpFormFetch';
 
@@ -25,11 +25,11 @@ export const ProtectedRoute: React.FC = () => {
 };
 
 export const ProtectedAdminRoute: React.FC = () => {
-  const isAdmin = useSelector(selectIsAdmin);
+  // const isAdmin = useSelector(selectIsAdmin);
 
-  if (!isAdmin) {
-    return <NavigateToSignIn />;
-  }
+  // if (!isAdmin) {
+    // return <NavigateToSignIn />;
+  // }
 
   return <Outlet />;
 };
