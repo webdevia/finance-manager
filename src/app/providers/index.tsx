@@ -10,13 +10,13 @@ import client from 'src/shared/api/client';
 export const Providers: React.FC = () => {
   return (
     <ApolloProvider client={client}>
-    <StoreProvider store={store}>
-      <ThemeProvider>
-        <AuthProvider>
-          <RouterProvider />
-        </AuthProvider>
-      </ThemeProvider>
-    </StoreProvider>
+      <StoreProvider store={store}>
+        <ThemeProvider>
+          <AuthProvider>
+            <RouterProvider />
+          </AuthProvider>
+        </ThemeProvider>
+      </StoreProvider>
     </ApolloProvider>
   );
 };

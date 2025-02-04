@@ -13,6 +13,7 @@ const SelectOption = ({ text, value }: SelectOptionProps) => <option value={valu
 
 type SelectFieldProps<T extends FieldValues> = {
   label: ReactNode;
+  inputId: string;
   register: UseFormRegister<T>;
   options: SelectOptionProps[];
   name: Path<T>;
@@ -22,13 +23,14 @@ type SelectFieldProps<T extends FieldValues> = {
 
 const SelectField = <T extends FieldValues>({
   label,
+  inputId,
   register,
   options,
   name,
   required,
   errors,
 }: SelectFieldProps<T>) => (
-  <Field label={{ children: label, required }} errors={errors}>
+  <Field label={{ children: label, required, inputId }} errors={errors}>
     <select className={cn(s.select, { [s.error]: errors })} {...register(name)}>
       {options.map((option, index) => (
         <SelectOption key={index} {...option} />

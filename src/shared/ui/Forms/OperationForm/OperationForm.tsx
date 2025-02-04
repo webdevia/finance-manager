@@ -62,6 +62,7 @@ const OperationForm = ({ onSubmit, initialData }: OperationFromProps) => {
           <>
             <SelectField
               label="Operation type"
+              inputId="type"
               name="type"
               options={[costOperationOption, profitOperationOption]}
               register={register}
@@ -70,6 +71,7 @@ const OperationForm = ({ onSubmit, initialData }: OperationFromProps) => {
             />
             <InputField
               label="Name"
+              inputId="name"
               name="name"
               register={register}
               type="text"
@@ -78,6 +80,7 @@ const OperationForm = ({ onSubmit, initialData }: OperationFromProps) => {
             />
             <InputField
               label="Category"
+              inputId="category"
               name="category"
               register={register}
               type="text"
@@ -86,6 +89,7 @@ const OperationForm = ({ onSubmit, initialData }: OperationFromProps) => {
             />
             <InputField
               label="Description"
+              inputId="desc"
               name="desc"
               register={register}
               type="text"
@@ -94,6 +98,7 @@ const OperationForm = ({ onSubmit, initialData }: OperationFromProps) => {
             />
             <InputField
               label="Created At"
+              inputId="createdAt"
               name="createdAt"
               register={register}
               type="date"
@@ -102,6 +107,7 @@ const OperationForm = ({ onSubmit, initialData }: OperationFromProps) => {
             />
             <InputField
               label="Amount"
+              inputId="amount"
               name="amount"
               register={register}
               type="number"

@@ -1,5 +1,5 @@
-import React from 'react';
-import { useForm } from 'react-hook-form';
+import React, { useEffect } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useIsFieldRequired } from 'src/shared/zod';
 import Form from 'src/shared/ui/Forms/Form/Form';
@@ -7,7 +7,7 @@ import InputField from 'src/shared/ui/Forms/FormFields/InputField/InputField';
 import Button from 'src/shared/ui/Button/Button';
 import ActionButtons from 'src/shared/ui/ActionButtons/ActionButtons';
 import Title from 'src/shared/ui/Title/Title';
-import TextareaField from '../FormFields/TextareaField/TextareaField';
+import { ProfileError } from 'src/features/profile/profileSlice';
 import { ZodEffects, ZodObject } from 'zod';
 import {
   ChangeProfileSchema,
@@ -16,31 +16,65 @@ import {
   ChangePasswordSchemaType,
 } from './profile-schema';
 import style from './ProfileForm.module.scss';
+import { ErrorLabel } from '../../ErrorLabel/ErrorLabel';
+import { InfoLabel } from '../../InfoLabel/InfoLabel';
+
+export type OnSubmit = SubmitHandler<Pick<ChangeProfileSchemaType, 'name'>>;
 
 type ChangeProfileFormProps = {
   initialData?: ChangeProfileSchemaType;
+  onSubmit: OnSubmit;
+  changeProfileButtonText: string;
+  profileError: ProfileError;
+  successInfo: string;
 };
 
-const ChangeProfileForm = ({ initialData }: ChangeProfileFormProps) => {
+const ChangeProfileForm = ({
+  initialData,
+  onSubmit,
+  changeProfileButtonText,
+  profileError,
+  successInfo,
+}: ChangeProfileFormProps) => {
   const {
     register,
     handleSubmit,
+    reset,
+    setError,
     formState: { errors },
   } = useForm<ChangeProfileSchemaType>({
     shouldUnregister: true,
     resolver: zodResolver(ChangeProfileSchema),
-    defaultValues: initialData,
   });
 
-  const onChangeProfile = (data: ChangeProfileSchemaType) => {
-    console.log(data);
+  const handleError = (profileError: ProfileError) => {
+    const { fields } = profileError;
+
+    fields.length > 1 && fields.forEach((field) => setError(field, { type: 'manual', message: '' }));
+
+    setError(fields.length === 1 ? fields[0] : 'root', {
+      type: 'manual',
+      message: profileError.message,
+    });
   };
+
+  useEffect(() => {
+    initialData && reset(initialData);
+  }, [initialData?.name]);
+
+  useEffect(() => {
+    profileError ? handleError(profileError) : reset(initialData);
+  }, [profileError]);
 
   const isRequired = useIsFieldRequired(ChangeProfileSchema);
 
-  const ChangeProfileButton = () => (
+  type ChangeProfileButtonProps = {
+    text: string;
+  };
+
+  const ChangeProfileButton = ({ text }: ChangeProfileButtonProps) => (
     <Button type="submit" stretch>
-      Save
+      {text}
     </Button>
   );
 
@@ -50,27 +84,57 @@ const ChangeProfileForm = ({ initialData }: ChangeProfileFormProps) => {
         <Title>Change profile</Title>
       </span>
       <Form
-        onSubmit={handleSubmit(onChangeProfile)}
+        onSubmit={handleSubmit(onSubmit)}
         fields={
           <>
             <InputField
+              label="Id"
+              inputId="id"
+              name="id"
+              register={register}
+              type="text"
+              errors={errors.id}
+              required={isRequired('id')}
+              readOnly
+            />
+            <InputField
               label="Name"
+              inputId="name"
               name="name"
               register={register}
               type="text"
               errors={errors.name}
               required={isRequired('name')}
             />
-            <TextareaField
-              label="Description"
-              name="description"
+            <InputField
+              label="Email"
+              inputId="email"
+              name="email"
               register={register}
-              errors={errors.description}
-              required={isRequired('description')}
+              type="email"
+              errors={errors.email}
+              required={isRequired('email')}
+              readOnly
             />
+            <InputField
+              label="Sign up date"
+              inputId="signUpDate"
+              name="signUpDate"
+              register={register}
+              type="date"
+              errors={errors.signUpDate}
+              required={isRequired('signUpDate')}
+              readOnly
+            />
+            {errors.root && <ErrorLabel message={errors.root.message} />}
+            {successInfo && <InfoLabel message={successInfo} />}
           </>
         }
-        buttons={<ActionButtons buttons={[{ button: <ChangeProfileButton key="changeProfile" /> }]} />}
+        buttons={
+          <ActionButtons
+            buttons={[{ button: <ChangeProfileButton text={changeProfileButtonText || 'Save'} key="changeProfile" /> }]}
+          />
+        }
       />
     </div>
   );
@@ -87,7 +151,7 @@ const ChangePasswordForm = () => {
   });
 
   const onChangePassword = (data: ChangePasswordSchemaType) => {
-    console.log(data);
+    //console.log(data);
   };
 
   const baseSchema = (ChangePasswordSchema as ZodEffects<ZodObject<any>>)._def.schema;
@@ -110,6 +174,7 @@ const ChangePasswordForm = () => {
           <>
             <InputField
               label="Password"
+              inputId="password"
               name="password"
               register={register}
               type="password"
@@ -118,6 +183,7 @@ const ChangePasswordForm = () => {
             />
             <InputField
               label="New password"
+              inputId="newPassword"
               name="newPassword"
               register={register}
               type="password"
@@ -126,6 +192,7 @@ const ChangePasswordForm = () => {
             />
             <InputField
               label="Confirm password"
+              inputId="confirmPassword"
               name="confirmPassword"
               register={register}
               type="password"
@@ -141,13 +208,13 @@ const ChangePasswordForm = () => {
 };
 
 type ProfileFormProps = {
-  profileInitialData: ChangeProfileSchemaType;
+  changeProfileForm: ChangeProfileFormProps;
 };
 
-const ProfileForm = ({ profileInitialData }: ProfileFormProps) => (
+const ProfileForm = ({ changeProfileForm }: ProfileFormProps) => (
   <div className={style.container}>
-    <ChangeProfileForm initialData={profileInitialData} />
-    <ChangePasswordForm />
+    <ChangeProfileForm {...changeProfileForm} />
+    {/* <ChangePasswordForm /> */}
   </div>
 );
 

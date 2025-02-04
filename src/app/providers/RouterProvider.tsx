@@ -8,9 +8,7 @@ import { GenericLayout } from 'src/widgets/Layout/GenericLayout';
 import { OperationListPage } from 'src/pages/OperationListPage/OperationListPage';
 import OperationDialogPage from 'src/pages/OperationDialogPage/OperationDialogPage';
 import { selectIsAuth } from 'src/features/auth/selectors';
-// import { selectIsAdmin } from 'src/features/profile/selectors';
-import SignUpFormRTK from 'src/features/auth/ui/SignUpFormRTK';
-import SignUpFormFetch from 'src/features/auth/ui/SignUpFormFetch';
+import { SignUpPage } from 'src/pages/SignUpPage/SignUpPage';
 
 const NavigateToSignIn = () => <Navigate to="/signin" replace />;
 
@@ -28,7 +26,7 @@ export const ProtectedAdminRoute: React.FC = () => {
   // const isAdmin = useSelector(selectIsAdmin);
 
   // if (!isAdmin) {
-    // return <NavigateToSignIn />;
+  // return <NavigateToSignIn />;
   // }
 
   return <Outlet />;
@@ -51,8 +49,7 @@ const router = createHashRouter([
     children: [
       { index: true, element: <HomePage /> },
       { path: 'signin', element: <SignInWrapper /> },
-      { path: 'signuprtk', element: <SignUpFormRTK /> },
-      { path: 'signupfetch', element: <SignUpFormFetch /> },
+      { path: 'signup', element: <SignUpPage /> },
       {
         element: <ProtectedRoute />,
         children: [
