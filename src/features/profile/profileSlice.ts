@@ -1,14 +1,62 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import client from 'src/shared/api/client';
-import { GET_PROFILE } from './api/profile';
+import { PROFILE_MUTATION, PROFILE_QUERY } from './api/profile';
+import { ApolloError } from '@apollo/client';
 
-export const fetchProfile = createAsyncThunk('todos/fetchProfile', async () => {
-    const { data } = await client.query({ query: GET_PROFILE });
-    return data.profile;
+export type ProfileInputFields = { input: { name: string } };
+
+export type ProfileField = 'name';
+
+export type ProfileError = {
+  fields: ProfileField[];
+  message: string;
+};
+
+type ServerErrorExtension = {
+  code: string;
+};
+
+type ErrorFieldsMap = Record<string, ProfileField[]>;
+const errorFieldsMap: ErrorFieldsMap = {
+  VALIDATION: ['name'],
+};
+
+export const handleProfileError = (serverError: ApolloError): ProfileError => {
+  const { message, extensions } = serverError.cause;
+  const serverErrorExtension = extensions as ServerErrorExtension;
+  const fields = errorFieldsMap[serverErrorExtension.code];
+
+  return { fields: fields ?? [], message };
+};
+
+export const handleUnknownError = (serverError: string): ProfileError => {
+  return { fields: [], message: serverError };
+};
+
+export const fetchProfile = createAsyncThunk('profile/fetchProfile', async () => {
+  const { data } = await client.query({ query: PROFILE_QUERY });
+  return data.profile;
 });
 
-interface Profile {
-  commandId: string;
+export const updateProfile = createAsyncThunk(
+  'profile/updateProfile',
+  async ({ input }: ProfileInputFields, { rejectWithValue }) => {
+    try {
+      const { data } = await client.mutate({
+        mutation: PROFILE_MUTATION,
+        variables: { input },
+      });
+      return data.profile.update;
+    } catch (err) {
+      if (err instanceof ApolloError) {
+        return rejectWithValue(handleProfileError(err));
+      }
+      return rejectWithValue(handleUnknownError('An unknown error occurred'));
+    }
+  }
+);
+
+export interface Profile {
   email: string;
   id: string;
   name: string;
@@ -17,34 +65,52 @@ interface Profile {
 
 interface ProfileState {
   profile: Profile | null;
-  status: 'idle' | 'loading' | 'succeeded' | 'failed';
-  error: string;
+  status: 'idle' | 'loading' | 'fetch_succeeded' | 'update_succeeded' | 'failed';
+  error: ProfileError | null;
 }
 
 const initialState: ProfileState = {
   profile: null,
-  status: "idle",
-  error: ""
+  status: 'idle',
+  error: null,
 };
 
 const profileSlice = createSlice({
   name: 'profile',
   initialState,
-  reducers: {},
+  reducers: {
+    resetError(state) {
+      state.error = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
+      // Fetch Profile
       .addCase(fetchProfile.pending, (state) => {
         state.status = 'loading';
       })
       .addCase(fetchProfile.fulfilled, (state, action) => {
-        state.status = 'succeeded';
+        state.status = 'fetch_succeeded';
         state.profile = action.payload;
       })
       .addCase(fetchProfile.rejected, (state, action) => {
         state.status = 'failed';
-        state.error = action.payload as string;
+        state.error = action.payload as ProfileError;
       })
+      // Update Profile
+      .addCase(updateProfile.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(updateProfile.fulfilled, (state, action) => {
+        state.status = 'update_succeeded';
+        state.profile = action.payload;
+      })
+      .addCase(updateProfile.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload as ProfileError;
+      });
   },
 });
 
+export const { resetError } = profileSlice.actions;
 export default profileSlice.reducer;

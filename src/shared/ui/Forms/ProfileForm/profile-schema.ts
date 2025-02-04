@@ -1,11 +1,13 @@
 import { z } from 'zod';
 
 export const ChangeProfileSchema = z.object({
-  name: z.string().nonempty('Required field'),
-  description: z.string().optional(),
+  email: z.string().readonly(),
+  id: z.string().readonly(),
+  name: z.string(),
+  signUpDate: z.string().readonly(),
 });
 
-export type ChangeProfileSchemaType = z.infer<typeof ChangeProfileSchema>;
+export type ChangeProfileSchemaType = Required<z.infer<typeof ChangeProfileSchema>>;
 
 const passwordZodType = z.string().nonempty('Required field').min(6, 'Password is too short');
 

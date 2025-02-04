@@ -1,11 +1,8 @@
 import React, { ReactNode, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../store';
-
-import { fakeProfile } from 'src/shared/services/authService';
 import { signOut } from 'src/features/auth/authSlice';
-import { fetchProfile } from 'src/features/profile/profileSlice'; 
-// import { clearProfile, setProfile } from 'src/features/profile/profileSlice';
+import { fetchProfile } from 'src/features/profile/profileSlice';
 import { initializeApp } from 'src/features/appSlice';
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
@@ -36,11 +33,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   // );
 
   useEffect(() => {
-   
-
-
     if (!isAppInitialized) {
-      
       // const storedToken = localStorage.getItem('token');
       // if (storedToken) {
       //   fakeProfile(storedToken)
@@ -55,7 +48,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
       if (token) {
         getProfile();
-      } 
+      }
 
       dispatch(initializeApp());
     }

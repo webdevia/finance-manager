@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import React, { useEffect } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useIsFieldRequired } from 'src/shared/zod';
 import Form from 'src/shared/ui/Forms/Form/Form';
@@ -8,24 +8,23 @@ import Button from 'src/shared/ui/Button/Button';
 import ActionButtons from 'src/shared/ui/ActionButtons/ActionButtons';
 import Title from 'src/shared/ui/Title/Title';
 import { ErrorLabel } from 'src/shared/ui/ErrorLabel/ErrorLabel';
-import { InfoLabel } from 'src/shared/ui/InfoLabel/InfoLabel';
 import { SignUpSchema, SignUpSchemaType } from './signup-schema';
-import { ServerError } from 'src/shared/api/authTypes';
+import { AuthUserError } from 'src/features/auth/authSlice';
 
 import style from './signUpForm.module.scss';
-import { SignUpField } from 'src/features/auth/ui/handleError';
 
-export type OnSubmit = (data: SignUpSchemaType) => Promise<string>;
+// TODO: Implement custom hook with state
+
+export type OnSubmit = SubmitHandler<SignUpSchemaType>;
 
 type SignUpFormProps = {
   onSubmit: OnSubmit;
-  signUpButtonText?: string;
   formTitle?: string;
+  signUpButtonText?: string;
+  authError: AuthUserError;
 };
 
-const SignUpForm = ({ onSubmit, signUpButtonText, formTitle }: SignUpFormProps) => {
-  const [info, setInfo] = useState<string>('');
-
+const SignUpForm = ({ onSubmit, signUpButtonText, formTitle, authError }: SignUpFormProps) => {
   const {
     reset,
     register,
@@ -37,19 +36,23 @@ const SignUpForm = ({ onSubmit, signUpButtonText, formTitle }: SignUpFormProps) 
     resolver: zodResolver(SignUpSchema),
   });
 
+  const handleError = (signInError: AuthUserError) => {
+    const { fields } = signInError;
+
+    fields.length > 1 && fields.forEach((field) => setError(field, { type: 'manual', message: '' }));
+
+    setError(fields.length === 1 ? fields[0] : 'root', {
+      type: 'manual',
+      message: signInError.message,
+    });
+  };
+
+  useEffect(() => {
+    authError ? handleError(authError) : reset();
+  }, [authError]);
+
   const withResetAndSetError = (onSubmit: OnSubmit) => (data: SignUpSchemaType) => {
-    setInfo('');
-    onSubmit(data)
-      .then((info) => setInfo(info))
-      .then(() => reset())
-      .catch((error) => {
-        const serverErrors: ServerError[] = error?.cause?.serverErrors ?? [];
-        serverErrors.length
-          ? serverErrors.forEach((serverError) => {
-              setError((serverError.fieldName as SignUpField) || 'root', { message: serverError.message });
-            })
-          : error.message && setError('root', { message: error.message });
-      });
+    onSubmit(data);
   };
 
   const isRequired = useIsFieldRequired(SignUpSchema);
@@ -76,14 +79,16 @@ const SignUpForm = ({ onSubmit, signUpButtonText, formTitle }: SignUpFormProps) 
             <>
               <InputField
                 label="Email"
+                inputId="email"
                 name="email"
                 register={register}
-                type="text"
+                type="email"
                 errors={errors.email}
                 required={isRequired('email')}
               />
               <InputField
                 label="Password"
+                inputId="password"
                 name="password"
                 register={register}
                 type="password"
@@ -91,12 +96,11 @@ const SignUpForm = ({ onSubmit, signUpButtonText, formTitle }: SignUpFormProps) 
                 required={isRequired('password')}
               />
               {errors.root && <ErrorLabel message={errors.root.message} />}
-              {info && <InfoLabel message={info} />}
             </>
           }
           buttons={
             <ActionButtons
-              buttons={[{ button: <SignUpButton text={signUpButtonText || 'Submit'} key="signUpButton" /> }]}
+              buttons={[{ button: <SignUpButton text={signUpButtonText || 'Sign up'} key="signUpButton" /> }]}
             />
           }
         />

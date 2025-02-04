@@ -1,13 +1,26 @@
 import { gql } from '@apollo/client';
 
-export const GET_PROFILE = gql`
+export const PROFILE_QUERY = gql`
   query Profile {
     profile {
-      commandId
-      email
       id
+      email
       name
       signUpDate
+    }
+  }
+`;
+
+export const PROFILE_MUTATION = gql`
+  mutation Update($input: UpdateProfileInput!) {
+    profile {
+      update(input: $input) {
+        commandId
+        email
+        id
+        name
+        signUpDate
+      }
     }
   }
 `;

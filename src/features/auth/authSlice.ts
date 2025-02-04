@@ -3,70 +3,80 @@ import client from 'src/shared/api/client';
 import { SIGNIN_MUTATION, SIGNUP_MUTATION } from './api/auth';
 import { ApolloError } from '@apollo/client';
 
-export type SignInUser = { email: string; password: string };
+export type AuthUser = { email: string; password: string }; // TODO: rename to AuthUserInputFields
 
-type SignInField = 'email' | 'password';
+type AuthField = 'email' | 'password';
 
-export type SignInUserError = {
-  fields: SignInField[];
+export type AuthUserError = {
+  fields: AuthField[];
   message: string;
 };
 
-export const handleSignInErrors = (serverError: ApolloError): SignInUserError => {
-  const {message, extensions} = serverError.cause;
-
-  console.dir(extensions, message);
-
-  const errorsMap = { INCORRECT_EMAIL_OR_PASSWORD: ['email', 'password'] as SignInField[] };
-  return { fields: errorsMap.INCORRECT_EMAIL_OR_PASSWORD, message: '111111111111' };
+type ServerErrorExtension = {
+  code: string;
 };
-//   return serverError. .map((error) => {
-//     const validateField = fieldValidator(error.message);
-//     const fieldName =
-//       error.extensions.code === 'ERR_VALIDATION_ERROR'
-//         ? ['email', 'password'].find((field) => validateField(field))
-//         : error.extensions.code === 'ERR_ACCOUNT_ALREADY_EXIST'
-//         ? 'email'
-//         : '';
-//     const message = error.message || 'Unknown error';
 
-//     return fieldName ? { message, fieldName: fieldName as SignUpField } : { message };
-//   });
-// };
+type ErrorFieldsMap = Record<string, AuthField[]>;
+const errorFieldsMap: ErrorFieldsMap = {
+  INCORRECT_EMAIL_OR_PASSWORD: ['email', 'password'],
+  ACCOUNT_ALREADY_EXIST: ['email'],
+};
+
+export const handleAuthError = (serverError: ApolloError): AuthUserError => {
+  const { message, extensions } = serverError.cause;
+  const serverErrorExtension = extensions as ServerErrorExtension;
+  const fields = errorFieldsMap[serverErrorExtension.code];
+
+  return { fields: fields ?? [], message };
+};
+
+export const handleUnknownError = (serverError: string): AuthUserError => {
+  return { fields: [], message: serverError };
+};
 
 export const signInUser = createAsyncThunk(
   'auth/signInUser',
-  async ({ email, password }: SignInUser, { rejectWithValue }) => {
+  async ({ email, password }: AuthUser, { rejectWithValue }) => {
     try {
       const { data } = await client.mutate({
         mutation: SIGNIN_MUTATION,
         variables: { email, password },
       });
-      return data.login.token;
+      return data.profile.signin.token;
     } catch (err) {
       if (err instanceof ApolloError) {
-        return rejectWithValue(handleSignInErrors(err));
+        return rejectWithValue(handleAuthError(err));
       }
-      return rejectWithValue('An unknown error occurred');
+      return rejectWithValue(handleUnknownError('An unknown error occurred'));
     }
   }
 );
 
-type SignUpUser = SignInUser & { commandId: string };
+export type SignUpUser = AuthUser & { commandId: string };
 
-export const signUpUser = createAsyncThunk('auth/signUpUser', async ({ email, password, commandId }: SignUpUser) => {
-  const { data } = await client.mutate({
-    mutation: SIGNUP_MUTATION,
-    variables: { email, password, commandId },
-  });
+export const signUpUser = createAsyncThunk(
+  'auth/signUpUser',
+  async ({ email, password, commandId }: SignUpUser, { rejectWithValue }) => {
+    try {
+      const { data } = await client.mutate({
+        mutation: SIGNUP_MUTATION,
+        variables: { email, password, commandId },
+      });
 
-  return data.register.token;
-});
+      return data.profile.signup.token;
+    } catch (err) {
+      if (err instanceof ApolloError) {
+        return rejectWithValue(handleAuthError(err));
+      }
+      return rejectWithValue(handleUnknownError('An unknown error occurred'));
+    }
+  }
+);
 
 interface AuthState {
   token: string;
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
-  error: SignInUserError | null;
+  error: AuthUserError | null;
 }
 
 const initialState: AuthState = {
@@ -81,11 +91,16 @@ const authSlice = createSlice({
   reducers: {
     signOut(state) {
       state.token = '';
+      state.status = 'idle';
       localStorage.removeItem('token');
+    },
+    resetError(state) {
+      state.error = null;
     },
   },
   extraReducers: (builder) => {
     builder
+      // SignIn
       .addCase(signInUser.pending, (state) => {
         state.status = 'loading';
       })
@@ -95,11 +110,10 @@ const authSlice = createSlice({
         localStorage.setItem('token', action.payload);
       })
       .addCase(signInUser.rejected, (state, action) => {
-        // console.dir(action.payload);
         state.status = 'failed';
-        state.error = action.payload as SignInUserError;
-        // state.errorFields = action.payload as ;
+        state.error = action.payload as AuthUserError;
       })
+      // SignUp
       .addCase(signUpUser.pending, (state) => {
         state.status = 'loading';
       })
@@ -110,11 +124,11 @@ const authSlice = createSlice({
       })
       .addCase(signUpUser.rejected, (state, action) => {
         state.status = 'failed';
-        state.error = action.payload as SignInUserError;
+        state.error = action.payload as AuthUserError;
       });
   },
 });
 
-export const { signOut } = authSlice.actions;
+export const { signOut, resetError } = authSlice.actions;
 
 export default authSlice.reducer;

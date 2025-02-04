@@ -11,16 +11,17 @@ import { ErrorLabel } from 'src/shared/ui/ErrorLabel/ErrorLabel';
 import { SignInSchema, SignInSchemaType } from './signin-schema';
 
 import style from './signInForm.module.scss';
-import { SignInUserError } from 'src/features/auth/authSlice';
+import { AuthUserError } from 'src/features/auth/authSlice';
 
 export type OnSubmit = SubmitHandler<SignInSchemaType>;
 
 type SignInFormProps = {
   onSubmit: OnSubmit;
-  signInError: SignInUserError;
+  signInButtonText: string;
+  authError: AuthUserError;
 };
 
-const SignInForm = ({ onSubmit, signInError }: SignInFormProps) => {
+const SignInForm = ({ onSubmit, signInButtonText, authError }: SignInFormProps) => {
   const {
     reset,
     register,
@@ -32,38 +33,34 @@ const SignInForm = ({ onSubmit, signInError }: SignInFormProps) => {
     resolver: zodResolver(SignInSchema),
   });
 
+  const handleError = (signInError: AuthUserError) => {
+    const { fields } = signInError;
+
+    fields.length > 1 && fields.forEach((field) => setError(field, { type: 'manual', message: '' }));
+
+    setError(fields.length === 1 ? fields[0] : 'root', {
+      type: 'manual',
+      message: signInError.message,
+    });
+  };
+
   useEffect(() => {
-    signInError &&
-      signInError.fields.forEach((field) =>
-        setError(field, {
-          type: 'manual',
-          message: signInError.message,
-        })
-      );
-  }, [signInError]);
+    authError ? handleError(authError) : reset();
+  }, [authError]);
 
   const withResetAndSetError = (onSubmit: OnSubmit) => (data: SignInSchemaType) => {
     onSubmit(data);
-    // const userError = onSubmit(data) as SignInUserError;
-    // userError.fields.forEach((field) => setError(field, {
-    //   type: 'manual',
-    //   message: userError.message,
-    // }));
-
-    /*  .then(() => reset())
-      .catch((error) =>
-        setError('root', {
-          type: 'manual',
-          message: error.message,
-        })
-      );*/
   };
 
   const isRequired = useIsFieldRequired(SignInSchema);
 
-  const LoginButton = () => (
+  type SignInButtonProps = {
+    text: string;
+  };
+
+  const SignInButton = ({ text }: SignInButtonProps) => (
     <Button type="submit" stretch>
-      Submit
+      {text}
     </Button>
   );
 
@@ -79,6 +76,7 @@ const SignInForm = ({ onSubmit, signInError }: SignInFormProps) => {
             <>
               <InputField
                 label="Email"
+                inputId="email"
                 name="email"
                 register={register}
                 type="email"
@@ -87,6 +85,7 @@ const SignInForm = ({ onSubmit, signInError }: SignInFormProps) => {
               />
               <InputField
                 label="Password"
+                inputId="password"
                 name="password"
                 register={register}
                 type="password"
@@ -96,7 +95,11 @@ const SignInForm = ({ onSubmit, signInError }: SignInFormProps) => {
               {errors.root && <ErrorLabel message={errors.root.message} />}
             </>
           }
-          buttons={<ActionButtons buttons={[{ button: <LoginButton key="loginButton" /> }]} />}
+          buttons={
+            <ActionButtons
+              buttons={[{ button: <SignInButton text={signInButtonText || 'Sign in'} key="loginButton" /> }]}
+            />
+          }
         />
       </div>
     </div>

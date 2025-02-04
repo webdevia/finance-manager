@@ -6,6 +6,7 @@ import Field from '../Field/Field';
 
 type TextareaFieldProps<T extends FieldValues> = {
   label: ReactNode;
+  inputId: string;
   required: boolean;
   register: UseFormRegister<T>;
   name: Path<T>;
@@ -15,13 +16,14 @@ type TextareaFieldProps<T extends FieldValues> = {
 
 export const TextareaField = <T extends FieldValues>({
   label,
+  inputId,
   required,
   rows,
   register,
   name,
   errors,
 }: TextareaFieldProps<T>) => (
-  <Field label={{ children: label, required }} errors={errors}>
+  <Field label={{ children: label, required, inputId }} errors={errors}>
     <textarea className={cn(s.textarea, { [s.error]: errors })} {...register(name)} rows={rows ?? 4}></textarea>
   </Field>
 );
