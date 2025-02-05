@@ -4,6 +4,7 @@ import { combineReducers } from 'redux';
 import appReducer from 'src/features/appSlice';
 import authReducer from 'src/features/auth/authSlice';
 import profileReducer from 'src/features/profile/profileSlice';
+import passwordReducer from 'src/features/profile/passwordSlice';
 import operationsReducer from 'src/features/operation/operationSlice';
 
 import { api } from '../features/auth/authApi';
@@ -11,6 +12,7 @@ import { api } from '../features/auth/authApi';
 const rootReducer = combineReducers({
   auth: authReducer,
   profile: profileReducer,
+  password: passwordReducer,
   operations: operationsReducer,
   app: appReducer,
   api: api.reducer,

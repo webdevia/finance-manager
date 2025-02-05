@@ -8,6 +8,7 @@ import Button from 'src/shared/ui/Button/Button';
 import ActionButtons from 'src/shared/ui/ActionButtons/ActionButtons';
 import Title from 'src/shared/ui/Title/Title';
 import { ProfileError } from 'src/features/profile/profileSlice';
+import { PasswordError } from 'src/features/profile/passwordSlice';
 import { ZodEffects, ZodObject } from 'zod';
 import {
   ChangeProfileSchema,
@@ -20,6 +21,7 @@ import { ErrorLabel } from '../../ErrorLabel/ErrorLabel';
 import { InfoLabel } from '../../InfoLabel/InfoLabel';
 
 export type OnSubmit = SubmitHandler<Pick<ChangeProfileSchemaType, 'name'>>;
+export type OnSubmitPassword = SubmitHandler<ChangePasswordSchemaType>;
 
 type ChangeProfileFormProps = {
   initialData?: ChangeProfileSchemaType;
@@ -29,7 +31,15 @@ type ChangeProfileFormProps = {
   successInfo: string;
 };
 
-const ChangeProfileForm = ({
+type ChangePasswordFormProps = {
+  // initialData?: ChangePasswordSchemaType;
+  onSubmit: OnSubmitPassword;
+  changePasswordButtonText: string;
+  passwordError: PasswordError;
+  successInfo: string;
+};
+
+const ChangeProfileForm: React.FC<ChangeProfileFormProps> = ({
   initialData,
   onSubmit,
   changeProfileButtonText,
@@ -140,15 +150,36 @@ const ChangeProfileForm = ({
   );
 };
 
-const ChangePasswordForm = () => {
+const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
+  onSubmit,
+  changePasswordButtonText,
+  passwordError,
+  successInfo,
+}: ChangePasswordFormProps) => {
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors },
   } = useForm<ChangePasswordSchemaType>({
     shouldUnregister: true,
     resolver: zodResolver(ChangePasswordSchema),
   });
+
+  const handleError = (passwordError: PasswordError) => {
+    const { fields } = passwordError;
+
+    fields.length > 1 && fields.forEach((field) => setError(field, { type: 'manual', message: '' }));
+
+    setError(fields.length === 1 ? fields[0] : 'root', {
+      type: 'manual',
+      message: passwordError.message,
+    });
+  };
+
+  useEffect(() => {
+    passwordError && handleError(passwordError);
+  }, [passwordError]);
 
   const onChangePassword = (data: ChangePasswordSchemaType) => {
     //console.log(data);
@@ -157,7 +188,11 @@ const ChangePasswordForm = () => {
   const baseSchema = (ChangePasswordSchema as ZodEffects<ZodObject<any>>)._def.schema;
   const isRequired = useIsFieldRequired(baseSchema);
 
-  const ChangePasswordButton = () => (
+  type ChangePasswordButtonProps = {
+    text: string;
+  }
+
+  const ChangePasswordButton = ({ text }: ChangePasswordButtonProps) => (
     <Button type="submit" stretch>
       Save
     </Button>
@@ -169,7 +204,7 @@ const ChangePasswordForm = () => {
         <Title>Change password</Title>
       </span>
       <Form
-        onSubmit={handleSubmit(onChangePassword)}
+        onSubmit={handleSubmit(onSubmit)}
         fields={
           <>
             <InputField
@@ -199,9 +234,11 @@ const ChangePasswordForm = () => {
               errors={errors.confirmPassword}
               required={isRequired('confirmPassword')}
             />
+            {errors.root && <ErrorLabel message={errors.root.message} />}
+            {successInfo && <InfoLabel message={successInfo} />}      
           </>
         }
-        buttons={<ActionButtons buttons={[{ button: <ChangePasswordButton key="changePassword" /> }]} />}
+        buttons={<ActionButtons buttons={[{ button: <ChangePasswordButton text={changePasswordButtonText || 'Save'} key="changePassword" /> }]} />}
       />
     </div>
   );
@@ -209,12 +246,13 @@ const ChangePasswordForm = () => {
 
 type ProfileFormProps = {
   changeProfileForm: ChangeProfileFormProps;
+  changePasswordForm: ChangePasswordFormProps;
 };
 
-const ProfileForm = ({ changeProfileForm }: ProfileFormProps) => (
+const ProfileForm = ({ changeProfileForm, changePasswordForm }: ProfileFormProps) => (
   <div className={style.container}>
     <ChangeProfileForm {...changeProfileForm} />
-    {/* <ChangePasswordForm /> */}
+    <ChangePasswordForm {...changePasswordForm} />
   </div>
 );
 

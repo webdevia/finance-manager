@@ -38,7 +38,7 @@ export const OPERATION_LIST_QUERY = gql`
 `;
 
 export const ADD_OPERATION_MUTATION = gql`
-  mutation Operations($input: OperationAddInput!) {
+  mutation AddOperations($input: OperationAddInput!) {
     operations {
       add(input: $input) {
         ... on Cost {
