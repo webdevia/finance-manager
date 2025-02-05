@@ -9,7 +9,6 @@ import Button from 'src/shared/ui/Button/Button';
 import style from './OperationListPage.module.scss';
 import { selectOperations } from 'src/features/operation/selectors';
 import { fetchOperations } from 'src/features/operation/operationSlice';
-import { AsyncThunkAction, ThunkDispatch, UnknownAction } from '@reduxjs/toolkit';
 import { AppDispatch } from 'src/app/store';
 
 type ColumnsWidthCSS = CSSProperties & {
@@ -43,6 +42,7 @@ export const OperationListPage: React.FC = () => {
   const { operations } = useSelector(selectOperations);
 
     useEffect(() => {
+      console.log("USE EFFECT FETCH");
       dispatch(fetchOperations());
     }, []);
   
@@ -65,7 +65,4 @@ export const OperationListPage: React.FC = () => {
     </div>
   );
 };
-function dispatch(arg0: AsyncThunkAction<any, void, { state?: unknown; dispatch?: ThunkDispatch<unknown, unknown, UnknownAction>; extra?: unknown; rejectValue?: unknown; serializedErrorType?: unknown; pendingMeta?: unknown; fulfilledMeta?: unknown; rejectedMeta?: unknown; }>) {
-  throw new Error('Function not implemented.');
-}
 

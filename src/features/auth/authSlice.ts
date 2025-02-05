@@ -93,6 +93,8 @@ const authSlice = createSlice({
       state.token = '';
       state.status = 'idle';
       localStorage.removeItem('token');
+      client.cache.reset();
+      
     },
     resetError(state) {
       state.error = null;
@@ -130,5 +132,4 @@ const authSlice = createSlice({
 });
 
 export const { signOut, resetError } = authSlice.actions;
-
 export default authSlice.reducer;

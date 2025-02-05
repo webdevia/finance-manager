@@ -34,6 +34,7 @@ export const handleUnknownError = (serverError: string): ProfileError => {
 };
 
 export const fetchProfile = createAsyncThunk('profile/fetchProfile', async () => {
+  console.log("LOADING PROFILE")
   const { data } = await client.query({ query: PROFILE_QUERY });
   return data.profile;
 });
@@ -45,6 +46,7 @@ export const updateProfile = createAsyncThunk(
       const { data } = await client.mutate({
         mutation: PROFILE_MUTATION,
         variables: { input },
+        refetchQueries: [{ query: PROFILE_QUERY }],
       });
       return data.profile.update;
     } catch (err) {
@@ -63,9 +65,12 @@ export interface Profile {
   signUpDate: string;
 }
 
+type FetchProfileStatus = "fetch_loading" | "fetch_succeeded" | "fetch_failed";
+type UpdateProfileStatus = "update_loading" | "update_succeeded" | "update_failed";
+
 interface ProfileState {
   profile: Profile | null;
-  status: 'idle' | 'loading' | 'fetch_succeeded' | 'update_succeeded' | 'failed';
+  status: 'idle' | FetchProfileStatus | UpdateProfileStatus;
   error: ProfileError | null;
 }
 
@@ -82,35 +87,38 @@ const profileSlice = createSlice({
     resetError(state) {
       state.error = null;
     },
+    clearProfile(state) {
+      state.profile = null;
+    }
   },
   extraReducers: (builder) => {
     builder
       // Fetch Profile
       .addCase(fetchProfile.pending, (state) => {
-        state.status = 'loading';
+        state.status = 'fetch_loading';
       })
       .addCase(fetchProfile.fulfilled, (state, action) => {
         state.status = 'fetch_succeeded';
         state.profile = action.payload;
       })
       .addCase(fetchProfile.rejected, (state, action) => {
-        state.status = 'failed';
+        state.status = 'fetch_failed';
         state.error = action.payload as ProfileError;
       })
       // Update Profile
       .addCase(updateProfile.pending, (state) => {
-        state.status = 'loading';
+        state.status = 'update_loading';
       })
       .addCase(updateProfile.fulfilled, (state, action) => {
         state.status = 'update_succeeded';
         state.profile = action.payload;
       })
       .addCase(updateProfile.rejected, (state, action) => {
-        state.status = 'failed';
+        state.status = 'update_failed';
         state.error = action.payload as ProfileError;
       });
   },
 });
 
-export const { resetError } = profileSlice.actions;
+export const { resetError, clearProfile } = profileSlice.actions;
 export default profileSlice.reducer;

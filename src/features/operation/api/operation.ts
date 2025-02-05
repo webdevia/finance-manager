@@ -38,24 +38,38 @@ export const OPERATION_LIST_QUERY = gql`
 `;
 
 export const ADD_OPERATION_MUTATION = gql`
-mutation Operations($input: OperationAddInput!) {
-  operations {
-    add(input: $input) {
-      ... on Cost {
-        id
-        amount
-        category {
-          name
+  mutation Operations($input: OperationAddInput!) {
+    operations {
+      add(input: $input) {
+        ... on Cost {
           id
+          amount
+          category {
+            name
+            id
+          }
+          createdAt
+          date
+          desc
+          name
+          type
+          updatedAt
         }
-        createdAt
-        date
-        desc
-        name
-        type
-        updatedAt
+        ... on Profit {
+          id
+          amount
+          category {
+            name
+            id
+          }
+          createdAt
+          date
+          desc
+          name
+          type
+          updatedAt
+        }
       }
     }
   }
-}
 `;
