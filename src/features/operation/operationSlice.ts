@@ -45,6 +45,7 @@ export const handleUnknownError = (serverError: string): OperationError => {
 
 export const fetchOperations = createAsyncThunk('operations/fetchOperations', async () => {
   const { data } = await client.query({ query: OPERATION_LIST_QUERY });
+  console.log('MAKE REQUEST', data.operations.getMany.data);
   return data.operations.getMany.data;
 });
 
@@ -55,6 +56,7 @@ export const addOperation = createAsyncThunk(
       const { data } = await client.mutate({
         mutation: ADD_OPERATION_MUTATION,
         variables: { input },
+        refetchQueries: [{ query: OPERATION_LIST_QUERY }],
       });
       return data.operations.add;
     } catch (err) {
@@ -66,9 +68,12 @@ export const addOperation = createAsyncThunk(
   }
 );
 
+type FetchOperationsStatus = 'fetch_loading' | 'fetch_succeeded' | 'fetch_failed';
+type AddOperationsStatus = 'add_loading' | 'add_succeeded' | 'add_failed';
+
 interface OperationsState {
   operations: BankOperation[];
-  status: 'idle' | 'loading' | 'fetch_succeeded' | 'add_succeeded' | 'failed';
+  status: 'idle' | FetchOperationsStatus | AddOperationsStatus;
   error: OperationError | null;
 }
 
@@ -83,6 +88,9 @@ const operationsSlice = createSlice({
   name: 'operations',
   initialState,
   reducers: {
+    clearOperations(state) {
+      state.operations = [];
+    }
     // addOperation: (state, action: PayloadAction<BankOperation>) => {
     //   state.operations.push(action.payload);
     // },
@@ -102,29 +110,37 @@ const operationsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchOperations.pending, (state) => {
-        state.status = 'loading';
+        console.log('fetch_loading');
+        state.status = 'fetch_loading';
       })
       .addCase(fetchOperations.fulfilled, (state, action) => {
+        console.log('fetch_succeeded');
         state.status = 'fetch_succeeded';
         state.operations = action.payload;
+        console.dir(action.payload);
       })
       .addCase(fetchOperations.rejected, (state, action) => {
-        state.status = 'failed';
+        console.log('fetch_failed');
+        state.status = 'fetch_failed';
         state.error = action.payload as OperationError;
       })
       .addCase(addOperation.pending, (state) => {
-        state.status = 'loading';
+        console.log('add_loading');
+        state.status = 'add_loading';
       })
       .addCase(addOperation.fulfilled, (state, action) => {
+        console.log('add_succeeded');
         state.status = 'add_succeeded';
-        state.operations.push(action.payload);
+        state.operations = [...state.operations, action.payload];
+        console.dir(state.operations);
       })
       .addCase(addOperation.rejected, (state, action) => {
-        state.status = 'failed';
+        console.log('add_failed');
+        state.status = 'add_failed';
         state.error = action.payload as OperationError;
       });
   },
 });
 
-// export const { addOperation, updateOperation, deleteOperation, setOperations } = operationsSlice.actions;
+export const { clearOperations } = operationsSlice.actions;
 export default operationsSlice.reducer;

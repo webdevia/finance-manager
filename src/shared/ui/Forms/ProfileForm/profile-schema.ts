@@ -1,10 +1,10 @@
 import { z } from 'zod';
 
 export const ChangeProfileSchema = z.object({
-  email: z.string().readonly(),
-  id: z.string().readonly(),
+  email: z.string().optional(),
+  id: z.string().optional(),
   name: z.string(),
-  signUpDate: z.string().readonly(),
+  signUpDate: z.string().optional(),
 });
 
 export type ChangeProfileSchemaType = Required<z.infer<typeof ChangeProfileSchema>>;

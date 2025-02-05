@@ -9,6 +9,7 @@ export interface OperationListProps {
 }
 
 export const OperationList: React.FC<OperationListProps> = ({ operations, onEdit }) => {
+
   return (
     <div className={style['operation-list']}>
       {operations.map((operation) => (

@@ -33,10 +33,9 @@ export const ProfilePage = () => {
     <ProfileForm
       changeProfileForm={{
         initialData: profile ? { ...profile, signUpDate: normalizeDateString(profile.signUpDate) } : null,
-        // profileStatus === 'fetch_succeeded' ? { ...profile, signUpDate: normalizeDateString(profile.signUpDate) } : null,
         successInfo,
         onSubmit: onChangeProfile,
-        changeProfileButtonText: profileStatus === 'loading' ? 'Updating...' : 'Save',
+        changeProfileButtonText: profileStatus === 'update_loading' ? 'Updating...' : 'Save',
         profileError,
       }}
     />
