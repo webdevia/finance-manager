@@ -18,7 +18,7 @@ export type OnSubmit = SubmitHandler<SignInSchemaType>;
 type SignInFormProps = {
   onSubmit: OnSubmit;
   signInButtonText: string;
-  authError: AuthUserError;
+  authError: AuthUserError | null;
 };
 
 const SignInForm = ({ onSubmit, signInButtonText, authError }: SignInFormProps) => {
@@ -92,7 +92,7 @@ const SignInForm = ({ onSubmit, signInButtonText, authError }: SignInFormProps) 
                 errors={errors.password}
                 required={isRequired('password')}
               />
-              {errors.root && <ErrorLabel message={errors.root.message} />}
+              {errors.root && <ErrorLabel message={errors.root.message || ''} />}
             </>
           }
           buttons={

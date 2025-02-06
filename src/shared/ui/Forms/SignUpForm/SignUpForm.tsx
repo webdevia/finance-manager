@@ -21,7 +21,7 @@ type SignUpFormProps = {
   onSubmit: OnSubmit;
   formTitle?: string;
   signUpButtonText?: string;
-  authError: AuthUserError;
+  authError: AuthUserError | null;
 };
 
 const SignUpForm = ({ onSubmit, signUpButtonText, formTitle, authError }: SignUpFormProps) => {
@@ -95,7 +95,7 @@ const SignUpForm = ({ onSubmit, signUpButtonText, formTitle, authError }: SignUp
                 errors={errors.password}
                 required={isRequired('password')}
               />
-              {errors.root && <ErrorLabel message={errors.root.message} />}
+              {errors.root && <ErrorLabel message={errors.root.message || ''} />}
             </>
           }
           buttons={

@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { BankOperation, getRandomId } from 'src/entities/Operation/Operation';
+import { BankOperation, getRandomId } from 'src/entities/operation/Operation';
 // import { addOperation, updateOperation } from 'src/features/operation/operationSlice';
 import OperationForm, { OnSubmit } from 'src/shared/ui/Forms/OperationForm/OperationForm';
 import { OperationSchemaType } from 'src/shared/ui/Forms/OperationForm/operation-schema';
@@ -15,10 +15,10 @@ import { addOperation, OperationInputFields } from 'src/features/operation/opera
 const OperationDialogPage = () => {
   const [isOperationDialogOpen, setIsOperationDialogOpen] = useState(false);
   // const [initialData, setInitialData] = useState<OperationSchemaType>(null);
-  const [onSubmit, setOnSubmit] = useState<OnSubmit>(null);
+  const [onSubmit, setOnSubmit] = useState<OnSubmit>(() => {});
 
-  const {operations} = useSelector(selectOperations);
-    const operationsStatus = useSelector((state: RootState) => state.operations.status);
+  const { operations } = useSelector(selectOperations);
+  const operationsStatus = useSelector((state: RootState) => state.operations.status);
   const dispatch = useDispatch<AppDispatch>();
 
   const navigate = useNavigate();
@@ -27,20 +27,22 @@ const OperationDialogPage = () => {
   const { id } = useParams();
   const location = useLocation();
 
-    // useEffect(() => {
-    //   setIsOperationDialogOpen(operationsStatus !== 'add_succeeded');
-    // }, [operationsStatus]);
+  // useEffect(() => {
+  //   setIsOperationDialogOpen(operationsStatus !== 'add_succeeded');
+  // }, [operationsStatus]);
 
-    // TODO: set real data
+  // TODO: set real data
   const handleAddOperation: OnSubmit = useCallback(
     (data) => {
-      const newOperation: OperationInputFields ={ input:  {
-        amount: data.amount,
-        "categoryId": "67a28da3959ec5e015c2636a",
-        date: data.createdAt,
-        name: data.name,
-        type: data.type,
-      }};
+      const newOperation: OperationInputFields = {
+        input: {
+          amount: data.amount,
+          categoryId: '67a28da3959ec5e015c2636a',
+          date: data.createdAt,
+          name: data.name,
+          type: data.type,
+        },
+      };
       dispatch(addOperation(newOperation));
       navigateToOpeartions();
     },
@@ -81,7 +83,6 @@ const OperationDialogPage = () => {
         //       type: operationToEdit.type,
         //     }
         //   : null;
-
         // setInitialData(initialFormData);
         // setOnSubmit(() => handleUpdateOperation(id));
       } else {
@@ -98,7 +99,6 @@ const OperationDialogPage = () => {
       <OperationForm onSubmit={onSubmit} />
     </Modal>
   );
-  
 };
 
 export default OperationDialogPage;

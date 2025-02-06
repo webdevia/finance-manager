@@ -18,6 +18,7 @@ const isLeftRightButton = (buttons: ActionButtons): buttons is LeftRightButton[]
 };
 
 const buttonMapper = (button: LeftRightButton) => button.button;
+const buttonCenterMapper = (button: CenterButton) => button.button;
 
 const buttonFilter = (position: ButtonPosition) => (button: LeftRightButton) => button.buttonPosition === position;
 const leftButtonFilter = buttonFilter('left');
@@ -34,7 +35,7 @@ const ActionButtons = ({ buttons }: ActionButtonsProps) =>
       right={buttons.filter(rightButtonFilter).map(buttonMapper)}
     />
   ) : (
-    <CenterLayout center={buttons.map(buttonMapper)} />
+    <CenterLayout center={buttons.map(buttonCenterMapper)} />
   );
 
 export default ActionButtons;

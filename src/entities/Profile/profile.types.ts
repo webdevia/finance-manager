@@ -1,4 +1,17 @@
-import { z } from 'zod';
-import { ProfileSchema } from './profile.contracts';
+export {
+  Profile as ProfileDto,
+  UpdateProfileInput as UpdateProfileInputDto,
+  UpdateMutation as UpdateMutationDto,
+  ProfileMutationsUpdateArgs as ProfileMutationsUpdateArgsDto,
+} from 'src/shared/api/types/generated.dto.types';
 
-export type Profile = z.infer<typeof ProfileSchema>;
+export type Profile = {
+  email: string;
+  id: string;
+  name: string;
+  signUpDate: string;
+};
+
+export type UpdateProfileInput = {
+  name: string;
+};

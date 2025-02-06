@@ -19,6 +19,7 @@ import {
 import style from './ProfileForm.module.scss';
 import { ErrorLabel } from '../../ErrorLabel/ErrorLabel';
 import { InfoLabel } from '../../InfoLabel/InfoLabel';
+// import { UpdateProfileButton } from 'src/features/profile/updateProfile/UpdateProfile.ui';
 
 export type OnSubmit = SubmitHandler<Pick<ChangeProfileSchemaType, 'name'>>;
 export type OnSubmitPassword = SubmitHandler<ChangePasswordSchemaType>;
@@ -27,7 +28,7 @@ type ChangeProfileFormProps = {
   initialData?: ChangeProfileSchemaType;
   onSubmit: OnSubmit;
   changeProfileButtonText: string;
-  profileError: ProfileError;
+  profileError: ProfileError | null;
   successInfo: string;
 };
 
@@ -35,7 +36,7 @@ type ChangePasswordFormProps = {
   // initialData?: ChangePasswordSchemaType;
   onSubmit: OnSubmitPassword;
   changePasswordButtonText: string;
-  passwordError: PasswordError;
+  passwordError: PasswordError | null;
   successInfo: string;
 };
 
@@ -136,15 +137,11 @@ const ChangeProfileForm: React.FC<ChangeProfileFormProps> = ({
               required={isRequired('signUpDate')}
               readOnly
             />
-            {errors.root && <ErrorLabel message={errors.root.message} />}
+            {errors.root && <ErrorLabel message={errors.root.message || ''} />}
             {successInfo && <InfoLabel message={successInfo} />}
           </>
         }
-        buttons={
-          <ActionButtons
-            buttons={[{ button: <ChangeProfileButton text={changeProfileButtonText || 'Save'} key="changeProfile" /> }]}
-          />
-        }
+        buttons={<ActionButtons buttons={[]} />}
       />
     </div>
   );
@@ -190,7 +187,7 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
 
   type ChangePasswordButtonProps = {
     text: string;
-  }
+  };
 
   const ChangePasswordButton = ({ text }: ChangePasswordButtonProps) => (
     <Button type="submit" stretch>
@@ -234,11 +231,17 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
               errors={errors.confirmPassword}
               required={isRequired('confirmPassword')}
             />
-            {errors.root && <ErrorLabel message={errors.root.message} />}
-            {successInfo && <InfoLabel message={successInfo} />}      
+            {errors.root && <ErrorLabel message={errors.root.message || ''} />}
+            {successInfo && <InfoLabel message={successInfo} />}
           </>
         }
-        buttons={<ActionButtons buttons={[{ button: <ChangePasswordButton text={changePasswordButtonText || 'Save'} key="changePassword" /> }]} />}
+        buttons={
+          <ActionButtons
+            buttons={[
+              { button: <ChangePasswordButton text={changePasswordButtonText || 'Save'} key="changePassword" /> },
+            ]}
+          />
+        }
       />
     </div>
   );

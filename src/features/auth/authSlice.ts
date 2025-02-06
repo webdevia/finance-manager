@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import client from 'src/shared/api/client';
+import { graphqlClient as client } from 'src/app/providers';
 import { SIGNIN_MUTATION, SIGNUP_MUTATION } from './api/auth';
 import { ApolloError } from '@apollo/client';
 import { tokenStorage } from 'src/shared/storage/tokenStorage';
@@ -24,7 +24,8 @@ const errorFieldsMap: ErrorFieldsMap = {
 };
 
 export const handleAuthError = (serverError: ApolloError): AuthUserError => {
-  const { message, extensions } = serverError.cause;
+  const message = serverError.cause?.message || '';
+  const extensions = serverError.cause?.extensions;
   const serverErrorExtension = extensions as ServerErrorExtension;
   const fields = errorFieldsMap[serverErrorExtension.code];
 

@@ -14,7 +14,10 @@ type LeftRightLayoutProps = {
 };
 
 const LeftRightLayout = ({ left, right, blocksGap, elementsGap }: LeftRightLayoutProps) => {
-  const layoutStyle: LayoutCSS = { '--layout-blocks-gap': blocksGap, '--layout-elements-gap': elementsGap };
+  const layoutStyle: LayoutCSS = {
+    '--layout-blocks-gap': blocksGap ?? '5px',
+    '--layout-elements-gap': elementsGap ?? '5px',
+  };
 
   return (
     <div className={s['space-between']} style={layoutStyle}>

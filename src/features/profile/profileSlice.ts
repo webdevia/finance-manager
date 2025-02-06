@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import client from 'src/shared/api/client';
+import { graphqlClient as client } from 'src/app/providers';
 import { PROFILE_MUTATION, PROFILE_QUERY } from './api/profile';
 import { ApolloError } from '@apollo/client';
 
@@ -22,7 +22,8 @@ const errorFieldsMap: ErrorFieldsMap = {
 };
 
 export const handleProfileError = (serverError: ApolloError): ProfileError => {
-  const { message, extensions } = serverError.cause;
+  const message = serverError.cause?.message || '';
+  const extensions = serverError.cause?.extensions;
   const serverErrorExtension = extensions as ServerErrorExtension;
   const fields = errorFieldsMap[serverErrorExtension.code];
 
@@ -34,7 +35,7 @@ export const handleUnknownError = (serverError: string): ProfileError => {
 };
 
 export const fetchProfile = createAsyncThunk('profile/fetchProfile', async () => {
-  console.log("LOADING PROFILE")
+  console.log('LOADING PROFILE');
   const { data } = await client.query({ query: PROFILE_QUERY });
   return data.profile;
 });
@@ -65,8 +66,8 @@ export interface Profile {
   signUpDate: string;
 }
 
-type FetchProfileStatus = "fetch_loading" | "fetch_succeeded" | "fetch_failed";
-type UpdateProfileStatus = "update_loading" | "update_succeeded" | "update_failed";
+type FetchProfileStatus = 'fetch_loading' | 'fetch_succeeded' | 'fetch_failed';
+type UpdateProfileStatus = 'update_loading' | 'update_succeeded' | 'update_failed';
 
 interface ProfileState {
   profile: Profile | null;
@@ -89,7 +90,7 @@ const profileSlice = createSlice({
     },
     clearProfile(state) {
       state.profile = null;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
