@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import client from 'src/shared/api/client';
 import { SIGNIN_MUTATION, SIGNUP_MUTATION } from './api/auth';
 import { ApolloError } from '@apollo/client';
+import { tokenStorage } from 'src/shared/storage/tokenStorage';
 
 export type AuthUser = { email: string; password: string }; // TODO: rename to AuthUserInputFields
 
@@ -80,7 +81,7 @@ interface AuthState {
 }
 
 const initialState: AuthState = {
-  token: localStorage.getItem('token') || '',
+  token: tokenStorage.get(),
   status: 'idle',
   error: null,
 };
@@ -92,9 +93,8 @@ const authSlice = createSlice({
     signOut(state) {
       state.token = '';
       state.status = 'idle';
-      localStorage.removeItem('token');
+      tokenStorage.remove();
       client.cache.reset();
-      
     },
     resetError(state) {
       state.error = null;
@@ -109,7 +109,7 @@ const authSlice = createSlice({
       .addCase(signInUser.fulfilled, (state, action) => {
         state.status = 'succeeded';
         state.token = action.payload;
-        localStorage.setItem('token', action.payload);
+        tokenStorage.set(action.payload);
       })
       .addCase(signInUser.rejected, (state, action) => {
         state.status = 'failed';
@@ -122,7 +122,7 @@ const authSlice = createSlice({
       .addCase(signUpUser.fulfilled, (state, action) => {
         state.status = 'succeeded';
         state.token = action.payload;
-        localStorage.setItem('token', action.payload);
+        tokenStorage.set(action.payload);
       })
       .addCase(signUpUser.rejected, (state, action) => {
         state.status = 'failed';

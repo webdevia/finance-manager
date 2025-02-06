@@ -1,7 +1,7 @@
 import React, { CSSProperties, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { OperationList } from 'src/widgets/OperationList/OperationList';
-import { createRandomOperation } from 'src/entities/operation/Operation';
+import { createRandomOperation } from 'src/entities/Operation/Operation';
 import AddOperationButton from 'src/features/AddOperationButton/AddOperationButton';
 import { Outlet, useNavigate } from 'react-router-dom';
 import Button from 'src/shared/ui/Button/Button';

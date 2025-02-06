@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { BankOperation, getRandomId } from 'src/entities/operation/Operation';
+import { BankOperation, getRandomId } from 'src/entities/Operation/Operation';
 // import { addOperation, updateOperation } from 'src/features/operation/operationSlice';
 import OperationForm, { OnSubmit } from 'src/shared/ui/Forms/OperationForm/OperationForm';
 import { OperationSchemaType } from 'src/shared/ui/Forms/OperationForm/operation-schema';

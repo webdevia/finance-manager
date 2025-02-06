@@ -4,6 +4,7 @@ import { AppDispatch, RootState } from '../store';
 import { signOut } from 'src/features/auth/authSlice';
 import { fetchProfile } from 'src/features/profile/profileSlice';
 import { initializeApp } from 'src/features/appSlice';
+import { tokenStorage } from 'src/shared/storage/tokenStorage';
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const dispatch = useDispatch<AppDispatch>();
@@ -55,21 +56,19 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   }, [dispatch, logout, isAppInitialized]);
 
   useEffect(() => {
-    const handleStorageChange = (event: StorageEvent) => {
-      if (event.key === 'token') {
-        const newToken = event.newValue;
-        if (newToken) {
-          getProfile();
-        } else {
-          logout();
-        }
+    const handleStorageChange = (newValue: string) => {
+      if (newValue) {
+        getProfile();
+        console.log('GET PROFILE');
+      } else {
+        logout();
       }
     };
 
-    window.addEventListener('storage', handleStorageChange);
+    tokenStorage.subscribe(handleStorageChange);
 
     return () => {
-      window.removeEventListener('storage', handleStorageChange);
+      tokenStorage.unsubscribe(handleStorageChange);
     };
   }, [getProfile, logout]);
 
