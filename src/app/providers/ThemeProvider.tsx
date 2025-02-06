@@ -2,7 +2,7 @@ import React, { createContext, useState, useEffect, useContext, ReactNode } from
 
 type Theme = 'dark' | 'light';
 
-type ThemeContextType = { theme: Theme; toggleTheme: () => void };
+type ThemeContextType = { theme: Theme; toggleTheme: () => void } | null;
 
 type ThemeProviderProps = {
   children: ReactNode;

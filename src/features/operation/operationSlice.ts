@@ -1,9 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import client from 'src/shared/api/client';
+import { graphqlClient as client } from 'src/app/providers';
 import { OPERATION_LIST_QUERY, ADD_OPERATION_MUTATION } from './api/operation';
 import { ApolloError } from '@apollo/client';
 
-import { BankOperation, createRandomOperation } from 'src/entities/Operation/Operation';
+import { BankOperation, createRandomOperation } from 'src/entities/operation/Operation';
 
 export type OperationInputFields = {
   input: {
@@ -32,7 +32,8 @@ const errorFieldsMap: ErrorFieldsMap = {
 };
 
 export const handleOperationError = (serverError: ApolloError): OperationError => {
-  const { message, extensions } = serverError.cause;
+  const message = serverError.cause?.message || '';
+  const extensions = serverError.cause?.extensions;
   const serverErrorExtension = extensions as ServerErrorExtension;
   const fields = errorFieldsMap[serverErrorExtension.code];
 
@@ -90,7 +91,7 @@ const operationsSlice = createSlice({
   reducers: {
     clearOperations(state) {
       state.operations = [];
-    }
+    },
     // addOperation: (state, action: PayloadAction<BankOperation>) => {
     //   state.operations.push(action.payload);
     // },

@@ -14,6 +14,7 @@ type InputFieldProps<T extends FieldValues> = {
   isNumber?: boolean;
   errors?: FieldError;
   readOnly?: boolean;
+  disabled?: boolean;
 };
 
 const InputField = <T extends FieldValues>({
@@ -26,6 +27,7 @@ const InputField = <T extends FieldValues>({
   isNumber,
   name,
   errors,
+  disabled,
 }: InputFieldProps<T>) => (
   <Field label={{ children: label, required, inputId }} errors={errors}>
     <input
@@ -34,6 +36,7 @@ const InputField = <T extends FieldValues>({
       type={type}
       {...register(name, { valueAsNumber: isNumber })}
       readOnly={readOnly}
+      disabled={disabled}
     />
   </Field>
 );

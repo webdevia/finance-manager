@@ -5,11 +5,14 @@ import { StoreProvider } from './StoreProvider';
 import { store } from '../store';
 import { AuthProvider } from './AuthProvider';
 import { ApolloProvider } from '@apollo/client';
-import client from 'src/shared/api/client';
+import createGraphqlClient from 'src/shared/api/client';
+import { tokenStorage } from 'src/shared/storage/tokenStorage';
+
+export const graphqlClient = createGraphqlClient(tokenStorage);
 
 export const Providers: React.FC = () => {
   return (
-    <ApolloProvider client={client}>
+    <ApolloProvider client={graphqlClient}>
       <StoreProvider store={store}>
         <ThemeProvider>
           <AuthProvider>

@@ -7,12 +7,12 @@ export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> =
 export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: { input: string; output: string; }
-  String: { input: string; output: string; }
-  Boolean: { input: boolean; output: boolean; }
-  Int: { input: number; output: number; }
-  Float: { input: number; output: number; }
-  Date: { input: any; output: any; }
+  ID: { input: string; output: string };
+  String: { input: string; output: string };
+  Boolean: { input: boolean; output: boolean };
+  Int: { input: number; output: number };
+  Float: { input: number; output: number };
+  Date: { input: any; output: any };
 };
 
 export type AuthResult = {
@@ -60,23 +60,19 @@ export type CategoryMutations = {
   remove: Category;
 };
 
-
 export type CategoryMutationsAddArgs = {
   input: CategoryAddInput;
 };
-
 
 export type CategoryMutationsPatchArgs = {
   id: Scalars['ID']['input'];
   input: CategoryUpdateInput;
 };
 
-
 export type CategoryMutationsPutArgs = {
   id: Scalars['ID']['input'];
   input: CategoryUpdateInput;
 };
-
 
 export type CategoryMutationsRemoveArgs = {
   id: Scalars['ID']['input'];
@@ -88,11 +84,9 @@ export type CategoryQueries = {
   getOne?: Maybe<Category>;
 };
 
-
 export type CategoryQueriesGetManyArgs = {
   input?: InputMaybe<CategoryGetManyInput>;
 };
-
 
 export type CategoryQueriesGetOneArgs = {
   id: Scalars['ID']['input'];
@@ -177,23 +171,19 @@ export type OperationMutations = {
   remove: Operation;
 };
 
-
 export type OperationMutationsAddArgs = {
   input: OperationAddInput;
 };
-
 
 export type OperationMutationsPatchArgs = {
   id: Scalars['ID']['input'];
   input: OperationUpdateInput;
 };
 
-
 export type OperationMutationsPutArgs = {
   id: Scalars['ID']['input'];
   input: OperationUpdateInput;
 };
-
 
 export type OperationMutationsRemoveArgs = {
   id: Scalars['ID']['input'];
@@ -205,11 +195,9 @@ export type OperationQueries = {
   getOne?: Maybe<Operation>;
 };
 
-
 export type OperationQueriesGetManyArgs = {
   input?: InputMaybe<OperationGetManyInput>;
 };
-
 
 export type OperationQueriesGetOneArgs = {
   id: Scalars['ID']['input'];
@@ -217,7 +205,7 @@ export type OperationQueriesGetOneArgs = {
 
 export enum OperationType {
   Cost = 'Cost',
-  Profit = 'Profit'
+  Profit = 'Profit',
 }
 
 export type OperationUpdateInput = {
@@ -271,23 +259,19 @@ export type OrderMutations = {
   remove: Order;
 };
 
-
 export type OrderMutationsAddArgs = {
   input: OrderAddInput;
 };
-
 
 export type OrderMutationsPatchArgs = {
   id: Scalars['ID']['input'];
   input: OrderUpdateInput;
 };
 
-
 export type OrderMutationsPutArgs = {
   id: Scalars['ID']['input'];
   input: OrderUpdateInput;
 };
-
 
 export type OrderMutationsRemoveArgs = {
   id: Scalars['ID']['input'];
@@ -306,11 +290,9 @@ export type OrderQueries = {
   getOne?: Maybe<Order>;
 };
 
-
 export type OrderQueriesGetManyArgs = {
   input?: InputMaybe<OrderGetManyInput>;
 };
-
 
 export type OrderQueriesGetOneArgs = {
   id: Scalars['ID']['input'];
@@ -324,7 +306,7 @@ export enum OrderStatus {
   PendingConfirmation = 'PendingConfirmation',
   Processing = 'Processing',
   ReturnRequested = 'ReturnRequested',
-  WaitingForDelivery = 'WaitingForDelivery'
+  WaitingForDelivery = 'WaitingForDelivery',
 }
 
 export type OrderUpdateInput = {
@@ -395,23 +377,19 @@ export type ProductMutations = {
   remove: Product;
 };
 
-
 export type ProductMutationsAddArgs = {
   input: ProductAddInput;
 };
-
 
 export type ProductMutationsPatchArgs = {
   id: Scalars['ID']['input'];
   input: ProductUpdateInput;
 };
 
-
 export type ProductMutationsPutArgs = {
   id: Scalars['ID']['input'];
   input: ProductUpdateInput;
 };
-
 
 export type ProductMutationsRemoveArgs = {
   id: Scalars['ID']['input'];
@@ -423,11 +401,9 @@ export type ProductQueries = {
   getOne?: Maybe<Product>;
 };
 
-
 export type ProductQueriesGetManyArgs = {
   input?: InputMaybe<ProductGetManyInput>;
 };
-
 
 export type ProductQueriesGetOneArgs = {
   id: Scalars['ID']['input'];
@@ -466,19 +442,16 @@ export type ProfileMutations = {
   update: Profile;
 };
 
-
 export type ProfileMutationsSigninArgs = {
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
 };
-
 
 export type ProfileMutationsSignupArgs = {
   commandId: Scalars['String']['input'];
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
 };
-
 
 export type ProfileMutationsUpdateArgs = {
   input: UpdateProfileInput;
@@ -488,7 +461,6 @@ export type ProfilePasswordMutations = {
   __typename?: 'ProfilePasswordMutations';
   change: ResetPassword;
 };
-
 
 export type ProfilePasswordMutationsChangeArgs = {
   input: ChangePasswordInput;
@@ -545,12 +517,12 @@ export enum SortField {
   Date = 'date',
   Id = 'id',
   Name = 'name',
-  UpdatedAt = 'updatedAt'
+  UpdatedAt = 'updatedAt',
 }
 
 export enum SortType {
   Asc = 'ASC',
-  Desc = 'DESC'
+  Desc = 'DESC',
 }
 
 export type Sorting = {
@@ -589,8 +561,10 @@ export type SigninMutationVariables = Exact<{
   password: Scalars['String']['input'];
 }>;
 
-
-export type SigninMutation = { __typename?: 'Mutation', profile?: { __typename?: 'ProfileMutations', signin: { __typename?: 'AuthResult', token: string } } | null };
+export type SigninMutation = {
+  __typename?: 'Mutation';
+  profile?: { __typename?: 'ProfileMutations'; signin: { __typename?: 'AuthResult'; token: string } } | null;
+};
 
 export type SignupMutationVariables = Exact<{
   email: Scalars['String']['input'];
@@ -598,36 +572,112 @@ export type SignupMutationVariables = Exact<{
   commandId: Scalars['String']['input'];
 }>;
 
+export type SignupMutation = {
+  __typename?: 'Mutation';
+  profile?: { __typename?: 'ProfileMutations'; signup: { __typename?: 'AuthResult'; token: string } } | null;
+};
 
-export type SignupMutation = { __typename?: 'Mutation', profile?: { __typename?: 'ProfileMutations', signup: { __typename?: 'AuthResult', token: string } } | null };
+export type OperationsQueryVariables = Exact<{ [key: string]: never }>;
 
-export type OperationsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type OperationsQuery = { __typename?: 'Query', operations: { __typename?: 'OperationQueries', getMany: { __typename?: 'OperationsResponse', data?: Array<{ __typename?: 'Cost', id: string, name: string, desc?: string | null, date: any, createdAt: any, updatedAt: any, amount: number, type: string, category: { __typename?: 'Category', name: string } } | { __typename?: 'Profit', id: string, name: string, desc?: string | null, date: any, createdAt: any, updatedAt: any, amount: number, type: string, category: { __typename?: 'Category', name: string } } | null> | null } } };
+export type OperationsQuery = {
+  __typename?: 'Query';
+  operations: {
+    __typename?: 'OperationQueries';
+    getMany: {
+      __typename?: 'OperationsResponse';
+      data?: Array<
+        | {
+            __typename?: 'Cost';
+            id: string;
+            name: string;
+            desc?: string | null;
+            date: any;
+            createdAt: any;
+            updatedAt: any;
+            amount: number;
+            type: string;
+            category: { __typename?: 'Category'; name: string };
+          }
+        | {
+            __typename?: 'Profit';
+            id: string;
+            name: string;
+            desc?: string | null;
+            date: any;
+            createdAt: any;
+            updatedAt: any;
+            amount: number;
+            type: string;
+            category: { __typename?: 'Category'; name: string };
+          }
+        | null
+      > | null;
+    };
+  };
+};
 
 export type AddOperationsMutationVariables = Exact<{
   input: OperationAddInput;
 }>;
 
-
-export type AddOperationsMutation = { __typename?: 'Mutation', operations: { __typename?: 'OperationMutations', add: { __typename?: 'Cost', id: string, amount: number, createdAt: any, date: any, desc?: string | null, name: string, type: string, updatedAt: any, category: { __typename?: 'Category', name: string, id: string } } | { __typename?: 'Profit' } } };
+export type AddOperationsMutation = {
+  __typename?: 'Mutation';
+  operations: {
+    __typename?: 'OperationMutations';
+    add:
+      | {
+          __typename?: 'Cost';
+          id: string;
+          amount: number;
+          createdAt: any;
+          date: any;
+          desc?: string | null;
+          name: string;
+          type: string;
+          updatedAt: any;
+          category: { __typename?: 'Category'; name: string; id: string };
+        }
+      | { __typename?: 'Profit' };
+  };
+};
 
 export type ChangeMutationVariables = Exact<{
   input: ChangePasswordInput;
 }>;
 
+export type ChangeMutation = {
+  __typename?: 'Mutation';
+  profile?: {
+    __typename?: 'ProfileMutations';
+    password?: {
+      __typename?: 'ProfilePasswordMutations';
+      change: { __typename?: 'ResetPassword'; success: boolean };
+    } | null;
+  } | null;
+};
 
-export type ChangeMutation = { __typename?: 'Mutation', profile?: { __typename?: 'ProfileMutations', password?: { __typename?: 'ProfilePasswordMutations', change: { __typename?: 'ResetPassword', success: boolean } } | null } | null };
+export type ProfileQueryVariables = Exact<{ [key: string]: never }>;
 
-export type ProfileQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type ProfileQuery = { __typename?: 'Query', profile?: { __typename?: 'Profile', id: string, email: string, name?: string | null, signUpDate: any } | null };
+export type ProfileQuery = {
+  __typename?: 'Query';
+  profile?: { __typename?: 'Profile'; id: string; email: string; name?: string | null; signUpDate: any } | null;
+};
 
 export type UpdateMutationVariables = Exact<{
   input: UpdateProfileInput;
 }>;
 
-
-export type UpdateMutation = { __typename?: 'Mutation', profile?: { __typename?: 'ProfileMutations', update: { __typename?: 'Profile', commandId: string, email: string, id: string, name?: string | null, signUpDate: any } } | null };
+export type UpdateMutation = {
+  __typename?: 'Mutation';
+  profile?: {
+    __typename?: 'ProfileMutations';
+    update: {
+      __typename?: 'Profile';
+      commandId: string;
+      email: string;
+      id: string;
+      name?: string | null;
+      signUpDate: any;
+    };
+  } | null;
+};

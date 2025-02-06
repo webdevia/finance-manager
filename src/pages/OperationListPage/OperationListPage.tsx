@@ -1,7 +1,7 @@
 import React, { CSSProperties, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { OperationList } from 'src/widgets/OperationList/OperationList';
-import { createRandomOperation } from 'src/entities/Operation/Operation';
+import { createRandomOperation } from 'src/entities/operation/Operation';
 import AddOperationButton from 'src/features/AddOperationButton/AddOperationButton';
 import { Outlet, useNavigate } from 'react-router-dom';
 import Button from 'src/shared/ui/Button/Button';
@@ -16,8 +16,6 @@ type ColumnsWidthCSS = CSSProperties & {
 };
 
 const Sidebar = () => {
-
-
   // const handleAddRandomOperation = () => {
   //   const newOperation = createRandomOperation(new Date().toISOString());
   //   dispatch(addOperation(newOperation));
@@ -41,11 +39,10 @@ export const OperationListPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { operations } = useSelector(selectOperations);
 
-    useEffect(() => {
-      console.log("USE EFFECT FETCH");
-      dispatch(fetchOperations());
-    }, []);
-  
+  useEffect(() => {
+    console.log('USE EFFECT FETCH');
+    dispatch(fetchOperations());
+  }, []);
 
   const onEditClick = (id: string) => {
     navigate(`${id}/edit`);
@@ -65,4 +62,3 @@ export const OperationListPage: React.FC = () => {
     </div>
   );
 };
-

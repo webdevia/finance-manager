@@ -12,7 +12,7 @@ type CenterLayoutProps = {
 };
 
 const CenterLayout = ({ center, elementsGap }: CenterLayoutProps) => {
-  const layoutStyle: LayoutCSS = { '--layout-elements-gap': elementsGap };
+  const layoutStyle: LayoutCSS = { '--layout-elements-gap': elementsGap ?? '5px' };
 
   return (
     <div className={s.center} style={layoutStyle}>

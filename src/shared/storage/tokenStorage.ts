@@ -1,7 +1,7 @@
-type TokenListener = (newValue: string) => void;
+import { IStorage, Listener } from './storage.type';
 
-class TokenStorage {
-  private listeners: TokenListener[] = [];
+class TokenStorage implements IStorage {
+  private listeners: Listener[] = [];
   private tokenKey = 'token';
 
   constructor() {
@@ -9,34 +9,28 @@ class TokenStorage {
   }
 
   public get(): string {
-    const a = localStorage.getItem(this.tokenKey) || '';
-    console.log(a);
-    return a;
+    return localStorage.getItem(this.tokenKey) || '';
   }
 
   public set(value: string): void {
     localStorage.setItem(this.tokenKey, value);
-    //this.notifyListeners(value);
   }
 
   public remove(): void {
     localStorage.removeItem(this.tokenKey);
-    console.log('REMOVED TOKEN');
-    // this.notifyListeners('');
   }
 
-  public subscribe(listener: TokenListener): void {
+  public subscribe(listener: Listener): void {
     this.listeners.push(listener);
   }
 
-  public unsubscribe(listener: TokenListener): void {
+  public unsubscribe(listener: Listener): void {
     this.listeners = this.listeners.filter((item) => item !== listener);
   }
 
   public handleStorageEvent(event: StorageEvent): void {
     if (event.storageArea === localStorage && event.key === this.tokenKey) {
-      console.log(event);
-      this.notifyListeners(event.newValue);
+      this.notifyListeners(event.newValue || '');
     }
   }
 

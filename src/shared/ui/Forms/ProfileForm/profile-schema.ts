@@ -7,7 +7,7 @@ export const ChangeProfileSchema = z.object({
   signUpDate: z.string().optional(),
 });
 
-export type ChangeProfileSchemaType = Required<z.infer<typeof ChangeProfileSchema>>;
+export type ChangeProfileSchemaType = z.infer<typeof ChangeProfileSchema>;
 
 const passwordZodType = z.string().nonempty('Required field').min(6, 'Password is too short');
 

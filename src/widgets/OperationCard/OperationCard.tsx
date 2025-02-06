@@ -1,6 +1,6 @@
 import React from 'react';
 import style from './OperationCard.module.scss';
-import { AbstractOperation } from 'src/entities/Operation/Operation';
+import { AbstractOperation } from 'src/entities/operation/Operation';
 
 export interface OperationCardProps extends AbstractOperation {
   onEditClick?: (id: string) => void;
