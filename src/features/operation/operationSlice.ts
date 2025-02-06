@@ -3,7 +3,7 @@ import client from 'src/shared/api/client';
 import { OPERATION_LIST_QUERY, ADD_OPERATION_MUTATION } from './api/operation';
 import { ApolloError } from '@apollo/client';
 
-import { BankOperation, createRandomOperation } from 'src/entities/operation/Operation';
+import { BankOperation, createRandomOperation } from 'src/entities/Operation/Operation';
 
 export type OperationInputFields = {
   input: {

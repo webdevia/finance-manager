@@ -1,6 +1,6 @@
 import type { Meta } from '@storybook/react';
 import { OperationList } from '../OperationList';
-import { createRandomOperation } from '../../../entities/operation/Operation';
+import { createRandomOperation } from '../../../entities/Operation/Operation';
 
 const meta: Meta<typeof OperationList> = {
   title: 'Example/Banking/OperationList',

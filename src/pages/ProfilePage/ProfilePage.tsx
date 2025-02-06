@@ -7,10 +7,16 @@ import ProfileForm, { OnSubmit, OnSubmitPassword } from 'src/shared/ui/Forms/Pro
 import { normalizeDateString } from 'src/shared/datetime-utils';
 import { updatePassword } from 'src/features/profile/passwordSlice';
 
+import { useQuery, useMutation } from '@apollo/client';
+import { PROFILE_MUTATION, PROFILE_QUERY } from 'src/features/profile/api/profile';
+import { Profile } from 'src/shared/api/profile/profile';
+import { ChangeProfileSchemaType } from 'src/shared/ui/Forms/ProfileForm/profile-schema';
+
 export const ProfilePage = () => {
   const [successInfo, setSuccessInfo] = useState('');
   const [passwordSuccessInfo, setPasswordSuccessInfo] = useState('');
-  const { profile } = useSelector(selectProfile);
+  const { data, loading, error } = useQuery<{ profile: Profile }>(PROFILE_QUERY);
+  // const { profile } = useSelector(selectProfile);
   const profileStatus = useSelector((state: RootState) => state.profile.status);
   const profileError = useSelector((state: RootState) => state.profile.error);
   const passwordStatus = useSelector((state: RootState) => state.password.status);
@@ -30,7 +36,7 @@ export const ProfilePage = () => {
   }, [profileStatus]);
 
   useEffect(() => {
-    setPasswordSuccessInfo(passwordStatus === 'update_succeeded' ? 'Password updated successfully' : '');  
+    setPasswordSuccessInfo(passwordStatus === 'update_succeeded' ? 'Password updated successfully' : '');
   }, [passwordSuccessInfo]);
 
   const onChangeProfile: OnSubmit = (data) => {
@@ -39,12 +45,14 @@ export const ProfilePage = () => {
 
   const onChangePassword: OnSubmitPassword = (data) => {
     dispatch(updatePassword({ input: { password: data.password, newPassword: data.newPassword } }));
-  }
+  };
 
   return (
     <ProfileForm
       changeProfileForm={{
-        initialData: profile ? { ...profile, signUpDate: normalizeDateString(profile.signUpDate) } : null,
+        initialData: data?.profile
+          ? ({ ...data.profile, signUpDate: normalizeDateString(data.profile.signUpDate) } as ChangeProfileSchemaType)
+          : null,
         successInfo,
         onSubmit: onChangeProfile,
         changeProfileButtonText: profileStatus === 'update_loading' ? 'Updating...' : 'Save',
