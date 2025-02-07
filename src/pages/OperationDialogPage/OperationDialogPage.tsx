@@ -1,102 +1,97 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { BankOperation, getRandomId } from 'src/entities/operation/Operation';
-// import { addOperation, updateOperation } from 'src/features/operation/operationSlice';
+import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom';
 import OperationForm, { OnSubmit } from 'src/shared/ui/Forms/OperationForm/OperationForm';
-import { OperationSchemaType } from 'src/shared/ui/Forms/OperationForm/operation-schema';
-import { normalizeDateString } from 'src/shared/datetime-utils';
-import { selectOperations } from 'src/features/operation/selectors';
 import Modal from 'src/shared/ui/Modal/Modal';
-import { AppDispatch, RootState } from 'src/app/store';
-
-import { addOperation, OperationInputFields } from 'src/features/operation/operationSlice';
+import { useAddOperation } from 'src/features/operation/hooks/useAddOperation';
+import { OperationAddInput, OperationType, OperationUpdateInput } from 'src/entities/operation/operation.types';
+import { useGetOperation } from 'src/features/operation/hooks/useGetOperation';
+import { OperationSchemaType } from 'src/shared/ui/Forms/OperationForm/operation-schema';
+import { useUpdateOperation } from 'src/features/operation/hooks/useUpdateOperation';
 
 const OperationDialogPage = () => {
   const [isOperationDialogOpen, setIsOperationDialogOpen] = useState(false);
-  // const [initialData, setInitialData] = useState<OperationSchemaType>(null);
   const [onSubmit, setOnSubmit] = useState<OnSubmit>(() => {});
+  const [initialData, setInitialData] = useState<OperationSchemaType | null>(null);
 
-  const { operations } = useSelector(selectOperations);
-  const operationsStatus = useSelector((state: RootState) => state.operations.status);
-  const dispatch = useDispatch<AppDispatch>();
-
+  const { addOperation, loading } = useAddOperation();
   const navigate = useNavigate();
   const navigateToOpeartions = useCallback(() => navigate('/operations'), [navigate]);
-
   const { id } = useParams();
-  const location = useLocation();
 
-  // useEffect(() => {
-  //   setIsOperationDialogOpen(operationsStatus !== 'add_succeeded');
-  // }, [operationsStatus]);
+  if (!id) {
+    return <Navigate to={'/operations/add'} />;
+  }
+
+  const { getOperation } = useGetOperation(id);
+  const { updateOperation } = useUpdateOperation(id);
+  const location = useLocation();
 
   // TODO: set real data
   const handleAddOperation: OnSubmit = useCallback(
     (data) => {
-      const newOperation: OperationInputFields = {
-        input: {
-          amount: data.amount,
-          categoryId: '67a28da3959ec5e015c2636a',
-          date: data.createdAt,
-          name: data.name,
-          type: data.type,
-        },
+      const newOperation: OperationAddInput = {
+        amount: data.amount,
+        categoryId: '67a28da3959ec5e015c2636a',
+        date: data.date,
+        name: data.name,
+        type: data.type as OperationType,
       };
-      dispatch(addOperation(newOperation));
-      navigateToOpeartions();
+      addOperation(newOperation).then(() => navigateToOpeartions());
     },
-    [dispatch, navigateToOpeartions]
+    [navigateToOpeartions]
   );
 
-  // const handleUpdateOperation = useCallback(
-  //   (id: string): OnSubmit =>
-  //     (data) => {
-  //       const updatedOperation: BankOperation = {
-  //         id,
-  //         amount: data.amount,
-  //         category: { id: getRandomId(), name: data.name },
-  //         date: data.createdAt,
-  //         name: data.name,
-  //         description: data.desc,
-  //         type: data.type,
-  //       };
-  //       dispatch(updateOperation(updatedOperation));
-  //       navigateToOpeartions();
-  //     },
-  //   [dispatch, navigateToOpeartions]
-  // );
+  const handleUpdateOperation = useCallback<OnSubmit>(
+    (data) => {
+      const updatedOperation: OperationUpdateInput = {
+        amount: data.amount,
+        categoryId: '67a28da3959ec5e015c2636a',
+        date: data.date,
+        name: data.name,
+        desc: data.desc,
+        type: data.type as OperationType,
+      };
+      updateOperation(updatedOperation).then(() => navigateToOpeartions());
+    },
+    [navigateToOpeartions]
+  );
 
   const isAddRoute = location.pathname.endsWith('/operations/add');
 
   useEffect(() => {
-    if (isAddRoute || id) {
-      if (id && id !== 'add') {
-        // const operationToEdit = operations.find((op) => op.id === id);
-        // const initialFormData: OperationSchemaType = operationToEdit
-        //   ? {
-        //       amount: operationToEdit.amount,
-        //       category: operationToEdit.category.name,
-        //       createdAt: normalizeDateString(operationToEdit.date),
-        //       name: operationToEdit.name,
-        //       desc: operationToEdit.description,
-        //       type: operationToEdit.type,
-        //     }
-        //   : null;
-        // setInitialData(initialFormData);
-        // setOnSubmit(() => handleUpdateOperation(id));
+    (async () => {
+      if (isAddRoute || id) {
+        if (id && id !== 'add') {
+          // TODO: handle error
+          const operationToEdit = await getOperation();
+          if (operationToEdit) {
+            const initialFormData: OperationSchemaType = {
+              amount: operationToEdit.amount,
+              category: operationToEdit.category.name,
+              date: operationToEdit.date,
+              name: operationToEdit.name,
+              desc: operationToEdit.desc ?? '',
+              type: operationToEdit.type as OperationType,
+            };
+            setInitialData(initialFormData);
+          } else {
+            throw new Error(`Cannot find operation with ID ${id}`);
+            navigate('/operations/add');
+          }
+          setOnSubmit(() => handleUpdateOperation);
+        } else {
+          setOnSubmit(() => handleAddOperation);
+        }
+        setIsOperationDialogOpen(true);
       } else {
-        setOnSubmit(() => handleAddOperation);
+        setIsOperationDialogOpen(false);
       }
-      setIsOperationDialogOpen(true);
-    } else {
-      setIsOperationDialogOpen(false);
-    }
-  }, [id, isAddRoute, operations, handleAddOperation]);
+    })();
+  }, [id, isAddRoute, handleAddOperation]);
 
   return (
     <Modal visible={isOperationDialogOpen} onClose={navigateToOpeartions}>
-      <OperationForm onSubmit={onSubmit} />
+      <OperationForm onSubmit={onSubmit} initialData={initialData} />
     </Modal>
   );
 };

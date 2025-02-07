@@ -45,7 +45,7 @@ export const UpdateProfile: React.FC = () => {
 
   useEffect(() => {
     getProfile().then((data) => {
-      data && reset(data);
+      data && reset(data as ProfileSchemaType);
     });
   }, []);
 

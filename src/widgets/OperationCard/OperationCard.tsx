@@ -1,10 +1,10 @@
 import React from 'react';
 import style from './OperationCard.module.scss';
-import { AbstractOperation } from 'src/entities/operation/Operation';
+import { Operation } from 'src/entities/operation/operation.types';
 
-export interface OperationCardProps extends AbstractOperation {
+export type OperationCardProps = Operation & {
   onEditClick?: (id: string) => void;
-}
+};
 
 export const OperationCard: React.FC<OperationCardProps> = ({
   id,

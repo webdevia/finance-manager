@@ -1,17 +1,4 @@
-export {
-  Profile as ProfileDto,
-  UpdateProfileInput as UpdateProfileInputDto,
-  UpdateMutation as UpdateMutationDto,
-  ProfileMutationsUpdateArgs as ProfileMutationsUpdateArgsDto,
-} from 'src/shared/api/types/generated.dto.types';
-
-export type Profile = {
-  email: string;
-  id: string;
-  name: string;
-  signUpDate: string;
-};
-
-export type UpdateProfileInput = {
-  name: string;
-};
+import type { Profile } from 'src/shared/api/types/generated.dto.types';
+export { UpdateProfileInput } from 'src/shared/api/types/generated.dto.types';
+export type { Profile };
+export type ProfileQuery = { __typename?: 'Query'; profile?: Profile | null };

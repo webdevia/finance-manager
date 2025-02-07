@@ -8,6 +8,7 @@ import SelectField, { SelectOptionProps } from 'src/shared/ui/Forms/FormFields/S
 import Button from 'src/shared/ui/Button/Button';
 import ActionButtons from 'src/shared/ui/ActionButtons/ActionButtons';
 import Title from 'src/shared/ui/Title/Title';
+import { normalizeDateString } from 'src/shared/datetime-utils';
 
 import { OperationSchema, OperationSchemaType } from './operation-schema';
 
@@ -25,7 +26,7 @@ export type OnSubmit = (data: OperationSchemaType) => void;
 
 type OperationFromProps = {
   onSubmit: OnSubmit;
-  initialData?: OperationSchemaType;
+  initialData?: OperationSchemaType | null;
 };
 
 const OperationForm = ({ onSubmit, initialData }: OperationFromProps) => {
@@ -37,7 +38,7 @@ const OperationForm = ({ onSubmit, initialData }: OperationFromProps) => {
   } = useForm<OperationSchemaType>({
     shouldUnregister: true,
     resolver: zodResolver(OperationSchema),
-    defaultValues: initialData,
+    defaultValues: { ...initialData, date: normalizeDateString(initialData?.date ?? '') },
   });
 
   const withReset = (onSubmit: OnSubmit) => (data: OperationSchemaType) => {
@@ -97,13 +98,13 @@ const OperationForm = ({ onSubmit, initialData }: OperationFromProps) => {
               required={isRequired('desc')}
             />
             <InputField
-              label="Created At"
-              inputId="createdAt"
-              name="createdAt"
+              label="Date"
+              inputId="date"
+              name="date"
               register={register}
               type="date"
-              errors={errors.createdAt}
-              required={isRequired('createdAt')}
+              errors={errors.date}
+              required={isRequired('date')}
             />
             <InputField
               label="Amount"

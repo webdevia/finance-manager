@@ -4,11 +4,7 @@ export const UPDATE_PROFILE = gql`
   mutation Update($input: UpdateProfileInput!) {
     profile {
       update(input: $input) {
-        commandId
-        email
         id
-        name
-        signUpDate
       }
     }
   }

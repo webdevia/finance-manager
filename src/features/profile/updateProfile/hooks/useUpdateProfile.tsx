@@ -1,8 +1,7 @@
 import { ApolloError, useMutation } from '@apollo/client';
-import { UPDATE_PROFILE } from 'src/entities/profile/profile.mutations';
-import { GET_PROFILE } from 'src/entities/profile/profile.queries';
+import { UPDATE_PROFILE } from 'src/entities/profile/api/profile.mutations';
+import { GET_PROFILE } from 'src/entities/profile/api/profile.queries';
 import { UpdateProfileInput } from 'src/entities/profile/profile.types';
-import { transformToProfileMutationsUpdateArgsDto } from 'src/entities/profile/profile.lib';
 import { ErrorFieldsMap, handleApolloError, handleUnknownError } from 'src/shared/api/errors/errors';
 
 export type ProfileErrorableField = 'name';
@@ -17,7 +16,7 @@ export const useUpdateProfile = () => {
 
   const handleUpdateProfile = async (updateProfileInputArgs: UpdateProfileInput) => {
     try {
-      await updateProfile({ variables: transformToProfileMutationsUpdateArgsDto(updateProfileInputArgs) });
+      await updateProfile({ variables: { input: updateProfileInputArgs } });
     } catch (err) {
       if (err instanceof ApolloError) {
         return Promise.reject(handleApolloError(err, errorFieldsMap));
