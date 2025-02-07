@@ -1,7 +1,7 @@
-schema: http://cea3c11a3f62.vps.myjino.ru/graphql 
+schema: http://cea3c11a3f62.vps.myjino.ru/graphql
 documents: './src/**/api/*.ts'
 generates:
-  ./src/shared/generated/types.ts:
+  ./src/shared/api/types/generated.dto.types.ts:
     plugins:
       - typescript
       - typescript-operations

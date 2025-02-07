@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { signOut } from '../auth/authSlice';
-import { clearProfile } from '../profile/profileSlice';
+// import { clearProfile } from '../profile/profileSlice';
 import { clearOperations } from '../operation/operationSlice';
 
 interface SignOutButtonProps {
@@ -13,7 +13,7 @@ export const SignOutButton: React.FC<SignOutButtonProps> = ({ className }) => {
 
   const handleSignOut = () => {
     dispatch(signOut());
-    dispatch(clearProfile());
+    // dispatch(clearProfile());
     dispatch(clearOperations());
   };
   return (

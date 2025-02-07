@@ -27,7 +27,7 @@ export type ServerError =
 export type ErrorFieldsMap<T> = Partial<Record<ServerError, T[]>>;
 
 export const handleApolloError = <T>(serverError: ApolloError, errorFieldsMap: ErrorFieldsMap<T>): HandledError<T> => {
-  const message = serverError.cause?.message || '';
+  const message = serverError.cause?.message ?? '';
   const extensions = serverError.cause?.extensions;
   const serverErrorExtension = extensions as ServerErrorExtension;
   const fields = errorFieldsMap[serverErrorExtension.code as ServerError];

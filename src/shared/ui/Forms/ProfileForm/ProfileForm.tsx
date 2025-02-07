@@ -178,9 +178,7 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
     passwordError && handleError(passwordError);
   }, [passwordError]);
 
-  const onChangePassword = (data: ChangePasswordSchemaType) => {
-    //console.log(data);
-  };
+  const onChangePassword = (data: ChangePasswordSchemaType) => {};
 
   const baseSchema = (ChangePasswordSchema as ZodEffects<ZodObject<any>>)._def.schema;
   const isRequired = useIsFieldRequired(baseSchema);

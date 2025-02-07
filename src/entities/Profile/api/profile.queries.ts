@@ -4,9 +4,10 @@ export const GET_PROFILE = gql`
   query Profile {
     profile {
       id
-      email
       name
+      email
       signUpDate
+      commandId
     }
   }
 `;

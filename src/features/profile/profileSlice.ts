@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { graphqlClient as client } from 'src/app/providers';
-import { PROFILE_MUTATION, PROFILE_QUERY } from './api/profile';
+import { UPDATE_PROFILE } from 'src/entities/profile/api/profile.mutations';
+import { GET_PROFILE } from 'src/entities/profile/api/profile.queries';
 import { ApolloError } from '@apollo/client';
 
 export type ProfileInputFields = { input: { name: string } };
@@ -35,8 +36,7 @@ export const handleUnknownError = (serverError: string): ProfileError => {
 };
 
 export const fetchProfile = createAsyncThunk('profile/fetchProfile', async () => {
-  console.log('LOADING PROFILE');
-  const { data } = await client.query({ query: PROFILE_QUERY });
+  const { data } = await client.query({ query: GET_PROFILE });
   return data.profile;
 });
 
@@ -45,9 +45,9 @@ export const updateProfile = createAsyncThunk(
   async ({ input }: ProfileInputFields, { rejectWithValue }) => {
     try {
       const { data } = await client.mutate({
-        mutation: PROFILE_MUTATION,
+        mutation: UPDATE_PROFILE,
         variables: { input },
-        refetchQueries: [{ query: PROFILE_QUERY }],
+        refetchQueries: [{ query: GET_PROFILE }],
       });
       return data.profile.update;
     } catch (err) {

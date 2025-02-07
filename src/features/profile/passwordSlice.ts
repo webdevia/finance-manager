@@ -45,7 +45,6 @@ export const updatePassword = createAsyncThunk(
         mutation: PASSWORD_MUTATION,
         variables: { input },
       });
-      console.log(data);
       return data.profile.update;
     } catch (err) {
       if (err instanceof ApolloError) {

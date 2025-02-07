@@ -2,7 +2,7 @@ import React, { ReactNode, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../store';
 import { signOut } from 'src/features/auth/authSlice';
-import { fetchProfile } from 'src/features/profile/profileSlice';
+import { clearProfile, fetchProfile } from 'src/features/profile/profileSlice';
 import { initializeApp } from 'src/features/appSlice';
 import { tokenStorage } from 'src/shared/storage/tokenStorage';
 
@@ -13,7 +13,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const logout = useCallback(() => {
     dispatch(signOut());
-    // dispatch(clearProfile());
+    dispatch(clearProfile());
   }, [dispatch]);
 
   const getProfile = useCallback(() => dispatch(fetchProfile), [dispatch]);
@@ -59,7 +59,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const handleStorageChange = (newValue: string) => {
       if (newValue) {
         getProfile();
-        console.log('GET PROFILE');
       } else {
         logout();
       }

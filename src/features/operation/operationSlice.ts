@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { graphqlClient as client } from 'src/app/providers';
-import { OPERATION_LIST_QUERY, ADD_OPERATION_MUTATION } from './api/operation';
+// import { ADD_OPERATION } from 'src/entities/operation/api/operation.mutations';
 import { ApolloError } from '@apollo/client';
 
 import { BankOperation, createRandomOperation } from 'src/entities/operation/Operation';
@@ -45,27 +45,27 @@ export const handleUnknownError = (serverError: string): OperationError => {
 };
 
 export const fetchOperations = createAsyncThunk('operations/fetchOperations', async () => {
-  const { data } = await client.query({ query: OPERATION_LIST_QUERY });
-  console.log('MAKE REQUEST', data.operations.getMany.data);
-  return data.operations.getMany.data;
+  // const { data } = await client.query({ query: OPERATION_LIST_QUERY });
+  // console.log('MAKE REQUEST', data.operations.getMany.data);
+  // return data.operations.getMany.data;
 });
 
 export const addOperation = createAsyncThunk(
   'operations/addOperation',
   async ({ input }: OperationInputFields, { rejectWithValue }) => {
-    try {
-      const { data } = await client.mutate({
-        mutation: ADD_OPERATION_MUTATION,
-        variables: { input },
-        refetchQueries: [{ query: OPERATION_LIST_QUERY }],
-      });
-      return data.operations.add;
-    } catch (err) {
-      if (err instanceof ApolloError) {
-        return rejectWithValue(handleOperationError(err));
-      }
-      return rejectWithValue(handleUnknownError('An unknown error occurred'));
-    }
+    //   try {
+    //     const { data } = await client.mutate({
+    //       mutation: ADD_OPERATION_MUTATION,
+    //       variables: { input },
+    //       refetchQueries: [{ query: OPERATION_LIST_QUERY }],
+    //     });
+    //     return data.operations.add;
+    //   } catch (err) {
+    //     if (err instanceof ApolloError) {
+    //       return rejectWithValue(handleOperationError(err));
+    //     }
+    //     return rejectWithValue(handleUnknownError('An unknown error occurred'));
+    //   }
   }
 );
 
@@ -92,21 +92,6 @@ const operationsSlice = createSlice({
     clearOperations(state) {
       state.operations = [];
     },
-    // addOperation: (state, action: PayloadAction<BankOperation>) => {
-    //   state.operations.push(action.payload);
-    // },
-    // updateOperation: (state, action: PayloadAction<BankOperation>) => {
-    //   const index = state.operations.findIndex((op) => op.id === action.payload.id);
-    //   if (index !== -1) {
-    //     state.operations[index] = action.payload;
-    //   }
-    // },
-    // deleteOperation: (state, action: PayloadAction<string>) => {
-    //   state.operations = state.operations.filter((op) => op.id !== action.payload);
-    // },
-    // setOperations: (state, action: PayloadAction<BankOperation[]>) => {
-    //   state.operations = action.payload;
-    // },
   },
   extraReducers: (builder) => {
     builder
@@ -117,7 +102,7 @@ const operationsSlice = createSlice({
       .addCase(fetchOperations.fulfilled, (state, action) => {
         console.log('fetch_succeeded');
         state.status = 'fetch_succeeded';
-        state.operations = action.payload;
+        // state.operations = action.payload;
         console.dir(action.payload);
       })
       .addCase(fetchOperations.rejected, (state, action) => {
@@ -132,7 +117,7 @@ const operationsSlice = createSlice({
       .addCase(addOperation.fulfilled, (state, action) => {
         console.log('add_succeeded');
         state.status = 'add_succeeded';
-        state.operations = [...state.operations, action.payload];
+        // state.operations = [...state.operations, action.payload];
         console.dir(state.operations);
       })
       .addCase(addOperation.rejected, (state, action) => {
