@@ -1,8 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { graphqlClient as client } from 'src/app/providers';
-import { SIGNIN_MUTATION, SIGNUP_MUTATION } from './api/auth';
+import { SIGNIN_MUTATION, SIGNUP_MUTATION } from './api/auth.mutations';
 import { ApolloError } from '@apollo/client';
 import { tokenStorage } from 'src/shared/storage/tokenStorage';
+import { set } from 'react-hook-form';
 
 export type AuthUser = { email: string; password: string }; // TODO: rename to AuthUserInputFields
 
@@ -100,6 +101,10 @@ const authSlice = createSlice({
     resetError(state) {
       state.error = null;
     },
+    setToken(state, action) {
+      tokenStorage.set(action.payload);
+      state.token = action.payload;
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -132,5 +137,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { signOut, resetError } = authSlice.actions;
+export const { signOut, resetError, setToken } = authSlice.actions;
 export default authSlice.reducer;

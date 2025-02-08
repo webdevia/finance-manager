@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useIsFieldRequired } from 'src/shared/zod';
@@ -12,16 +12,19 @@ import { SignInSchema, SignInSchemaType } from './signin-schema';
 
 import style from './signInForm.module.scss';
 import { AuthUserError } from 'src/features/auth/authSlice';
+import { SignInErrorableField, useSignIn } from 'src/features/auth/hooks/useSignIn';
+import { HandledError } from 'src/shared/api/errors/errors';
 
 export type OnSubmit = SubmitHandler<SignInSchemaType>;
 
 type SignInFormProps = {
-  onSubmit: OnSubmit;
-  signInButtonText: string;
-  authError: AuthUserError | null;
-};
+  onSignIn: (token: string) => void;
+}
 
-const SignInForm = ({ onSubmit, signInButtonText, authError }: SignInFormProps) => {
+const SignInForm: React.FC<SignInFormProps> = ({ onSignIn }) => {
+  const { handleSignIn, loading } = useSignIn();
+  const isRequired = useIsFieldRequired(SignInSchema);
+
   const {
     reset,
     register,
@@ -44,25 +47,19 @@ const SignInForm = ({ onSubmit, signInButtonText, authError }: SignInFormProps) 
     });
   };
 
-  useEffect(() => {
-    authError ? handleError(authError) : reset();
-  }, [authError]);
-
   const withResetAndSetError = (onSubmit: OnSubmit) => (data: SignInSchemaType) => {
     onSubmit(data);
   };
 
-  const isRequired = useIsFieldRequired(SignInSchema);
-
-  type SignInButtonProps = {
-    text: string;
+  const onSubmit: SubmitHandler<SignInSchemaType> = async (data) => {
+    try {
+      const token = await handleSignIn({ email: data.email, password: data.password });
+      token && onSignIn(token);
+    } catch (err) {
+      const handledError = err as HandledError<SignInErrorableField>;
+      handleError(handledError);
+    }
   };
-
-  const SignInButton = ({ text }: SignInButtonProps) => (
-    <Button type="submit" stretch>
-      {text}
-    </Button>
-  );
 
   return (
     <div className={style.container}>
@@ -82,6 +79,7 @@ const SignInForm = ({ onSubmit, signInButtonText, authError }: SignInFormProps) 
                 type="email"
                 errors={errors.email}
                 required={isRequired('email')}
+                disabled={loading}
               />
               <InputField
                 label="Password"
@@ -91,13 +89,22 @@ const SignInForm = ({ onSubmit, signInButtonText, authError }: SignInFormProps) 
                 type="password"
                 errors={errors.password}
                 required={isRequired('password')}
+                disabled={loading}
               />
               {errors.root && <ErrorLabel message={errors.root.message || ''} />}
             </>
           }
           buttons={
             <ActionButtons
-              buttons={[{ button: <SignInButton text={signInButtonText || 'Sign in'} key="loginButton" /> }]}
+              buttons={[
+                {
+                  button: (
+                    <Button key={'signInButton'} type="submit" stretch disabled={loading}>
+                      {loading ? 'Signing in...' : 'Sign In'}
+                    </Button>
+                  ),
+                },
+              ]}
             />
           }
         />
