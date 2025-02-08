@@ -1,7 +1,6 @@
 import { ApolloError, useMutation } from '@apollo/client';
-import { UPDATE_OPERATION } from 'src/entities/operation/api/operation.mutations';
+import { REMOVE_OPERATION } from 'src/entities/operation/api/operation.mutations';
 import { GET_OPERATION_LIST } from 'src/entities/operation/api/operation.queries';
-import { OperationUpdateInput } from 'src/entities/operation/operation.types';
 import { ErrorFieldsMap, handleApolloError, handleUnknownError } from 'src/shared/api/errors/errors';
 
 export type OperationErrorableField = 'name';
@@ -9,14 +8,14 @@ const errorFieldsMap: ErrorFieldsMap<OperationErrorableField> = {
   VALIDATION: ['name'], // TODO: set correct fields
 };
 
-export const useUpdateOperation = (id: string) => {
-  const [updateOperation, { loading, error }] = useMutation(UPDATE_OPERATION, {
+export const useDeleteOperation = () => {
+  const [deleteOperation, { loading, error }] = useMutation(REMOVE_OPERATION, {
     refetchQueries: [{ query: GET_OPERATION_LIST }],
   });
 
-  const handleUpdateOperation = async (updateOperationInputArgs: OperationUpdateInput): Promise<void> => {
+  const handleDeleteOperation = async (id: string): Promise<void> => {
     try {
-      await updateOperation({ variables: { patchId: id, input: updateOperationInputArgs } });
+      await deleteOperation({ variables: { removeId: id } });
     } catch (err) {
       if (err instanceof ApolloError) {
         return Promise.reject(handleApolloError(err, errorFieldsMap));
@@ -25,5 +24,5 @@ export const useUpdateOperation = (id: string) => {
     }
   };
 
-  return { updateOperation: handleUpdateOperation, loading, error };
+  return { deleteOperation: handleDeleteOperation, loading, error };
 };

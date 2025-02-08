@@ -15,7 +15,6 @@ export const getNavLinkStyle = ({ isActive }: { isActive: boolean }) => {
 export const Navigation = () => {
   const token = useSelector((state: RootState) => state.auth.token);
   const isAuthenticated = !!token;
-  console.log('NAVIGATION', token);
 
   return (
     <>

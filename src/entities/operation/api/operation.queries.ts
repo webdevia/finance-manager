@@ -48,9 +48,14 @@ export const GET_OPERATION = gql`
 `;
 
 export const GET_OPERATION_LIST = gql`
-  query Operations {
+  query Operations($input: OperationGetManyInput) {
     operations {
-      getMany {
+      getMany(input: $input) {
+        pagination {
+          pageNumber
+          pageSize
+          total
+        }
         data {
           ... on Profit {
             id

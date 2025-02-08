@@ -1,9 +1,11 @@
 import React from 'react';
 import style from './OperationCard.module.scss';
+import cn from 'clsx';
 import { Operation } from 'src/entities/operation/operation.types';
 
 export type OperationCardProps = Operation & {
   onEditClick?: (id: string) => void;
+  onDeleteClick?: (id: string) => void;
 };
 
 export const OperationCard: React.FC<OperationCardProps> = ({
@@ -13,10 +15,12 @@ export const OperationCard: React.FC<OperationCardProps> = ({
   name,
   desc,
   date,
+  type,
   onEditClick,
+  onDeleteClick,
 }) => {
   return (
-    <div className={style['card']}>
+    <div className={cn(style['card'], { [style.cost]: type === 'Cost' }, { [style.profit]: type === 'Profit' })}>
       <div className={style['card-header']}>
         <span className={style['category']}>{category.name}</span>
         <span className={style['money-value']}>{amount}</span>
@@ -30,6 +34,11 @@ export const OperationCard: React.FC<OperationCardProps> = ({
         {onEditClick && (
           <button className={style['edit-button']} onClick={() => onEditClick(id)}>
             Edit
+          </button>
+        )}
+        {onDeleteClick && (
+          <button className={style['edit-button']} onClick={() => onDeleteClick(id)}>
+            Delete
           </button>
         )}
       </div>

@@ -1,0 +1,18 @@
+export const categories = [
+  'Account Management',
+  'Transactions',
+  'Loan Services',
+  'Credit Card Services',
+  'Investment Services',
+  'Online and Mobile Banking',
+  'Customer Support',
+  'Foreign Exchange Services',
+  'Other Services',
+  'Security Services',
+  'Digital Banking',
+  'Insurance Services',
+  'Financial Planning',
+  'Mortgage Services',
+  'Business Banking Services',
+  'ATM Services',
+];
