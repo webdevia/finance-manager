@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useIsFieldRequired } from 'src/shared/zod';
@@ -11,17 +11,20 @@ import { ErrorLabel } from 'src/shared/ui/ErrorLabel/ErrorLabel';
 import { SignUpSchema, SignUpSchemaType } from './signup-schema';
 import { AuthUserError } from 'src/features/auth/authSlice';
 import style from './signUpForm.module.scss';
+import { SignUpErrorableField, useSignUp } from 'src/features/auth/signUp/hooks/useSignUp';
+import { HandledError } from 'src/shared/api/errors/errors';
+import { COMMAND_ID } from 'src/shared/consts';
 
 export type OnSubmit = SubmitHandler<SignUpSchemaType>;
 
 type SignUpFormProps = {
-  onSubmit: OnSubmit;
-  formTitle?: string;
-  signUpButtonText?: string;
-  authError: AuthUserError | null;
+  onSignUp: (token: string) => void;
 };
 
-export const SignUpForm = ({ onSubmit, signUpButtonText, formTitle, authError }: SignUpFormProps) => {
+export const SignUpForm: React.FC<SignUpFormProps> = ({ onSignUp }: SignUpFormProps) => {
+  const { handleSignUp, loading } = useSignUp();
+  const isRequired = useIsFieldRequired(SignUpSchema);
+
   const {
     reset,
     register,
@@ -33,42 +36,36 @@ export const SignUpForm = ({ onSubmit, signUpButtonText, formTitle, authError }:
     resolver: zodResolver(SignUpSchema),
   });
 
-  const handleError = (signInError: AuthUserError) => {
-    const { fields } = signInError;
+  const handleError = (signUpError: AuthUserError) => {
+    const { fields } = signUpError;
 
     fields.length > 1 && fields.forEach((field) => setError(field, { type: 'manual', message: '' }));
 
     setError(fields.length === 1 ? fields[0] : 'root', {
       type: 'manual',
-      message: signInError.message,
+      message: signUpError.message,
     });
   };
-
-  useEffect(() => {
-    authError ? handleError(authError) : reset();
-  }, [authError, handleError, reset]);
 
   const withResetAndSetError = (onSubmit: OnSubmit) => (data: SignUpSchemaType) => {
     onSubmit(data);
   };
 
-  const isRequired = useIsFieldRequired(SignUpSchema);
-
-  type SignUpButtonProps = {
-    text: string;
+  const onSubmit: SubmitHandler<SignUpSchemaType> = async (data) => {
+    try {
+      const token = await handleSignUp({ email: data.email, password: data.password, commandId: COMMAND_ID });
+      token && onSignUp(token);
+    } catch (err) {
+      const handledError = err as HandledError<SignUpErrorableField>;
+      handleError(handledError);
+    }
   };
-
-  const SignUpButton = ({ text }: SignUpButtonProps) => (
-    <Button type="submit" stretch>
-      {text}
-    </Button>
-  );
 
   return (
     <div className={style.container}>
       <div className={style['sign-up-form']}>
         <span className={style.title}>
-          <Title>{formTitle || 'Sign Up'}</Title>
+          <Title>Sign Up</Title>
         </span>
         <Form
           onSubmit={handleSubmit(withResetAndSetError(onSubmit))}
@@ -97,7 +94,15 @@ export const SignUpForm = ({ onSubmit, signUpButtonText, formTitle, authError }:
           }
           buttons={
             <ActionButtons
-              buttons={[{ button: <SignUpButton text={signUpButtonText || 'Sign up'} key="signUpButton" /> }]}
+              buttons={[
+                {
+                  button: (
+                    <Button key={'signUpButton'} type="submit" stretch disabled={loading}>
+                      {loading ? 'Signing up...' : 'Sign Up'}
+                    </Button>
+                  ),
+                },
+              ]}
             />
           }
         />
