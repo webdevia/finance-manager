@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { SignOutButton } from 'src/features/SignOutButton/SignOutButton';
+import { SignOutButton } from 'src/features/auth/signOut/ui/SignOutButton';
 import { useSelector } from 'react-redux';
 import { RootState } from 'src/app/store';
 

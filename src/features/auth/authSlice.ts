@@ -1,10 +1,12 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { graphqlClient as client } from 'src/app/providers';
-import { SIGNIN_MUTATION, SIGNUP_MUTATION } from './api/auth.mutations';
+import { SIGNIN_MUTATION } from './signIn/api/signIn.mutations';
+import { SIGNUP_MUTATION } from './signUp/api/signUp.mutations';
 import { ApolloError } from '@apollo/client';
 import { tokenStorage } from 'src/shared/storage/tokenStorage';
 
-export type AuthUser = { email: string; password: string }; // TODO: rename to AuthUserInputFields
+// TODO: review and remove
+export type AuthUser = { email: string; password: string };
 
 type AuthField = 'email' | 'password';
 

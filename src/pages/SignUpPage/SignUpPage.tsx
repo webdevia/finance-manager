@@ -1,7 +1,7 @@
 import React, { useEffect, useLayoutEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import SignUpForm, { OnSubmit } from 'src/shared/ui/Forms/SignUpForm/SignUpForm';
+import { SignUpForm, OnSubmit } from 'src/features/auth/signUp/ui/SignUpForm/SignUpForm';
 import { resetError, signUpUser } from 'src/features/auth/authSlice';
 import { AppDispatch, RootState } from 'src/app/store';
 

@@ -1,20 +1,20 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import OperationForm, { OnSubmit } from 'src/features/operation/form/ui/OperationForm/OperationForm';
+import { OperationForm, OnSubmit } from 'src/features/operation/updateOperation/ui/OperationForm';
 import Modal from 'src/shared/ui/Modal/Modal';
-import { useAddOperation } from 'src/features/operation/hooks/useAddOperation';
+import { useAddOperation } from 'src/features/operation/addOperation/hooks/useAddOperation';
 import { OperationAddInput, OperationUpdateInput } from 'src/entities/operation/operation.types';
-import { useGetOperation } from 'src/features/operation/hooks/useGetOperation';
-import { OperationSchemaType } from 'src/features/operation/form/operationForm.schema';
-import { useUpdateOperation } from 'src/features/operation/hooks/useUpdateOperation';
+import { useGetOperation } from 'src/features/operation/getOperation/hooks/useGetOperation';
+import { OperationSchemaType } from 'src/features/operation/updateOperation/ui/OperationForm/operationForm.schema';
+import { useUpdateOperation } from 'src/features/operation/updateOperation/hooks/useUpdateOperation';
 import {
   transformFormDataToOpearionInput,
   transformOperationToFormData,
-} from 'src/features/operation/form/operationForm.lib';
+} from 'src/features/operation/updateOperation/lib/transformOperation.lib';
 
-import { setLastOperation } from 'src/features/operation/lastOperationSlice';
+import { setUpdatedOperation } from 'src/features/operation/updateOperation/slices/updatedOperationSlice';
 import { useDispatch } from 'react-redux';
-import { useGetCategoryList } from 'src/features/category/hooks/useGetCategoryList';
+import { useGetCategoryList } from 'src/features/category/getCategory/hooks/useGetCategoryList';
 
 const OperationDialogPage = () => {
   const [isOperationDialogOpen, setIsOperationDialogOpen] = useState(false);
@@ -30,12 +30,12 @@ const OperationDialogPage = () => {
   const operationId = id ?? '';
 
   const { addOperation } = useAddOperation({
-    onCompleteHandler: (data) => dispatch(setLastOperation(data)),
+    onCompleteHandler: (data) => dispatch(setUpdatedOperation(data)),
   });
   const { getOperation } = useGetOperation(operationId);
   const { updateOperation } = useUpdateOperation({
     id: operationId,
-    onCompleteHandler: (data) => dispatch(setLastOperation(data)),
+    onCompleteHandler: (data) => dispatch(setUpdatedOperation(data)),
   });
   const { categories } = useGetCategoryList();
 

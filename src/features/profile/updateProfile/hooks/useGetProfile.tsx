@@ -1,7 +1,7 @@
 import { useLazyQuery } from '@apollo/client';
 import { GET_PROFILE } from 'src/entities/profile/api/profile.queries';
 import { ProfileQuery, Profile } from 'src/entities/profile/profile.types';
-import { normalizeDateString } from 'src/shared/datetime-utils';
+import { normalizeDateString } from 'src/shared/utils/datetimeUtils';
 
 export const useGetProfile = () => {
   const [getProfile, { loading, error }] = useLazyQuery<ProfileQuery>(GET_PROFILE);
