@@ -13,6 +13,6 @@ export const createRandomOperation = (operationType: OperationType): OperationAd
   date: '2025-01-01',
   desc: getRandomDescription(nouns, adjectives),
   amount: getRandomNumber(1, 10000),
-  categoryId: '67a28da3959ec5e015c2636a',
+  categoryId: '67a8b036959ec5e015c3d292',
   type: operationType,
 });

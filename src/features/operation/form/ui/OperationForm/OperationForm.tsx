@@ -24,12 +24,21 @@ const profitOperationOption: SelectOptionProps = {
 
 export type OnSubmit = (data: OperationSchemaType) => void;
 
+type Category = {
+  id: string;
+  name: string;
+};
+
 type OperationFromProps = {
   onSubmit: OnSubmit;
   initialData?: OperationSchemaType | null;
+  categories: Category[];
 };
 
-const OperationForm = ({ onSubmit, initialData }: OperationFromProps) => {
+const transformCategoriesToOptions = (categories: Category[]): SelectOptionProps[] =>
+  categories.map((category) => ({ text: category.name, value: category.id }));
+
+const OperationForm = ({ onSubmit, initialData, categories }: OperationFromProps) => {
   const {
     reset,
     register,
@@ -79,7 +88,16 @@ const OperationForm = ({ onSubmit, initialData }: OperationFromProps) => {
               errors={errors.name}
               required={isRequired('name')}
             />
-            <InputField
+            <SelectField
+              label="Category"
+              inputId="category"
+              name="category"
+              options={transformCategoriesToOptions(categories)}
+              register={register}
+              errors={errors.category}
+              required={true}
+            />
+            {/* <InputField
               label="Category"
               inputId="category"
               name="category"
@@ -87,7 +105,7 @@ const OperationForm = ({ onSubmit, initialData }: OperationFromProps) => {
               type="text"
               errors={errors.category}
               required={isRequired('category')}
-            />
+            /> */}
             <InputField
               label="Description"
               inputId="desc"

@@ -5,7 +5,7 @@
   max-width: 300px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: box-shadow 0.3s ease;
-  background-color: #daf3d0;
+  //background-color: var(--profit-card-bg-color);
 
   &:hover {
     box-shadow: 0 8px 16px var(--card-box-shadow-color);
@@ -69,14 +69,6 @@
       }
     }
   }
-}
-
-.cost {
-  background-color: var(--cost-card-bg-color);
-}
-
-.profit {
-  background-color: var(--profit-card-bg-color);
 }
 
 .date {

@@ -12,7 +12,7 @@ export const transformOperationToFormData = (operation: Operation): OperationSch
 
 export const transformFormDataToOpearionInput = (formData: OperationSchemaType): OperationAddInput => ({
   amount: formData.amount,
-  categoryId: '67a28da3959ec5e015c2636a',
+  categoryId: formData.category,
   date: formData.date,
   name: formData.name,
   desc: formData.desc,

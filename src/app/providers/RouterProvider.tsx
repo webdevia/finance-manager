@@ -9,7 +9,9 @@ import { OperationListPage } from 'src/pages/OperationListPage/OperationListPage
 import OperationDialogPage from 'src/pages/OperationDialogPage/OperationDialogPage';
 import { selectIsAuth } from 'src/features/auth/selectors';
 import { SignUpPage } from 'src/pages/SignUpPage/SignUpPage';
-import  ErrorBoundary  from './ErrorBoundary'; 
+import ErrorBoundary from './ErrorBoundary';
+import { CategoryListPage } from 'src/pages/CategoryListPage/CategoryListPage';
+import CategoryDialogPage from 'src/pages/CategoryDialogPage/CategoryDialogPage';
 
 const NavigateToSignIn = () => <Navigate to="/signin" replace />;
 
@@ -55,6 +57,14 @@ const router = createHashRouter([
             children: [
               { path: 'add', element: <OperationDialogPage /> },
               { path: ':id/edit', element: <OperationDialogPage /> },
+            ],
+          },
+          {
+            path: 'categories',
+            element: <CategoryListPage />,
+            children: [
+              { path: 'add', element: <CategoryDialogPage /> },
+              { path: ':id/edit', element: <CategoryDialogPage /> },
             ],
           },
         ],
