@@ -9,6 +9,7 @@ import { OperationListPage } from 'src/pages/OperationListPage/OperationListPage
 import OperationDialogPage from 'src/pages/OperationDialogPage/OperationDialogPage';
 import { selectIsAuth } from 'src/features/auth/selectors';
 import { SignUpPage } from 'src/pages/SignUpPage/SignUpPage';
+import  ErrorBoundary  from './ErrorBoundary'; 
 
 const NavigateToSignIn = () => <Navigate to="/signin" replace />;
 
@@ -18,16 +19,6 @@ export const ProtectedRoute: React.FC = () => {
   if (!isAuthenticated) {
     return <NavigateToSignIn />;
   }
-
-  return <Outlet />;
-};
-
-export const ProtectedAdminRoute: React.FC = () => {
-  // const isAdmin = useSelector(selectIsAdmin);
-
-  // if (!isAdmin) {
-  // return <NavigateToSignIn />;
-  // }
 
   return <Outlet />;
 };
@@ -45,7 +36,11 @@ const SignInWrapper: React.FC = () => {
 const router = createHashRouter([
   {
     path: '/',
-    element: <GenericLayout />,
+    element: (
+      <ErrorBoundary>
+        <GenericLayout />
+      </ErrorBoundary>
+    ),
     children: [
       { index: true, element: <HomePage /> },
       { path: 'signin', element: <SignInWrapper /> },
@@ -58,13 +53,8 @@ const router = createHashRouter([
             path: 'operations',
             element: <OperationListPage />,
             children: [
-              {
-                element: <ProtectedAdminRoute />,
-                children: [
-                  { path: 'add', element: <OperationDialogPage /> },
-                  { path: ':id/edit', element: <OperationDialogPage /> },
-                ],
-              },
+              { path: 'add', element: <OperationDialogPage /> },
+              { path: ':id/edit', element: <OperationDialogPage /> },
             ],
           },
         ],
