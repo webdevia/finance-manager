@@ -18,14 +18,13 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   useEffect(() => {
     if (!isAppInitialized) {
-
       if (token) {
         getProfile();
       }
 
       dispatch(initializeApp());
     }
-  }, [dispatch, logout, isAppInitialized]);
+  }, [dispatch, logout, isAppInitialized, getProfile, token]);
 
   useEffect(() => {
     const handleStorageChange = (newValue: string) => {
@@ -41,7 +40,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     return () => {
       tokenStorage.unsubscribe(handleStorageChange);
     };
-  }, [getProfile, logout]);
+  }, [getProfile, logout, dispatch]);
 
   return <>{children}</>;
 };

@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import style from './OperationCard.module.scss';
 import cn from 'clsx';
 import { Operation } from 'src/entities/operation/operation.types';
 import LeftRightLayout from 'src/shared/ui/Layouts/LeftRightLayout/LeftRightLayout';
 import Button from 'src/shared/ui/Button/Button';
+import { normalizeDateString } from 'src/shared/datetime-utils';
 
 export type OperationCardProps = Operation & {
   onEditClick?: (id: string) => void;
-  onDeleteClick?: (id: string) => void;
+  onDeleteClick?: (id: string) => Promise<void>;
 };
 
 export const OperationCard: React.FC<OperationCardProps> = ({
@@ -21,8 +22,22 @@ export const OperationCard: React.FC<OperationCardProps> = ({
   onEditClick,
   onDeleteClick,
 }) => {
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const handleDeleteClick = () => {
+    if (onDeleteClick) {
+      setIsDeleting(true);
+      onDeleteClick(id).finally(() => setIsDeleting(false));
+    }
+  };
+
   return (
     <div className={cn(style['card'], { [style.cost]: type === 'Cost' }, { [style.profit]: type === 'Profit' })}>
+      {category.photo && (
+        <div className={style['card-image']}>
+          <img src={category.photo} alt={name} className={style['image']} />
+        </div>
+      )}
       <div className={style['card-header']}>
         <span className={style['category']}>{category.name}</span>
         <span className={style['money-value']}>{amount}</span>
@@ -33,16 +48,16 @@ export const OperationCard: React.FC<OperationCardProps> = ({
       </div>
       <LeftRightLayout
         elementsGap="0.5rem"
-        left={<span className={style['date']}>{date}</span>}
+        left={<span className={style['date']}>{normalizeDateString(date)}</span>}
         right={
           <>
             {onEditClick && (
-              <Button small onClick={() => onEditClick(id)}>
+              <Button disabled={isDeleting} small onClick={() => onEditClick(id)}>
                 Edit
               </Button>
             )}
             {onDeleteClick && (
-              <Button small onClick={() => onDeleteClick(id)}>
+              <Button disabled={isDeleting} small onClick={handleDeleteClick}>
                 Delete
               </Button>
             )}

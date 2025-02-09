@@ -6,15 +6,14 @@ import style from './CategoryList.module.scss';
 export interface CategoryListProps {
   categories: CategoryCardProps[];
   onEdit?: (id: string) => void;
-  onDelete?: (id: string) => void;
 }
 
-export const CategoryList: React.FC<CategoryListProps> = ({ categories, onEdit, onDelete }) => {
+export const CategoryList: React.FC<CategoryListProps> = ({ categories, onEdit }) => {
   return (
     <div className={style['category-list']}>
       {categories.map((category) => (
         <div key={category.id}>
-          <CategoryCard {...category} onEditClick={onEdit} onDeleteClick={onDelete} />
+          <CategoryCard {...category} onEditClick={onEdit} />
         </div>
       ))}
     </div>

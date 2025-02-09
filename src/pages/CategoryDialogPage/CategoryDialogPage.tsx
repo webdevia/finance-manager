@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import Modal from 'src/shared/ui/Modal/Modal';
-import { transformFormDataToOpearionInput } from 'src/features/operation/form/operationForm.lib';
 import { useAddCategory } from 'src/features/category/hooks/useAddCategory';
 import { useGetCategory } from 'src/features/category/hooks/useGetCategory';
 import { useUpdateCategory } from 'src/features/category/hooks/useUpdateCategory';
@@ -15,7 +14,7 @@ import CategoryForm, { OnSubmit } from 'src/features/category/form/ui/CategoryFo
 
 const CategoryDialogPage = () => {
   const [isOperationDialogOpen, setIsOperationDialogOpen] = useState(false);
-  const [onSubmit, setOnSubmit] = useState<OnSubmit>(() => {});
+  const [onSubmit, setOnSubmit] = useState<OnSubmit>(() => null);
   const [initialData, setInitialData] = useState<CategorySchemaType | null>(null);
   const navigate = useNavigate();
   const navigateToCategories = useCallback(() => navigate('/categories'), [navigate]);
@@ -24,45 +23,20 @@ const CategoryDialogPage = () => {
   const hasAddRoute = location.pathname.endsWith('/categories/add');
   const canBeProcessed = id || hasAddRoute;
 
-  if (!canBeProcessed) {
-    return <Navigate to={'/categories'} />;
-  }
-
   const categoryId = id ?? '';
 
-  const { addCategory } = useAddCategory({});
+  const { addCategory } = useAddCategory();
   const { getCategory } = useGetCategory(categoryId);
   const { updateCategory } = useUpdateCategory({
     id: categoryId,
   });
 
-  useEffect(() => {
-    (async () => {
-      if (categoryId) {
-        const categoryToEdit = await getCategory();
-
-        if (categoryToEdit) {
-          const initialFormData = transformCategoryToFormData(categoryToEdit);
-          setInitialData(initialFormData);
-          setOnSubmit(() => handleUpdateOperation);
-        } else {
-          navigateToCategories();
-        }
-      } else {
-        setOnSubmit(() => handleAddCategory);
-      }
-
-      setIsOperationDialogOpen(true);
-    })();
-  }, [categoryId]);
-
-  // TODO: set real data
   const handleAddCategory = useCallback<OnSubmit>(
     (data) => {
       const newCategory: CategoryAddInput = transformFormDataToCategoryInput(data);
       addCategory(newCategory).then(() => navigateToCategories());
     },
-    [navigateToCategories]
+    [navigateToCategories, addCategory]
   );
 
   const handleUpdateOperation = useCallback<OnSubmit>(
@@ -70,8 +44,32 @@ const CategoryDialogPage = () => {
       const updatedCategory: CategoryUpdateInput = transformFormDataToCategoryInput(data);
       updateCategory(updatedCategory).then(() => navigateToCategories());
     },
-    [navigateToCategories]
+    [navigateToCategories, updateCategory]
   );
+
+  useEffect(() => {
+    (async () => {
+      if (canBeProcessed) {
+        if (categoryId) {
+          const categoryToEdit = await getCategory();
+
+          if (categoryToEdit) {
+            const initialFormData = transformCategoryToFormData(categoryToEdit);
+            setInitialData(initialFormData);
+            setOnSubmit(() => handleUpdateOperation);
+          } else {
+            navigateToCategories();
+          }
+        } else {
+          setOnSubmit(() => handleAddCategory);
+        }
+
+        setIsOperationDialogOpen(true);
+      } else {
+        navigateToCategories();
+      }
+    })();
+  }, [categoryId, canBeProcessed, getCategory, handleAddCategory, handleUpdateOperation, navigateToCategories]);
 
   return (
     <Modal visible={isOperationDialogOpen} onClose={navigateToCategories}>

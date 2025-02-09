@@ -11,6 +11,20 @@
     box-shadow: 0 8px 16px var(--card-box-shadow-color);
   }
 
+  &-image {
+    width: 100%;
+    height: 150px; /* Adjust height as needed */
+    overflow: hidden;
+    border-radius: 8px 8px 0 0; /* Rounded corners at the top */
+    margin-bottom: 12px;
+
+    .image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover; /* Ensures the image covers the container */
+    }
+  }
+
   &-header {
     display: flex;
     justify-content: space-between;

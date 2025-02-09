@@ -1,6 +1,6 @@
 import { ApolloError, useMutation } from '@apollo/client';
 import { REMOVE_OPERATION } from 'src/entities/operation/api/operation.mutations';
-import { GET_BALANCE, GET_OPERATION_LIST } from 'src/entities/operation/api/operation.queries';
+import { GET_BALANCE } from 'src/entities/operation/api/operation.queries';
 import { ErrorFieldsMap, handleApolloError, handleUnknownError } from 'src/shared/api/errors/errors';
 
 export type OperationErrorableField = 'name';
@@ -10,7 +10,7 @@ const errorFieldsMap: ErrorFieldsMap<OperationErrorableField> = {
 
 export const useDeleteOperation = () => {
   const [deleteOperation, { loading, error }] = useMutation(REMOVE_OPERATION, {
-    refetchQueries: [{ query: GET_OPERATION_LIST }, { query: GET_BALANCE }],
+    refetchQueries: [{ query: GET_BALANCE }],
   });
 
   const handleDeleteOperation = async (id: string): Promise<void> => {

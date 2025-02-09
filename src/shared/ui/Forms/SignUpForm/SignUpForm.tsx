@@ -49,7 +49,7 @@ const SignUpForm = ({ onSubmit, signUpButtonText, formTitle, authError }: SignUp
 
   useEffect(() => {
     authError ? handleError(authError) : reset();
-  }, [authError]);
+  }, [authError, handleError, reset]);
 
   const withResetAndSetError = (onSubmit: OnSubmit) => (data: SignUpSchemaType) => {
     onSubmit(data);

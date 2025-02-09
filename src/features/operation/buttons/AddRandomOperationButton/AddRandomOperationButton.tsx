@@ -10,7 +10,13 @@ const getRandomOperationType = () => getRandomItemFromArray(Object.values(Operat
 const AddRandomOperationButton = ({ onCompleteHandler }: UseAddOperation) => {
   const { addOperation } = useAddOperation({ onCompleteHandler });
   return (
-    <Button onClick={() => addOperation(createRandomOperation(getRandomOperationType()))}>Add Random Operation</Button>
+    <Button
+      onClick={() => {
+        addOperation(createRandomOperation(getRandomOperationType()));
+      }}
+    >
+      Add Random Operation
+    </Button>
   );
 };
 

@@ -3,7 +3,7 @@ import { OperationSchemaType } from './operationForm.schema';
 
 export const transformOperationToFormData = (operation: Operation): OperationSchemaType => ({
   amount: operation.amount,
-  category: operation.category.name,
+  category: operation.category.id,
   date: operation.date,
   name: operation.name,
   desc: operation.desc ?? '',

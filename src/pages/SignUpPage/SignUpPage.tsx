@@ -15,11 +15,11 @@ export const SignUpPage = () => {
 
   useEffect(() => {
     authStatus === 'succeeded' && navigate('/');
-  }, [authStatus]);
+  }, [authStatus, navigate]);
 
   useLayoutEffect(() => {
     dispatch(resetError());
-  }, []);
+  }, [dispatch]);
 
   const onLogin: OnSubmit = (data) => {
     dispatch(signUpUser({ ...data, commandId: COMMAND_ID }));

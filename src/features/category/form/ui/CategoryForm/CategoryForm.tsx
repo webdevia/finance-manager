@@ -29,7 +29,7 @@ const CategoryForm = ({ onSubmit, initialData }: CategoryFromProps) => {
   });
 
   const withReset = (onSubmit: OnSubmit) => (data: CategorySchemaType) => {
-    onSubmit(data);
+    onSubmit?.(data);
     reset({});
   };
 

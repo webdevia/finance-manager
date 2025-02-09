@@ -97,15 +97,6 @@ const OperationForm = ({ onSubmit, initialData, categories }: OperationFromProps
               errors={errors.category}
               required={true}
             />
-            {/* <InputField
-              label="Category"
-              inputId="category"
-              name="category"
-              register={register}
-              type="text"
-              errors={errors.category}
-              required={isRequired('category')}
-            /> */}
             <InputField
               label="Description"
               inputId="desc"

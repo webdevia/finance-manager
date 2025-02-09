@@ -88,7 +88,6 @@ const passwordSlice = createSlice({
         state.status = 'loading';
       })
       .addCase(updatePassword.fulfilled, (state, action) => {
-        console.log('update_succeeded', action.payload);
         state.status = 'update_succeeded';
         state.profile = action.payload;
       })

@@ -161,14 +161,14 @@ export type Category = {
 };
 
 export type AbstractOperation = {
-    id: string;
-    name: string;
-    desc?: string;
-    date: string;
-    createdAt: string;
-    updatedAt: string;
-    amount: number;
-    category: Category;
+  id: string;
+  name: string;
+  desc?: string;
+  date: string;
+  createdAt: string;
+  updatedAt: string;
+  amount: number;
+  category: Category;
 };
 
 type Cost = AbstractOperation & { type: 'Cost' };
