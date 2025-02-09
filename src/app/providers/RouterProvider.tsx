@@ -25,6 +25,16 @@ export const ProtectedRoute: React.FC = () => {
   return <Outlet />;
 };
 
+const HomePageWrapper: React.FC = () => {
+  const isAuthenticated = useSelector(selectIsAuth);
+
+  if (isAuthenticated) {
+    return <Navigate to="/operations" replace />;
+  }
+
+  return <HomePage />;
+};
+
 const SignInWrapper: React.FC = () => {
   const isAuthenticated = useSelector(selectIsAuth);
 
@@ -44,7 +54,7 @@ const router = createHashRouter([
       </ErrorBoundary>
     ),
     children: [
-      { index: true, element: <HomePage /> },
+      { index: true, element: <HomePageWrapper /> },
       { path: 'signin', element: <SignInWrapper /> },
       { path: 'signup', element: <SignUpPage /> },
       {

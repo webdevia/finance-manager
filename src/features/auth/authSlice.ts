@@ -3,7 +3,6 @@ import { graphqlClient as client } from 'src/app/providers';
 import { SIGNIN_MUTATION, SIGNUP_MUTATION } from './api/auth.mutations';
 import { ApolloError } from '@apollo/client';
 import { tokenStorage } from 'src/shared/storage/tokenStorage';
-import { set } from 'react-hook-form';
 
 export type AuthUser = { email: string; password: string }; // TODO: rename to AuthUserInputFields
 

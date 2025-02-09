@@ -18,24 +18,24 @@ export const Navigation = () => {
 
   return (
     <>
-      <NavLink to={'/'} className={style['nav-btn']} style={getNavLinkStyle} end>
-        Home
-      </NavLink>
       {isAuthenticated ? (
         <>
-          <NavLink to={'/profile'} className={style['nav-btn']} style={getNavLinkStyle}>
-            Profile
-          </NavLink>
           <NavLink to={'/operations'} className={style['nav-btn']} style={getNavLinkStyle}>
             Operations
           </NavLink>
           <NavLink to={'/categories'} className={style['nav-btn']} style={getNavLinkStyle}>
             Categories
           </NavLink>
+          <NavLink to={'/profile'} className={style['nav-btn']} style={getNavLinkStyle}>
+            Profile
+          </NavLink>
           <SignOutButton className={style['nav-btn']} />
         </>
       ) : (
         <>
+          <NavLink to={'/'} className={style['nav-btn']} style={getNavLinkStyle} end>
+            Home
+          </NavLink>
           <NavLink to={'/signin'} className={style['nav-btn']} style={getNavLinkStyle}>
             Sign In
           </NavLink>

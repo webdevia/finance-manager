@@ -17,7 +17,6 @@ import style from './UpdatePassword.module.scss';
 export const UpdatePassword: React.FC = () => {
     const [success, setSuccess] = useState(false);
     const { handleUpdatePassword, loading } = useUpdatePassword();
-    const isRequired = useIsFieldRequired(PasswordSchema);
     
     const {
       register,
@@ -67,7 +66,7 @@ export const UpdatePassword: React.FC = () => {
                 register={register}
                 type="password"
                 errors={errors.password}
-                required={isRequired('password')}
+                required={true}
               />
               <InputField
                 label="New password"
@@ -76,7 +75,7 @@ export const UpdatePassword: React.FC = () => {
                 register={register}
                 type="password"
                 errors={errors.newPassword}
-                required={isRequired('newPassword')}
+                required={true}
               />
               <InputField
                 label="Confirm password"
@@ -85,7 +84,7 @@ export const UpdatePassword: React.FC = () => {
                 register={register}
                 type="password"
                 errors={errors.newPasswordConfirm}
-                required={isRequired('newPasswordConfirm')}
+                required={true}
               />
               {errors.root && <ErrorLabel message={errors.root.message || ''} />}
               {success && <InfoLabel message={'Password changed successfully'} />}
