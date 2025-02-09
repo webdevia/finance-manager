@@ -7,10 +7,9 @@ import style from './CetegoryCard.module.scss';
 
 export type CategoryCardProps = Category & {
   onEditClick?: (id: string) => void;
-  onDeleteClick?: (id: string) => void;
 };
 
-export const CategoryCard: React.FC<CategoryCardProps> = ({ id, name, photo, onEditClick, onDeleteClick }) => {
+export const CategoryCard: React.FC<CategoryCardProps> = ({ id, name, photo, onEditClick }) => {
   return (
     <div className={cn(style['card'])}>
       {photo && (

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import OperationForm, { OnSubmit } from 'src/features/operation/form/ui/OperationForm/OperationForm';
 import Modal from 'src/shared/ui/Modal/Modal';
 import { useAddOperation } from 'src/features/operation/hooks/useAddOperation';
@@ -18,7 +18,7 @@ import { useGetCategoryList } from 'src/features/category/hooks/useGetCategoryLi
 
 const OperationDialogPage = () => {
   const [isOperationDialogOpen, setIsOperationDialogOpen] = useState(false);
-  const [onSubmit, setOnSubmit] = useState<OnSubmit>(() => {});
+  const [onSubmit, setOnSubmit] = useState<OnSubmit>(() => null);
   const [initialData, setInitialData] = useState<OperationSchemaType | null>(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -27,11 +27,6 @@ const OperationDialogPage = () => {
   const { id } = useParams();
   const hasAddRoute = location.pathname.endsWith('/operations/add');
   const canBeProcessed = id || hasAddRoute;
-
-  if (!canBeProcessed) {
-    return <Navigate to={'/operations'} />;
-  }
-
   const operationId = id ?? '';
 
   const { addOperation } = useAddOperation({
@@ -42,35 +37,14 @@ const OperationDialogPage = () => {
     id: operationId,
     onCompleteHandler: (data) => dispatch(setLastOperation(data)),
   });
-  const { categories } = useGetCategoryList({});
+  const { categories } = useGetCategoryList();
 
-  useEffect(() => {
-    (async () => {
-      if (operationId) {
-        const operationToEdit = await getOperation();
-
-        if (operationToEdit) {
-          const initialFormData = transformOperationToFormData(operationToEdit);
-          setInitialData(initialFormData);
-          setOnSubmit(() => handleUpdateOperation);
-        } else {
-          navigateToOpeartions(); // throw new Error(`Cannot find operation with ID ${id}`);
-        }
-      } else {
-        setOnSubmit(() => handleAddOperation);
-      }
-
-      setIsOperationDialogOpen(true);
-    })();
-  }, [operationId]);
-
-  // TODO: set real data
   const handleAddOperation = useCallback<OnSubmit>(
     (data) => {
       const newOperation: OperationAddInput = transformFormDataToOpearionInput(data);
       addOperation(newOperation).then(() => navigateToOpeartions());
     },
-    [navigateToOpeartions]
+    [navigateToOpeartions, addOperation]
   );
 
   const handleUpdateOperation = useCallback<OnSubmit>(
@@ -78,8 +52,32 @@ const OperationDialogPage = () => {
       const updatedOperation: OperationUpdateInput = transformFormDataToOpearionInput(data);
       updateOperation(updatedOperation).then(() => navigateToOpeartions());
     },
-    [navigateToOpeartions]
+    [navigateToOpeartions, updateOperation]
   );
+
+  useEffect(() => {
+    (async () => {
+      if (canBeProcessed) {
+        if (operationId) {
+          const operationToEdit = await getOperation();
+
+          if (operationToEdit) {
+            const initialFormData = transformOperationToFormData(operationToEdit);
+            setInitialData(initialFormData);
+            setOnSubmit(() => handleUpdateOperation);
+          } else {
+            navigateToOpeartions(); // throw new Error(`Cannot find operation with ID ${id}`);
+          }
+        } else {
+          setOnSubmit(() => handleAddOperation);
+        }
+
+        setIsOperationDialogOpen(true);
+      } else {
+        navigateToOpeartions();
+      }
+    })();
+  }, [operationId, canBeProcessed, getOperation, handleAddOperation, handleUpdateOperation, navigateToOpeartions]);
 
   return (
     <Modal visible={isOperationDialogOpen} onClose={navigateToOpeartions}>

@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import SignInForm from 'src/features/auth/ui/SignInForm';
 import { setToken } from 'src/features/auth/authSlice';
-import { AppDispatch, RootState } from 'src/app/store';
+import { AppDispatch } from 'src/app/store';
 
 export const SignInPage = () => {
   const navigate = useNavigate();
@@ -14,7 +14,5 @@ export const SignInPage = () => {
     navigate('/');
   };
 
-  return (
-    <SignInForm onSignIn={onLogin} />
-  );
+  return <SignInForm onSignIn={onLogin} />;
 };

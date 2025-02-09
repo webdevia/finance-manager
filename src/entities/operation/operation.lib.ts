@@ -8,8 +8,8 @@ import { nouns } from 'src/shared/data/nouns';
 import { adjectives } from 'src/shared/data/adjectives';
 import { operations } from 'src/shared/data/operations';
 
-export const createRandomOperation = (operationType: OperationType, index: number): OperationAddInput => ({
-  name: '' + index, // getRandomItemFromArray(operations),
+export const createRandomOperation = (operationType: OperationType): OperationAddInput => ({
+  name: getRandomItemFromArray(operations),
   date: '2025-01-01',
   desc: getRandomDescription(nouns, adjectives),
   amount: getRandomNumber(1, 10000),

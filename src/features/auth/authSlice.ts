@@ -103,7 +103,7 @@ const authSlice = createSlice({
     setToken(state, action) {
       tokenStorage.set(action.payload);
       state.token = action.payload;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder

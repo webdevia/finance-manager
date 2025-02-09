@@ -1,4 +1,4 @@
-import { useLazyQuery, useQuery } from '@apollo/client';
+import { useLazyQuery } from '@apollo/client';
 import { GET_OPERATION_LIST } from 'src/entities/operation/api/operation.queries';
 import { OperationsQuery, Operation } from 'src/entities/operation/operation.types';
 

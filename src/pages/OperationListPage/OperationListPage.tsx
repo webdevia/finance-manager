@@ -5,7 +5,7 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import { useGetOperationList } from 'src/features/operation/hooks/useGetOperationList';
 import AddRandomOperationButton from 'src/features/operation/buttons/AddRandomOperationButton/AddRandomOperationButton';
 import { useDeleteOperation } from 'src/features/operation/hooks/useDeleteOperation';
-import { Operation, OperationsQuery } from 'src/entities/operation/operation.types';
+import { Operation } from 'src/entities/operation/operation.types';
 import style from './OperationListPage.module.scss';
 import { Balance } from 'src/features/balance/ui/Balance';
 import { useDispatch, useSelector } from 'react-redux';
@@ -64,7 +64,7 @@ export const OperationListPage: React.FC = () => {
       });
       dispatch(setLastOperation(null));
     }
-  }, [lastOperation?.id]);
+  }, [lastOperation, dispatch]);
 
   const deleteOperationCard = (id: string) => {
     setOperationList((prev) => prev.filter((card) => card.id !== id));
@@ -100,12 +100,12 @@ export const OperationListPage: React.FC = () => {
         if (pagination) {
           items[0].isIntersecting &&
             pagination.pageNumber * pagination.pageSize < pagination.total &&
-            setPage((page) => page + 1);
+            setPage((prev) => prev + 1);
         }
       });
       node && observer.current.observe(node);
     },
-    [pagination?.total, pagination?.pageSize, pagination?.pageNumber, page]
+    [pagination]
   );
 
   return (

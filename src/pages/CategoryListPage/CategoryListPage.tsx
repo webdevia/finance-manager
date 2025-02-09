@@ -3,7 +3,6 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import { useGetCategoryList } from 'src/features/category/hooks/useGetCategoryList';
 import style from './CategoryListPage.module.scss';
 import { CategoryList } from 'src/widgets/CategoryList/CategoryList';
-import { useDeleteCategory } from 'src/features/category/hooks/useDeleteCategory';
 import AddCategoryButton from 'src/features/category/buttons/AddOperationButton/AddOperationButton';
 
 type ColumnsWidthCSS = CSSProperties & {
@@ -20,15 +19,10 @@ const Sidebar = ({ children }: SidebarProps) => {
 
 export const CategoryListPage: React.FC = () => {
   const navigate = useNavigate();
-  const { categories } = useGetCategoryList({});
-  const { deleteCategory } = useDeleteCategory();
+  const { categories } = useGetCategoryList();
 
   const handleEditClick = (id: string) => {
     navigate(`${id}/edit`);
-  };
-
-  const handleDeleteClick = (id: string) => {
-    deleteCategory(id);
   };
 
   const getContainerStyle = (visible: boolean): ColumnsWidthCSS => ({
@@ -41,7 +35,7 @@ export const CategoryListPage: React.FC = () => {
         <AddCategoryButton />
       </Sidebar>
       <div className={style['operation-list']}>
-        <CategoryList categories={categories} onEdit={handleEditClick} onDelete={handleDeleteClick} />
+        <CategoryList categories={categories} onEdit={handleEditClick} />
       </div>
       <Outlet />
     </div>

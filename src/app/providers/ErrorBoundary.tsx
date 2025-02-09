@@ -10,7 +10,7 @@ interface ErrorBoundaryState {
   errorInfo?: React.ErrorInfo;
 }
 
- export default class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
+export default class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
   constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = { hasError: false };
@@ -32,7 +32,7 @@ interface ErrorBoundaryState {
           <h2>Oops! Something went wrong.</h2>
           <p>We apologize for the inconvenience. Please try refreshing the page.</p>
           <button onClick={() => window.location.reload()}>Refresh Page</button>
-          <details style={{marginTop: 20, whiteSpace: 'pre-wrap' }}>
+          <details style={{ marginTop: 20, whiteSpace: 'pre-wrap' }}>
             {error && error.toString()}
             <br />
             {errorInfo && errorInfo.componentStack}

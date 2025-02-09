@@ -9,24 +9,22 @@ import ActionButtons from 'src/shared/ui/ActionButtons/ActionButtons';
 import Title from 'src/shared/ui/Title/Title';
 import { ErrorLabel } from 'src/shared/ui/ErrorLabel/ErrorLabel';
 import { SignInSchema, SignInSchemaType } from './signin-schema';
-
-import style from './signInForm.module.scss';
 import { AuthUserError } from 'src/features/auth/authSlice';
 import { SignInErrorableField, useSignIn } from 'src/features/auth/hooks/useSignIn';
 import { HandledError } from 'src/shared/api/errors/errors';
+import style from './signInForm.module.scss';
 
 export type OnSubmit = SubmitHandler<SignInSchemaType>;
 
 type SignInFormProps = {
   onSignIn: (token: string) => void;
-}
+};
 
 const SignInForm: React.FC<SignInFormProps> = ({ onSignIn }) => {
   const { handleSignIn, loading } = useSignIn();
   const isRequired = useIsFieldRequired(SignInSchema);
 
   const {
-    reset,
     register,
     handleSubmit,
     setError,
