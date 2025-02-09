@@ -10,7 +10,19 @@ const errorFieldsMap: ErrorFieldsMap<OperationErrorableField> = {
 
 export const useDeleteOperation = () => {
   const [deleteOperation, { loading, error }] = useMutation(REMOVE_OPERATION, {
-    refetchQueries: [{ query: GET_OPERATION_LIST }, { query: GET_BALANCE }],
+    refetchQueries: [
+      // {
+      //   query: GET_OPERATION_LIST,
+      //   variables: {
+      //     input: {
+      //       pagination: {
+      //         pageNumber: pageNr,
+      //       },
+      //     },
+      //   },
+      // },
+      { query: GET_BALANCE },
+    ],
   });
 
   const handleDeleteOperation = async (id: string): Promise<void> => {

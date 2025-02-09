@@ -5,12 +5,13 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import { useGetOperationList } from 'src/features/operation/hooks/useGetOperationList';
 import AddRandomOperationButton from 'src/features/operation/buttons/AddRandomOperationButton/AddRandomOperationButton';
 import { useDeleteOperation } from 'src/features/operation/hooks/useDeleteOperation';
-import { Operation } from 'src/entities/operation/operation.types';
+import { Operation, OperationsQuery } from 'src/entities/operation/operation.types';
 import style from './OperationListPage.module.scss';
 import { Balance } from 'src/features/balance/ui/Balance';
 import { useDispatch, useSelector } from 'react-redux';
 import { setLastOperation } from 'src/features/operation/lastOperationSlice';
 import { RootState } from 'src/app/store';
+import { useGetLazyOperationList } from 'src/features/operation/hooks/useGetLazyOperationList';
 
 type ColumnsWidthCSS = CSSProperties & {
   '--columns-width': string;
@@ -26,12 +27,25 @@ const Sidebar = ({ children }: SidebarProps) => {
 
 export const OperationListPage: React.FC = () => {
   const [page, setPage] = useState(1);
-  const [operationList, setOperationList] = useState<Operation[]>([]);
+  const [operationList, setOperationList] = useState<Operation[]>(() => []);
   const { lastOperation } = useSelector((state: RootState) => state.lastOperation);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { pagination } = useGetOperationList({ pageNr: page, onCompleteHandler: addOperationCards });
+  const { operations, pagination, loading } = useGetOperationList({
+    pageNr: page,
+  });
+  const { getLazyOperations, loading: lazyLoading } = useGetLazyOperationList();
   const { deleteOperation } = useDeleteOperation();
+
+  function addOperationCards(data: Operation[]) {
+    setOperationList((prev) => [...prev, ...data.filter((dataEl) => !prev.some((prevEl) => prevEl.id === dataEl.id))]);
+  }
+
+  useEffect(() => {
+    if (operations.length > 0) {
+      addOperationCards(operations);
+    }
+  }, [operations]);
 
   useEffect(() => {
     if (lastOperation?.id) {
@@ -60,16 +74,17 @@ export const OperationListPage: React.FC = () => {
     setOperationList((prev) => [...prev, operation]);
   };
 
-  function addOperationCards(data: Operation[]) {
-    setOperationList((prev) => [...prev, ...data]);
-  }
-
   const handleEditClick = (id: string) => {
     navigate(`${id}/edit`);
   };
 
   const handleDeleteClick = (id: string) => {
-    return deleteOperation(id).then(() => deleteOperationCard(id));
+    return deleteOperation(id)
+      .then(() => deleteOperationCard(id))
+      .then(() => getLazyOperations(page))
+      .then(({ operations }) => {
+        addOperationCards(operations);
+      });
   };
 
   const getContainerStyle = (visible: boolean): ColumnsWidthCSS => ({
@@ -90,7 +105,7 @@ export const OperationListPage: React.FC = () => {
       });
       node && observer.current.observe(node);
     },
-    [pagination?.pageNumber]
+    [pagination?.total, pagination?.pageSize, pagination?.pageNumber, page]
   );
 
   return (
@@ -103,7 +118,7 @@ export const OperationListPage: React.FC = () => {
       </Sidebar>
       <div className={style['operation-list']}>
         <OperationList operations={operationList} onEdit={handleEditClick} onDelete={handleDeleteClick} />
-        <div ref={lastOperationRef}></div>
+        <div ref={lastOperationRef}>{(loading || lazyLoading) && 'LOADING...'}</div>
       </div>
       <Outlet />
     </div>

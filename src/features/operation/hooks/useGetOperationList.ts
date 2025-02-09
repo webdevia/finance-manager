@@ -4,13 +4,13 @@ import { OperationsQuery, Operation } from 'src/entities/operation/operation.typ
 
 type UseGetOperationList = {
   pageNr: number;
-  onCompleteHandler: (data: Operation[]) => void;
+  onCompleteHandler?: (data: Operation[]) => void;
 };
 
 export const useGetOperationList = ({ pageNr, onCompleteHandler }: UseGetOperationList) => {
   const { data, loading, error } = useQuery<OperationsQuery>(GET_OPERATION_LIST, {
     onCompleted(data) {
-      onCompleteHandler(data?.operations.getMany.data ?? []);
+      onCompleteHandler?.(data?.operations.getMany.data ?? []);
     },
     variables: {
       input: {
