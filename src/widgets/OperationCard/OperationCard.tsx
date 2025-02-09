@@ -2,6 +2,8 @@ import React from 'react';
 import style from './OperationCard.module.scss';
 import cn from 'clsx';
 import { Operation } from 'src/entities/operation/operation.types';
+import LeftRightLayout from 'src/shared/ui/Layouts/LeftRightLayout/LeftRightLayout';
+import Button from 'src/shared/ui/Button/Button';
 
 export type OperationCardProps = Operation & {
   onEditClick?: (id: string) => void;
@@ -29,19 +31,24 @@ export const OperationCard: React.FC<OperationCardProps> = ({
         <h2 className={style['name']}>{name}</h2>
         <p className={style['description']}>{desc}</p>
       </div>
-      <div className={style['card-footer']}>
-        <span className={style['date']}>{date}</span>
-        {onEditClick && (
-          <button className={style['edit-button']} onClick={() => onEditClick(id)}>
-            Edit
-          </button>
-        )}
-        {onDeleteClick && (
-          <button className={style['edit-button']} onClick={() => onDeleteClick(id)}>
-            Delete
-          </button>
-        )}
-      </div>
+      <LeftRightLayout
+        elementsGap="0.5rem"
+        left={<span className={style['date']}>{date}</span>}
+        right={
+          <>
+            {onEditClick && (
+              <Button small onClick={() => onEditClick(id)}>
+                Edit
+              </Button>
+            )}
+            {onDeleteClick && (
+              <Button small onClick={() => onDeleteClick(id)}>
+                Delete
+              </Button>
+            )}
+          </>
+        }
+      />
     </div>
   );
 };

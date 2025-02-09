@@ -22,9 +22,10 @@
     --navlink-bg-color: #727272;
     --cost-card-bg-color: #6d0000;
     --profit-card-bg-color: #004b00;
-
+    --card-box-shadow-color: rgba(255, 255, 255, 0.25);
+    
   }
-
+  
   @media (prefers-color-scheme: light) {
     :root {
       color: #213547;
@@ -39,6 +40,7 @@
       --navlink-bg-color: #b1b1b1;;
       --cost-card-bg-color: #f3d0d7;
       --profit-card-bg-color: #daf3d0;
+      --card-box-shadow-color: rgba(0, 0, 0, 0.25);
     }
   }
 

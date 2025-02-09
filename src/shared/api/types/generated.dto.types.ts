@@ -584,6 +584,40 @@ export type User = {
   name?: Maybe<Scalars['String']['output']>;
 };
 
+export type AddCategoryMutationVariables = Exact<{
+  input: CategoryAddInput;
+}>;
+
+
+export type AddCategoryMutation = { __typename?: 'Mutation', categories: { __typename?: 'CategoryMutations', add: { __typename?: 'Category', id: string, name: string, photo?: string | null, createdAt: any, updatedAt: any, commandId: string } } };
+
+export type UpdateCategoryMutationVariables = Exact<{
+  patchId: Scalars['ID']['input'];
+  input: CategoryUpdateInput;
+}>;
+
+
+export type UpdateCategoryMutation = { __typename?: 'Mutation', categories: { __typename?: 'CategoryMutations', patch: { __typename?: 'Category', id: string, name: string, photo?: string | null, createdAt: any, updatedAt: any, commandId: string } } };
+
+export type RemoveCategoryMutationVariables = Exact<{
+  removeId: Scalars['ID']['input'];
+}>;
+
+
+export type RemoveCategoryMutation = { __typename?: 'Mutation', categories: { __typename?: 'CategoryMutations', remove: { __typename?: 'Category', id: string, name: string, photo?: string | null, createdAt: any, updatedAt: any, commandId: string } } };
+
+export type CategoryQueryVariables = Exact<{
+  getOneId: Scalars['ID']['input'];
+}>;
+
+
+export type CategoryQuery = { __typename?: 'Query', categories: { __typename?: 'CategoryQueries', getOne?: { __typename?: 'Category', id: string, name: string, photo?: string | null, createdAt: any, updatedAt: any, commandId: string } | null } };
+
+export type CategoriesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CategoriesQuery = { __typename?: 'Query', categories: { __typename?: 'CategoryQueries', getMany: { __typename?: 'CategoriesResponse', data?: Array<{ __typename?: 'Category', id: string, name: string, photo?: string | null, createdAt: any, updatedAt: any, commandId: string } | null> | null } } };
+
 export type AddOperationMutationVariables = Exact<{
   input: OperationAddInput;
 }>;

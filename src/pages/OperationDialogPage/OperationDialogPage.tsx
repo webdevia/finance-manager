@@ -14,6 +14,7 @@ import {
 
 import { setLastOperation } from 'src/features/operation/lastOperationSlice';
 import { useDispatch } from 'react-redux';
+import { useGetCategoryList } from 'src/features/category/hooks/useGetCategoryList';
 
 const OperationDialogPage = () => {
   const [isOperationDialogOpen, setIsOperationDialogOpen] = useState(false);
@@ -41,6 +42,7 @@ const OperationDialogPage = () => {
     id: operationId,
     onCompleteHandler: (data) => dispatch(setLastOperation(data)),
   });
+  const { categories } = useGetCategoryList({});
 
   useEffect(() => {
     (async () => {
@@ -81,7 +83,7 @@ const OperationDialogPage = () => {
 
   return (
     <Modal visible={isOperationDialogOpen} onClose={navigateToOpeartions}>
-      <OperationForm onSubmit={onSubmit} initialData={initialData} />
+      <OperationForm categories={categories} onSubmit={onSubmit} initialData={initialData} />
     </Modal>
   );
 };

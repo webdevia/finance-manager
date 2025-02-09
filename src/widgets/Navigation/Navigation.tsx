@@ -29,6 +29,9 @@ export const Navigation = () => {
           <NavLink to={'/operations'} className={style['nav-btn']} style={getNavLinkStyle}>
             Operations
           </NavLink>
+          <NavLink to={'/categories'} className={style['nav-btn']} style={getNavLinkStyle}>
+            Categories
+          </NavLink>
           <SignOutButton className={style['nav-btn']} />
         </>
       ) : (
