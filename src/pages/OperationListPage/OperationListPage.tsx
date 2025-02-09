@@ -1,17 +1,17 @@
 import React, { CSSProperties, useCallback, useEffect, useRef, useState } from 'react';
 import { OperationList } from 'src/widgets/OperationList/OperationList';
-import AddOperationButton from 'src/features/operation/buttons/AddOperationButton/AddOperationButton';
+import { AddOperationButton } from 'src/features/operation/addOperation/ui/AddOperationButton';
 import { Outlet, useNavigate } from 'react-router-dom';
-import { useGetOperationList } from 'src/features/operation/hooks/useGetOperationList';
-import AddRandomOperationButton from 'src/features/operation/buttons/AddRandomOperationButton/AddRandomOperationButton';
-import { useDeleteOperation } from 'src/features/operation/hooks/useDeleteOperation';
+import { useGetOperationList } from 'src/features/operation/getOperation/hooks/useGetOperationList';
+import { AddRandomOperationButton } from 'src/features/operation/addOperation/ui/AddRandomOperationButton';
+import { useDeleteOperation } from 'src/features/operation/deleteOperation/hooks/useDeleteOperation';
 import { Operation } from 'src/entities/operation/operation.types';
-import style from './OperationListPage.module.scss';
-import { Balance } from 'src/features/balance/ui/Balance';
+import { Balance } from 'src/features/balance/ui/Balance/Balance';
 import { useDispatch, useSelector } from 'react-redux';
-import { setLastOperation } from 'src/features/operation/lastOperationSlice';
+import { setUpdatedOperation } from 'src/features/operation/updateOperation/slices/updatedOperationSlice';
 import { RootState } from 'src/app/store';
-import { useGetLazyOperationList } from 'src/features/operation/hooks/useGetLazyOperationList';
+import { useGetLazyOperationList } from 'src/features/operation/getOperation/hooks/useGetLazyOperationList';
+import style from './OperationListPage.module.scss';
 
 type ColumnsWidthCSS = CSSProperties & {
   '--columns-width': string;
@@ -28,7 +28,7 @@ const Sidebar = ({ children }: SidebarProps) => {
 export const OperationListPage: React.FC = () => {
   const [page, setPage] = useState(1);
   const [operationList, setOperationList] = useState<Operation[]>(() => []);
-  const { lastOperation } = useSelector((state: RootState) => state.lastOperation);
+  const { updatedOperation: lastOperation } = useSelector((state: RootState) => state.lastOperation);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { operations, pagination, loading } = useGetOperationList({
@@ -62,7 +62,7 @@ export const OperationListPage: React.FC = () => {
         };
         return index > -1 ? replaceOperation() : addOperation();
       });
-      dispatch(setLastOperation(null));
+      dispatch(setUpdatedOperation(null));
     }
   }, [lastOperation, dispatch]);
 

@@ -1,16 +1,16 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import Modal from 'src/shared/ui/Modal/Modal';
-import { useAddCategory } from 'src/features/category/hooks/useAddCategory';
-import { useGetCategory } from 'src/features/category/hooks/useGetCategory';
-import { useUpdateCategory } from 'src/features/category/hooks/useUpdateCategory';
+import { useAddCategory } from 'src/features/category/addCategory/hooks/useAddCategory';
+import { useGetCategory } from 'src/features/category/getCategory/hooks/useGetCategory';
+import { useUpdateCategory } from 'src/features/category/updateCategory/hooks/useUpdateCategory';
 import {
   transformCategoryToFormData,
   transformFormDataToCategoryInput,
-} from 'src/features/category/form/categoryForm.lib';
-import { CategorySchemaType } from 'src/features/category/form/categoryForm.schema';
+} from 'src/features/category/updateCategory/lib/transformCategory.lib';
+import { CategorySchemaType } from 'src/features/category/updateCategory/ui/CategoryForm/categoryForm.schema';
 import { CategoryAddInput, CategoryUpdateInput } from 'src/entities/category/category.types';
-import CategoryForm, { OnSubmit } from 'src/features/category/form/ui/CategoryForm/CategoryForm';
+import { CategoryForm, OnSubmit } from 'src/features/category/updateCategory/ui/CategoryForm';
 
 const CategoryDialogPage = () => {
   const [isOperationDialogOpen, setIsOperationDialogOpen] = useState(false);

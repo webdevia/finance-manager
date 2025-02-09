@@ -2,6 +2,11 @@ import type { Operation } from 'src/shared/api/types/generated.dto.types';
 export type { OperationAddInput, OperationUpdateInput } from 'src/shared/api/types/generated.dto.types';
 export { OperationType } from 'src/shared/api/types/generated.dto.types';
 
+export type OperationCategoryOption = {
+  id: string;
+  name: string;
+};
+
 export type OperationsQuery = {
   __typename?: 'Query';
   operations: {

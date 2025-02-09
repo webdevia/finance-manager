@@ -5,7 +5,7 @@ import appReducer from 'src/features/appSlice';
 import authReducer from 'src/features/auth/authSlice';
 // import profileReducer from 'src/features/profile/profileSlice';
 import passwordReducer from 'src/features/profile/passwordSlice';
-import lastOperationReducer from 'src/features/operation/lastOperationSlice';
+import lastOperationReducer from 'src/features/operation/updateOperation/slices/updatedOperationSlice';
 
 import { api } from '../features/auth/authApi';
 

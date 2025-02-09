@@ -1,9 +1,9 @@
 import React, { CSSProperties } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
-import { useGetCategoryList } from 'src/features/category/hooks/useGetCategoryList';
+import { useGetCategoryList } from 'src/features/category/getCategory/hooks/useGetCategoryList';
 import style from './CategoryListPage.module.scss';
 import { CategoryList } from 'src/widgets/CategoryList/CategoryList';
-import AddCategoryButton from 'src/features/category/buttons/AddOperationButton/AddOperationButton';
+import { AddCategoryButton } from 'src/features/category/addCategory/ui/AddCategoryButton';
 
 type ColumnsWidthCSS = CSSProperties & {
   '--columns-width': string;
