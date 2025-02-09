@@ -20,6 +20,9 @@
     --logo-svg: invert(1) brightness(1.5);
     --modal-bg-color: #272727;
     --navlink-bg-color: #727272;
+    --cost-card-bg-color: #6d0000;
+    --profit-card-bg-color: #004b00;
+
   }
 
   @media (prefers-color-scheme: light) {
@@ -34,6 +37,8 @@
       --logo-svg: none;
       --modal-bg-color: #ececec;
       --navlink-bg-color: #b1b1b1;;
+      --cost-card-bg-color: #f3d0d7;
+      --profit-card-bg-color: #daf3d0;
     }
   }
 

@@ -589,7 +589,7 @@ export type AddOperationMutationVariables = Exact<{
 }>;
 
 
-export type AddOperationMutation = { __typename?: 'Mutation', operations: { __typename?: 'OperationMutations', add: { __typename?: 'Cost', id: string } | { __typename?: 'Profit', id: string } } };
+export type AddOperationMutation = { __typename?: 'Mutation', operations: { __typename?: 'OperationMutations', add: { __typename?: 'Cost', id: string, name: string, desc?: string | null, date: any, createdAt: any, updatedAt: any, amount: number, type: string, commandId: string, category: { __typename?: 'Category', id: string, name: string, photo?: string | null, createdAt: any, updatedAt: any, commandId: string } } | { __typename?: 'Profit', id: string, name: string, desc?: string | null, date: any, createdAt: any, updatedAt: any, amount: number, type: string, commandId: string, category: { __typename?: 'Category', id: string, name: string, photo?: string | null, createdAt: any, updatedAt: any, commandId: string } } } };
 
 export type UpdateOperationMutationVariables = Exact<{
   patchId: Scalars['ID']['input'];
@@ -597,7 +597,14 @@ export type UpdateOperationMutationVariables = Exact<{
 }>;
 
 
-export type UpdateOperationMutation = { __typename?: 'Mutation', operations: { __typename?: 'OperationMutations', patch: { __typename?: 'Cost', id: string } | { __typename?: 'Profit', id: string } } };
+export type UpdateOperationMutation = { __typename?: 'Mutation', operations: { __typename?: 'OperationMutations', patch: { __typename?: 'Cost', id: string, name: string, desc?: string | null, date: any, createdAt: any, updatedAt: any, amount: number, type: string, commandId: string, category: { __typename?: 'Category', id: string, name: string, photo?: string | null, createdAt: any, updatedAt: any, commandId: string } } | { __typename?: 'Profit', id: string, name: string, desc?: string | null, date: any, createdAt: any, updatedAt: any, amount: number, type: string, commandId: string, category: { __typename?: 'Category', id: string, name: string, photo?: string | null, createdAt: any, updatedAt: any, commandId: string } } } };
+
+export type RemoveOperationMutationVariables = Exact<{
+  removeId: Scalars['ID']['input'];
+}>;
+
+
+export type RemoveOperationMutation = { __typename?: 'Mutation', operations: { __typename?: 'OperationMutations', remove: { __typename?: 'Cost', id: string } | { __typename?: 'Profit', id: string } } };
 
 export type OperationQueryVariables = Exact<{
   getOneId: Scalars['ID']['input'];
@@ -606,10 +613,17 @@ export type OperationQueryVariables = Exact<{
 
 export type OperationQuery = { __typename?: 'Query', operations: { __typename?: 'OperationQueries', getOne?: { __typename?: 'Cost', id: string, name: string, desc?: string | null, date: any, createdAt: any, updatedAt: any, amount: number, type: string, commandId: string, category: { __typename?: 'Category', id: string, name: string, photo?: string | null, createdAt: any, updatedAt: any, commandId: string } } | { __typename?: 'Profit', id: string, name: string, desc?: string | null, date: any, createdAt: any, updatedAt: any, amount: number, type: string, commandId: string, category: { __typename?: 'Category', id: string, name: string, photo?: string | null, createdAt: any, updatedAt: any, commandId: string } } | null } };
 
-export type OperationsQueryVariables = Exact<{ [key: string]: never; }>;
+export type OperationsQueryVariables = Exact<{
+  input?: InputMaybe<OperationGetManyInput>;
+}>;
 
 
-export type OperationsQuery = { __typename?: 'Query', operations: { __typename?: 'OperationQueries', getMany: { __typename?: 'OperationsResponse', data?: Array<{ __typename?: 'Cost', id: string, name: string, desc?: string | null, date: any, createdAt: any, updatedAt: any, amount: number, type: string, category: { __typename?: 'Category', id: string, name: string, photo?: string | null, createdAt: any, updatedAt: any, commandId: string } } | { __typename?: 'Profit', id: string, name: string, desc?: string | null, date: any, createdAt: any, updatedAt: any, amount: number, type: string, category: { __typename?: 'Category', id: string, name: string, photo?: string | null, createdAt: any, updatedAt: any, commandId: string } } | null> | null } } };
+export type OperationsQuery = { __typename?: 'Query', operations: { __typename?: 'OperationQueries', getMany: { __typename?: 'OperationsResponse', pagination: { __typename?: 'ResponsePagination', pageNumber: number, pageSize: number, total: number }, data?: Array<{ __typename?: 'Cost', id: string, name: string, desc?: string | null, date: any, createdAt: any, updatedAt: any, amount: number, type: string, category: { __typename?: 'Category', id: string, name: string, photo?: string | null, createdAt: any, updatedAt: any, commandId: string } } | { __typename?: 'Profit', id: string, name: string, desc?: string | null, date: any, createdAt: any, updatedAt: any, amount: number, type: string, category: { __typename?: 'Category', id: string, name: string, photo?: string | null, createdAt: any, updatedAt: any, commandId: string } } | null> | null } } };
+
+export type GetBalanceQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetBalanceQuery = { __typename?: 'Query', operations: { __typename?: 'OperationQueries', getMany: { __typename?: 'OperationsResponse', data?: Array<{ __typename?: 'Cost', amount: number, type: string } | { __typename?: 'Profit', amount: number, type: string } | null> | null } } };
 
 export type UpdateMutationVariables = Exact<{
   input: UpdateProfileInput;

@@ -5,6 +5,7 @@
   max-width: 300px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: box-shadow 0.3s ease;
+  background-color: #daf3d0;
 
   &:hover {
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
@@ -17,13 +18,13 @@
 
     .category {
       font-size: 14px;
-      color: #888;
+      // color: #888;
     }
 
     .money-value {
       font-size: 16px;
       font-weight: bold;
-      color: #333;
+      // color: #333;
     }
   }
 
@@ -31,12 +32,18 @@
     .name {
       font-size: 18px;
       margin: 0 0 8px;
-      color: #333;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      // color: #333;
     }
 
     .description {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
       font-size: 14px;
-      color: #666;
+      // color: #666;
     }
   }
 
@@ -66,5 +73,12 @@
       }
     }
   }
+}
 
+.cost {
+  background-color: var(--cost-card-bg-color);
+}
+
+.profit {
+  background-color: var(--profit-card-bg-color);
 }

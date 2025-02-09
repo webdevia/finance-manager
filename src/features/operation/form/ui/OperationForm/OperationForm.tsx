@@ -10,7 +10,7 @@ import ActionButtons from 'src/shared/ui/ActionButtons/ActionButtons';
 import Title from 'src/shared/ui/Title/Title';
 import { normalizeDateString } from 'src/shared/datetime-utils';
 
-import { OperationSchema, OperationSchemaType } from './operation-schema';
+import { OperationSchema, OperationSchemaType } from '../../operationForm.schema';
 
 const costOperationOption: SelectOptionProps = {
   text: 'Cost',
@@ -43,7 +43,7 @@ const OperationForm = ({ onSubmit, initialData }: OperationFromProps) => {
 
   const withReset = (onSubmit: OnSubmit) => (data: OperationSchemaType) => {
     onSubmit(data);
-    reset();
+    reset({});
   };
 
   const isRequired = useIsFieldRequired(OperationSchema);
