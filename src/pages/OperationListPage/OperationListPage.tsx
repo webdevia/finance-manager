@@ -69,7 +69,7 @@ export const OperationListPage: React.FC = () => {
   };
 
   const handleDeleteClick = (id: string) => {
-    deleteOperation(id).then(() => deleteOperationCard(id));
+    return deleteOperation(id).then(() => deleteOperationCard(id));
   };
 
   const getContainerStyle = (visible: boolean): ColumnsWidthCSS => ({

@@ -13,13 +13,13 @@ export type CategoryCardProps = Category & {
 export const CategoryCard: React.FC<CategoryCardProps> = ({ id, name, photo, onEditClick, onDeleteClick }) => {
   return (
     <div className={cn(style['card'])}>
-      <div className={style['card-header']}>
-        <span className={style['category']}></span>
-        <span className={style['money-value']}></span>
-      </div>
+      {photo && (
+        <div className={style['card-image']}>
+          <img src={photo} alt={name} className={style['image']} />
+        </div>
+      )}
       <div className={style['card-body']}>
         <h2 className={style['name']}>{name}</h2>
-        <p className={style['description']}></p>
       </div>
       <LeftRightLayout
         elementsGap="0.5rem"
