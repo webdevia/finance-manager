@@ -25,4 +25,20 @@ export type OperationQuery = {
   };
 };
 
+export type AddOperationMutation = {
+  __typename?: 'Mutation';
+  operations: {
+    __typename?: 'OperationMutations';
+    add: Operation;
+  };
+};
+
+export type UpdateOperationMutation = {
+  __typename?: 'Mutation';
+  operations: {
+    __typename?: 'OperationMutations';
+    patch: Operation;
+  };
+};
+
 export { Operation };

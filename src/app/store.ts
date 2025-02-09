@@ -5,7 +5,7 @@ import appReducer from 'src/features/appSlice';
 import authReducer from 'src/features/auth/authSlice';
 // import profileReducer from 'src/features/profile/profileSlice';
 import passwordReducer from 'src/features/profile/passwordSlice';
-import operationsReducer from 'src/features/operation/operationSlice';
+import lastOperationReducer from 'src/features/operation/lastOperationSlice';
 
 import { api } from '../features/auth/authApi';
 
@@ -13,7 +13,7 @@ const rootReducer = combineReducers({
   auth: authReducer,
   // profile: profileReducer,
   password: passwordReducer,
-  operations: operationsReducer,
+  lastOperation: lastOperationReducer,
   app: appReducer,
   api: api.reducer,
 });

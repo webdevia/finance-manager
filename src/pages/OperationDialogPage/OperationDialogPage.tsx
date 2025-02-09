@@ -12,11 +12,14 @@ import {
   transformOperationToFormData,
 } from 'src/features/operation/form/operationForm.lib';
 
+import { setLastOperation } from 'src/features/operation/lastOperationSlice';
+import { useDispatch } from 'react-redux';
+
 const OperationDialogPage = () => {
   const [isOperationDialogOpen, setIsOperationDialogOpen] = useState(false);
   const [onSubmit, setOnSubmit] = useState<OnSubmit>(() => {});
   const [initialData, setInitialData] = useState<OperationSchemaType | null>(null);
-
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const navigateToOpeartions = useCallback(() => navigate('/operations'), [navigate]);
   const location = useLocation();
@@ -30,9 +33,14 @@ const OperationDialogPage = () => {
 
   const operationId = id ?? '';
 
-  const { addOperation } = useAddOperation();
+  const { addOperation } = useAddOperation({
+    onCompleteHandler: (data) => dispatch(setLastOperation(data)),
+  });
   const { getOperation } = useGetOperation(operationId);
-  const { updateOperation } = useUpdateOperation(operationId);
+  const { updateOperation } = useUpdateOperation({
+    id: operationId,
+    onCompleteHandler: (data) => dispatch(setLastOperation(data)),
+  });
 
   useEffect(() => {
     (async () => {
