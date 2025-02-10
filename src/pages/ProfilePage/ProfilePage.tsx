@@ -1,10 +1,13 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { selectProfile } from 'src/features/profile/selectors';
-import ProfileForm from 'src/shared/ui/Forms/ProfileForm/ProfileForm';
+import { UpdateProfile } from 'src/features/profile/updateProfile/UpdateProfile.ui';
+import style from './Profile.module.scss';
+import { UpdatePassword } from 'src/features/password/updatePassword/ui/UpdatePassword';
 
 export const ProfilePage = () => {
-  const { profile } = useSelector(selectProfile);
-
-  return <ProfileForm profileInitialData={{ name: profile.name, description: profile.description }} />;
+  return (
+    <div className={style.container}>
+      <UpdateProfile />
+      <UpdatePassword />
+    </div>
+  );
 };

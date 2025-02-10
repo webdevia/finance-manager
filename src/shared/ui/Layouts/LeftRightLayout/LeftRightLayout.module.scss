@@ -2,6 +2,7 @@
   display: flex;
   justify-content: space-between;
   gap: var(--layout-blocks-gap, 5px);
+  align-items: var(--layout-vertical-align);
 
   > div {
     display: flex;

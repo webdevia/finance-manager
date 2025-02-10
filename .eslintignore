@@ -1,3 +1,4 @@
 node_modules
 build
 dist
+src/shared/api/types/generated.dto.types.ts

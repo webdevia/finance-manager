@@ -8,9 +8,11 @@ import { GenericLayout } from 'src/widgets/Layout/GenericLayout';
 import { OperationListPage } from 'src/pages/OperationListPage/OperationListPage';
 import OperationDialogPage from 'src/pages/OperationDialogPage/OperationDialogPage';
 import { selectIsAuth } from 'src/features/auth/selectors';
-import { selectIsAdmin } from 'src/features/profile/selectors';
-import SignUpFormRTK from 'src/features/auth/ui/SignUpFormRTK';
-import SignUpFormFetch from 'src/features/auth/ui/SignUpFormFetch';
+import { SignUpPage } from 'src/pages/SignUpPage/SignUpPage';
+import ErrorBoundary from './ErrorBoundary';
+import { CategoryListPage } from 'src/pages/CategoryListPage/CategoryListPage';
+import CategoryDialogPage from 'src/pages/CategoryDialogPage/CategoryDialogPage';
+import { ThemeProvider } from './ThemeProvider';
 
 const NavigateToSignIn = () => <Navigate to="/signin" replace />;
 
@@ -24,14 +26,14 @@ export const ProtectedRoute: React.FC = () => {
   return <Outlet />;
 };
 
-export const ProtectedAdminRoute: React.FC = () => {
-  const isAdmin = useSelector(selectIsAdmin);
+const HomePageWrapper: React.FC = () => {
+  const isAuthenticated = useSelector(selectIsAuth);
 
-  if (!isAdmin) {
-    return <NavigateToSignIn />;
+  if (isAuthenticated) {
+    return <Navigate to="/operations" replace />;
   }
 
-  return <Outlet />;
+  return <HomePage />;
 };
 
 const SignInWrapper: React.FC = () => {
@@ -47,12 +49,17 @@ const SignInWrapper: React.FC = () => {
 const router = createHashRouter([
   {
     path: '/',
-    element: <GenericLayout />,
+    element: (
+      <ErrorBoundary>
+        <ThemeProvider>
+          <GenericLayout />
+        </ThemeProvider>
+      </ErrorBoundary>
+    ),
     children: [
-      { index: true, element: <HomePage /> },
+      { index: true, element: <HomePageWrapper /> },
       { path: 'signin', element: <SignInWrapper /> },
-      { path: 'signuprtk', element: <SignUpFormRTK /> },
-      { path: 'signupfetch', element: <SignUpFormFetch /> },
+      { path: 'signup', element: <SignUpPage /> },
       {
         element: <ProtectedRoute />,
         children: [
@@ -61,13 +68,16 @@ const router = createHashRouter([
             path: 'operations',
             element: <OperationListPage />,
             children: [
-              {
-                element: <ProtectedAdminRoute />,
-                children: [
-                  { path: 'add', element: <OperationDialogPage /> },
-                  { path: ':id/edit', element: <OperationDialogPage /> },
-                ],
-              },
+              { path: 'add', element: <OperationDialogPage /> },
+              { path: ':id/edit', element: <OperationDialogPage /> },
+            ],
+          },
+          {
+            path: 'categories',
+            element: <CategoryListPage />,
+            children: [
+              { path: 'add', element: <CategoryDialogPage /> },
+              { path: ':id/edit', element: <CategoryDialogPage /> },
             ],
           },
         ],

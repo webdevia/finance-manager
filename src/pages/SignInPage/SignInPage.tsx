@@ -1,21 +1,18 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { fakeAuth } from 'src/shared/services/authService';
+import { SignInForm } from 'src/features/auth/signIn/ui/SignInForm';
 import { setToken } from 'src/features/auth/authSlice';
-import { setProfile } from 'src/features/profile/profileSlice';
-import SignInForm, { OnSubmit } from 'src/shared/ui/Forms/SignInForm/SignInForm';
+import { AppDispatch } from 'src/app/store';
 
 export const SignInPage = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
 
-  const onLogin: OnSubmit = (data) =>
-    fakeAuth(data.email, data.password).then((user) => {
-      dispatch(setToken(user.token));
-      dispatch(setProfile(user));
-      navigate('/operations');
-    });
+  const onLogin = (token: string) => {
+    dispatch(setToken(token));
+    navigate('/');
+  };
 
-  return <SignInForm onSubmit={onLogin} />;
+  return <SignInForm onSignIn={onLogin} />;
 };

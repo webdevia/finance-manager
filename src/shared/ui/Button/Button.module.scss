@@ -16,8 +16,7 @@
 
   &:hover {
     &:not([disabled]) {
-      // background-color: #0066d3;
-      filter: brightness(0.95);
+      filter: brightness(0.9);
     }
   }
 
@@ -30,4 +29,8 @@
 .stretch {
   display: block;
   width: 100%;
+}
+
+.small {
+  font-size: 0.8rem;
 }

@@ -1,58 +1,124 @@
-import React, { CSSProperties } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { CSSProperties, useCallback, useEffect, useRef, useState } from 'react';
 import { OperationList } from 'src/widgets/OperationList/OperationList';
-import { createRandomOperation } from 'src/entities/operation/Operation';
-import AddOperationButton from 'src/features/AddOperationButton/AddOperationButton';
+import { AddOperationButton } from 'src/features/operation/addOperation/ui/AddOperationButton';
 import { Outlet, useNavigate } from 'react-router-dom';
-import Button from 'src/shared/ui/Button/Button';
-import { addOperation } from 'src/features/operation/operationSlice';
-import { selectIsAdmin } from 'src/features/profile/selectors';
+import { useGetOperationList } from 'src/features/operation/getOperation/hooks/useGetOperationList';
+import { AddRandomOperationButton } from 'src/features/operation/addOperation/ui/AddRandomOperationButton';
+import { useDeleteOperation } from 'src/features/operation/deleteOperation/hooks/useDeleteOperation';
+import { Operation } from 'src/entities/operation/operation.types';
+import { Balance } from 'src/features/balance/ui/Balance/Balance';
+import { useDispatch, useSelector } from 'react-redux';
+import { setUpdatedOperation } from 'src/features/operation/updateOperation/slices/updatedOperationSlice';
+import { RootState } from 'src/app/store';
+import { useGetLazyOperationList } from 'src/features/operation/getOperation/hooks/useGetLazyOperationList';
 import style from './OperationListPage.module.scss';
-import { selectOperations } from 'src/features/operation/selectors';
 
 type ColumnsWidthCSS = CSSProperties & {
   '--columns-width': string;
 };
 
-const Sidebar = () => {
-  const dispatch = useDispatch();
+type SidebarProps = {
+  children?: React.ReactNode;
+};
 
-  const handleAddRandomOperation = () => {
-    const newOperation = createRandomOperation(new Date().toISOString());
-    dispatch(addOperation(newOperation));
-  };
-
-  const handleAddNr = (count: number) => () => {
-    [...Array(count)].forEach(() => handleAddRandomOperation());
-  };
-
-  return (
-    <div className={style.sidebar}>
-      <AddOperationButton />
-      <Button onClick={handleAddRandomOperation}>Add random operation</Button>
-      <Button onClick={handleAddNr(100)}>Add 100 operations</Button>
-    </div>
-  );
+const Sidebar = ({ children }: SidebarProps) => {
+  return <div className={style.sidebar}>{children}</div>;
 };
 
 export const OperationListPage: React.FC = () => {
+  const [page, setPage] = useState(1);
+  const [operationList, setOperationList] = useState<Operation[]>(() => []);
+  const { updatedOperation: lastOperation } = useSelector((state: RootState) => state.updatedOperation);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { operations } = useSelector(selectOperations);
-  const isAdmin = useSelector(selectIsAdmin);
+  const { operations, pagination, loading } = useGetOperationList({
+    pageNr: page,
+  });
+  const { getLazyOperations, loading: lazyLoading } = useGetLazyOperationList();
+  const { deleteOperation } = useDeleteOperation();
 
-  const onEditClick = (id: string) => {
+  function addOperationCards(data: Operation[]) {
+    setOperationList((prev) => [...prev, ...data.filter((dataEl) => !prev.some((prevEl) => prevEl.id === dataEl.id))]);
+  }
+
+  useEffect(() => {
+    if (operations.length > 0) {
+      addOperationCards(operations);
+    }
+  }, [operations]);
+
+  useEffect(() => {
+    if (lastOperation?.id) {
+      setOperationList((prev) => {
+        const index = prev.findIndex((item) => item.id === lastOperation.id);
+        const newOperationList = [...prev];
+        const replaceOperation = () => {
+          newOperationList.splice(index, 1, lastOperation);
+          return newOperationList;
+        };
+        const addOperation = () => {
+          newOperationList.push(lastOperation);
+          return newOperationList;
+        };
+        return index > -1 ? replaceOperation() : addOperation();
+      });
+      dispatch(setUpdatedOperation(null));
+    }
+  }, [lastOperation, dispatch]);
+
+  const deleteOperationCard = (id: string) => {
+    setOperationList((prev) => prev.filter((card) => card.id !== id));
+  };
+
+  const addOperationCard = (operation: Operation) => {
+    setOperationList((prev) => [...prev, operation]);
+  };
+
+  const handleEditClick = (id: string) => {
     navigate(`${id}/edit`);
+  };
+
+  const handleDeleteClick = (id: string) => {
+    return deleteOperation(id)
+      .then(() => deleteOperationCard(id))
+      .then(() => getLazyOperations(page))
+      .then(({ operations }) => {
+        addOperationCards(operations);
+      });
   };
 
   const getContainerStyle = (visible: boolean): ColumnsWidthCSS => ({
     '--columns-width': visible ? '250px 1fr' : '1fr',
   });
 
+  const observer = useRef<IntersectionObserver | null>(null);
+
+  const lastOperationRef = useCallback(
+    (node: HTMLDivElement) => {
+      observer.current && observer.current.disconnect();
+      observer.current = new IntersectionObserver((items) => {
+        if (pagination) {
+          items[0].isIntersecting &&
+            pagination.pageNumber * pagination.pageSize < pagination.total &&
+            setPage((prev) => prev + 1);
+        }
+      });
+      node && observer.current.observe(node);
+    },
+    [pagination]
+  );
+
   return (
-    <div className={style.container} style={getContainerStyle(isAdmin)}>
-      {isAdmin && <Sidebar />}
+    <div className={style.container} style={getContainerStyle(true)}>
+      <Sidebar>
+        <AddOperationButton />
+        <AddRandomOperationButton onCompleteHandler={addOperationCard} />
+        <Balance />
+        <div>{`${pagination?.pageNumber} ${pagination?.pageSize} ${pagination?.total}`}</div>
+      </Sidebar>
       <div className={style['operation-list']}>
-        <OperationList operations={operations} onEdit={isAdmin && onEditClick} />
+        <OperationList operations={operationList} onEdit={handleEditClick} onDelete={handleDeleteClick} />
+        <div ref={lastOperationRef}>{(loading || lazyLoading) && 'LOADING...'}</div>
       </div>
       <Outlet />
     </div>

@@ -17,7 +17,7 @@ export type TitleProps = {
 };
 
 const Title = ({ children, transform, full }: TitleProps) => {
-  const titleTransformStyle: TitleCSS = { '--title-transform': transform };
+  const titleTransformStyle: TitleCSS = { '--title-transform': transform || 'uppercase' };
 
   return (
     <h2 className={cn(s.title, { [shortStyle.short]: !full })} style={titleTransformStyle}>

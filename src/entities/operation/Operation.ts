@@ -154,7 +154,7 @@ const createRandomCategory = (): Category => {
   return { id, name, photo };
 };
 
-type Category = {
+export type Category = {
   id: string;
   name: string;
   photo?: string;
@@ -163,8 +163,10 @@ type Category = {
 export type AbstractOperation = {
   id: string;
   name: string;
-  description?: string;
+  desc?: string;
   date: string;
+  createdAt: string;
+  updatedAt: string;
   amount: number;
   category: Category;
 };
@@ -182,18 +184,22 @@ export const createRandomCost = (date: string): Cost => {
   const id = getRandomId();
   const name = getRandomProduct();
   const quality = getRandomQuality();
-  const description = `${quality} ${name}`;
+  const desc = `${quality} ${name}`;
   const amount = getRandomNumber(1, 10);
   const category = createRandomCategory();
-  return { id, name, description, date, amount, category, type: 'Cost' };
+  const createdAt = date;
+  const updatedAt = date;
+  return { id, name, desc, date, amount, category, createdAt, updatedAt, type: 'Cost' };
 };
 
 export const createRandomProfit = (date: string): Profit => {
   const id = getRandomId();
   const name = getRandomProduct();
   const quality = getRandomQuality();
-  const description = `${quality} ${name}`;
+  const desc = `${quality} ${name}`;
   const amount = getRandomNumber(1, 10);
   const category = createRandomCategory();
-  return { id, name, description, date, amount, category, type: 'Profit' };
+  const createdAt = date;
+  const updatedAt = date;
+  return { id, name, desc, date, amount, category, createdAt, updatedAt, type: 'Profit' };
 };

@@ -3,7 +3,9 @@
     font-weight: bold;
 
     &.required {
-      color: red;
+      &::after {
+        content: " *";
+      }
     }
       
   }

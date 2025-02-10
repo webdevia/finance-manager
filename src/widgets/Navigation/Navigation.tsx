@@ -1,10 +1,12 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { SignOutButton } from 'src/features/SignOutButton/SignOutButton';
+import { SignOutButton } from 'src/features/auth/signOut/ui/SignOutButton';
 import { useSelector } from 'react-redux';
 import { RootState } from 'src/app/store';
 
 import style from './navigation.module.scss';
+import { DarkThemeButton } from 'src/features/theme/changeTheme/DarkThemeButton/DarkThemeButton';
+import { LightThemeButton } from 'src/features/theme/changeTheme/LightThemeButton/LightThemeButton';
 
 export const getNavLinkStyle = ({ isActive }: { isActive: boolean }) => {
   return {
@@ -18,29 +20,31 @@ export const Navigation = () => {
 
   return (
     <>
-      <NavLink to={'/'} className={style['nav-btn']} style={getNavLinkStyle} end>
-        Home
-      </NavLink>
       {isAuthenticated ? (
         <>
-          <NavLink to={'/profile'} className={style['nav-btn']} style={getNavLinkStyle}>
-            Profile
-          </NavLink>
           <NavLink to={'/operations'} className={style['nav-btn']} style={getNavLinkStyle}>
             Operations
           </NavLink>
+          <NavLink to={'/categories'} className={style['nav-btn']} style={getNavLinkStyle}>
+            Categories
+          </NavLink>
+          <NavLink to={'/profile'} className={style['nav-btn']} style={getNavLinkStyle}>
+            Profile
+          </NavLink>
           <SignOutButton className={style['nav-btn']} />
+          <DarkThemeButton className={style['nav-btn']} />
+          <LightThemeButton className={style['nav-btn']} />
         </>
       ) : (
         <>
+          <NavLink to={'/'} className={style['nav-btn']} style={getNavLinkStyle} end>
+            Home
+          </NavLink>
           <NavLink to={'/signin'} className={style['nav-btn']} style={getNavLinkStyle}>
             Sign In
           </NavLink>
-          <NavLink to={'/signuprtk'} className={style['nav-btn']} style={getNavLinkStyle}>
-            Sign Up RTK
-          </NavLink>
-          <NavLink to={'/signupfetch'} className={style['nav-btn']} style={getNavLinkStyle}>
-            Sign Up Fetch
+          <NavLink to={'/signup'} className={style['nav-btn']} style={getNavLinkStyle}>
+            Sign Up
           </NavLink>
         </>
       )}
