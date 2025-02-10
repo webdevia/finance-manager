@@ -14,7 +14,5 @@ export const SignUpPage = () => {
     navigate('/');
   };
 
-  return (
-    <SignUpForm onSignUp={onLogin} />
-  );
+  return <SignUpForm onSignUp={onLogin} />;
 };

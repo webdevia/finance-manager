@@ -6,7 +6,7 @@ import InputField from 'src/shared/ui/Forms/FormFields/InputField/InputField';
 import Button from 'src/shared/ui/Button/Button';
 import ActionButtons from 'src/shared/ui/ActionButtons/ActionButtons';
 import Title from 'src/shared/ui/Title/Title';
-import { PasswordSchema, PasswordSchemaType } from '../contracts/updatePasswordContract';
+import { PasswordSchema, PasswordSchemaType } from './updatePassword.schema';
 import { PasswordErrorableField, useUpdatePassword } from '../hooks/useUpdatePassword';
 import { HandledError } from 'src/shared/api/errors/errors';
 import { ErrorLabel } from 'src/shared/ui/ErrorLabel/ErrorLabel';

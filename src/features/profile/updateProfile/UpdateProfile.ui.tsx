@@ -47,7 +47,7 @@ export const UpdateProfile: React.FC = () => {
     getProfile().then((data) => {
       data && reset(data as ProfileSchemaType);
     });
-  }, [getProfile, reset]);
+  }, [reset]);
 
   const onSubmit: SubmitHandler<ProfileSchemaType> = async (data) => {
     setSuccess(false);

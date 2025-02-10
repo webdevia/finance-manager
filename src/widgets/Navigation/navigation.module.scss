@@ -1,12 +1,13 @@
 .nav-btn {
   padding: 1rem 0.75rem;
   font-size: 1rem;
-  background-color: var(--navlink-bg-color);
+  //background-color: var(--navlink-bg-color);
+  background-color: var(--background-color);
   line-height: 1.5;
   cursor: pointer;
   user-select: none;
   text-decoration: none;
-  color: inherit;
+  color: var(--color);
 
   &:active {
     opacity: 0.85;

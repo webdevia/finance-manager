@@ -12,6 +12,7 @@ import { SignUpPage } from 'src/pages/SignUpPage/SignUpPage';
 import ErrorBoundary from './ErrorBoundary';
 import { CategoryListPage } from 'src/pages/CategoryListPage/CategoryListPage';
 import CategoryDialogPage from 'src/pages/CategoryDialogPage/CategoryDialogPage';
+import { ThemeProvider } from './ThemeProvider';
 
 const NavigateToSignIn = () => <Navigate to="/signin" replace />;
 
@@ -50,7 +51,9 @@ const router = createHashRouter([
     path: '/',
     element: (
       <ErrorBoundary>
-        <GenericLayout />
+        <ThemeProvider>
+          <GenericLayout />
+        </ThemeProvider>
       </ErrorBoundary>
     ),
     children: [

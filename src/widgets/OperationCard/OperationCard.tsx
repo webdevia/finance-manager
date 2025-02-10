@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import style from './OperationCard.module.scss';
-import cn from 'clsx';
 import { Operation } from 'src/entities/operation/operation.types';
 import LeftRightLayout from 'src/shared/ui/Layouts/LeftRightLayout/LeftRightLayout';
 import Button from 'src/shared/ui/Button/Button';
 import { normalizeDateString } from 'src/shared/utils/datetimeUtils';
+import cn from 'clsx';
+import style from './OperationCard.module.scss';
 
 export type OperationCardProps = Operation & {
   onEditClick?: (id: string) => void;
@@ -40,7 +40,7 @@ export const OperationCard: React.FC<OperationCardProps> = ({
       )}
       <div className={style['card-header']}>
         <span className={style['category']}>{category.name}</span>
-        <span className={style['money-value']}>{amount}</span>
+        <span className={style['money-value']}>{amount} RUB</span>
       </div>
       <div className={style['card-body']}>
         <h2 className={style['name']}>{name}</h2>

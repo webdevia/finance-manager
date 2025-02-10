@@ -1,11 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { combineReducers } from 'redux';
 
-import appReducer from 'src/features/appSlice';
+import appReducer from 'src/app/slices/appSlice';
 import authReducer from 'src/features/auth/authSlice';
 // import profileReducer from 'src/features/profile/profileSlice';
 import passwordReducer from 'src/features/profile/passwordSlice';
-import lastOperationReducer from 'src/features/operation/updateOperation/slices/updatedOperationSlice';
+import updatedOperationReducer from 'src/features/operation/updateOperation/slices/updatedOperationSlice';
 
 import { api } from '../features/auth/authApi';
 
@@ -13,7 +13,7 @@ const rootReducer = combineReducers({
   auth: authReducer,
   // profile: profileReducer,
   password: passwordReducer,
-  lastOperation: lastOperationReducer,
+  updatedOperation: updatedOperationReducer,
   app: appReducer,
   api: api.reducer,
 });
