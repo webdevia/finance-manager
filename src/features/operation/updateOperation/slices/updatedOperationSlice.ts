@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { Operation } from 'src/entities/operation/operation.types';
+import { Operation } from 'src/entities/operation/types/operation.types';
 
 interface UpdatedOperation {
   updatedOperation: Operation | null;

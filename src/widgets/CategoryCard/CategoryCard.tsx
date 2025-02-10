@@ -1,6 +1,6 @@
 import React from 'react';
 import cn from 'clsx';
-import { Category } from 'src/entities/category/category.types';
+import { Category } from 'src/entities/category/types/category.types';
 import LeftRightLayout from 'src/shared/ui/Layouts/LeftRightLayout/LeftRightLayout';
 import Button from 'src/shared/ui/Button/Button';
 import style from './CetegoryCard.module.scss';

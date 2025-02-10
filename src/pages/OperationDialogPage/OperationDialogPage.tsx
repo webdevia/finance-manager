@@ -3,7 +3,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { OperationForm, OnSubmit } from 'src/features/operation/updateOperation/ui/OperationForm';
 import Modal from 'src/shared/ui/Modal/Modal';
 import { useAddOperation } from 'src/features/operation/addOperation/hooks/useAddOperation';
-import { OperationAddInput, OperationUpdateInput } from 'src/entities/operation/operation.types';
+import { OperationAddInput, OperationUpdateInput } from 'src/entities/operation/types/operation.types';
 import { useGetOperation } from 'src/features/operation/getOperation/hooks/useGetOperation';
 import { OperationSchemaType } from 'src/features/operation/updateOperation/ui/OperationForm/operationForm.schema';
 import { useUpdateOperation } from 'src/features/operation/updateOperation/hooks/useUpdateOperation';

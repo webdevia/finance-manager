@@ -9,7 +9,7 @@ import {
   transformFormDataToCategoryInput,
 } from 'src/features/category/updateCategory/lib/transformCategory.lib';
 import { CategorySchemaType } from 'src/features/category/updateCategory/ui/CategoryForm/categoryForm.schema';
-import { CategoryAddInput, CategoryUpdateInput } from 'src/entities/category/category.types';
+import { CategoryAddInput, CategoryUpdateInput } from 'src/entities/category/types/category.types';
 import { CategoryForm, OnSubmit } from 'src/features/category/updateCategory/ui/CategoryForm';
 
 const CategoryDialogPage = () => {

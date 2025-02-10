@@ -1,7 +1,7 @@
 import { ApolloError, useMutation } from '@apollo/client';
-import { ADD_CATEGORY } from 'src/entities/category/api/category.mutations';
-import { GET_CATEGORY_LIST } from 'src/entities/category/api/category.queries';
-import { AddCategoryMutation, CategoryAddInput } from 'src/entities/category/category.types';
+import { ADD_CATEGORY } from '../api/addCategory.mutations';
+import { GET_CATEGORY_LIST } from 'src/features/category/getCategory/api/getCategory.queries';
+import { AddCategoryMutation, CategoryAddInput } from 'src/entities/category/types/category.types';
 import { ErrorFieldsMap, handleApolloError, handleUnknownError } from 'src/shared/api/errors/errors';
 
 export type CategoryErrorableField = 'name';

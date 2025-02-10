@@ -13,6 +13,14 @@ import ErrorBoundary from './ErrorBoundary';
 import { CategoryListPage } from 'src/pages/CategoryListPage/CategoryListPage';
 import CategoryDialogPage from 'src/pages/CategoryDialogPage/CategoryDialogPage';
 import { ThemeProvider } from './ThemeProvider';
+import { ApolloProvider } from '@apollo/client';
+import { StoreProvider } from './StoreProvider';
+import { AuthProvider } from './AuthProvider';
+import { tokenStorage } from 'src/shared/storage/tokenStorage';
+import createGraphqlClient from 'src/shared/api/client';
+import { store } from '../store';
+
+export const graphqlClient = createGraphqlClient(tokenStorage);
 
 const NavigateToSignIn = () => <Navigate to="/signin" replace />;
 
@@ -51,9 +59,15 @@ const router = createHashRouter([
     path: '/',
     element: (
       <ErrorBoundary>
-        <ThemeProvider>
-          <GenericLayout />
-        </ThemeProvider>
+        <ApolloProvider client={graphqlClient}>
+          <StoreProvider store={store}>
+            <ThemeProvider>
+              <AuthProvider>
+                <GenericLayout />
+              </AuthProvider>
+            </ThemeProvider>
+          </StoreProvider>
+        </ApolloProvider>
       </ErrorBoundary>
     ),
     children: [

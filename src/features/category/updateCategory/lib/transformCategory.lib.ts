@@ -1,4 +1,4 @@
-import { Category, CategoryAddInput } from 'src/entities/category/category.types';
+import { Category, CategoryAddInput } from 'src/entities/category/types/category.types';
 import { CategorySchemaType } from '../ui/CategoryForm/categoryForm.schema';
 
 export const transformCategoryToFormData = (category: Category): CategorySchemaType => ({

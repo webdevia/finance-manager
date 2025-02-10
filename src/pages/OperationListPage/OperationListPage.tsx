@@ -5,8 +5,8 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import { useGetOperationList } from 'src/features/operation/getOperation/hooks/useGetOperationList';
 import { AddRandomOperationButton } from 'src/features/operation/addOperation/ui/AddRandomOperationButton';
 import { useDeleteOperation } from 'src/features/operation/deleteOperation/hooks/useDeleteOperation';
-import { Operation } from 'src/entities/operation/operation.types';
-import { Balance } from 'src/features/balance/ui/Balance/Balance';
+import { Operation } from 'src/entities/operation/types/operation.types';
+import { Balance } from 'src/features/balance/getBalance/ui/Balance/Balance';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUpdatedOperation } from 'src/features/operation/updateOperation/slices/updatedOperationSlice';
 import { RootState } from 'src/app/store';
@@ -114,7 +114,6 @@ export const OperationListPage: React.FC = () => {
         <AddOperationButton />
         <AddRandomOperationButton onCompleteHandler={addOperationCard} />
         <Balance />
-        <div>{`${pagination?.pageNumber} ${pagination?.pageSize} ${pagination?.total}`}</div>
       </Sidebar>
       <div className={style['operation-list']}>
         <OperationList operations={operationList} onEdit={handleEditClick} onDelete={handleDeleteClick} />

@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { graphqlClient as client } from 'src/app/providers';
+import { graphqlClient as client } from 'src/app/providers/RouterProvider';
 import { ApolloError } from '@apollo/client';
 import { tokenStorage } from 'src/shared/storage/tokenStorage';
 

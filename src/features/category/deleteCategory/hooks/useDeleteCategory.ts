@@ -1,6 +1,6 @@
 import { ApolloError, useMutation } from '@apollo/client';
-import { REMOVE_CATEGORY } from 'src/entities/category/api/category.mutations';
-import { GET_CATEGORY_LIST } from 'src/entities/category/api/category.queries';
+import { REMOVE_CATEGORY } from '../api/deleteCategory.mutations';
+import { GET_CATEGORY_LIST } from 'src/features/category/getCategory/api/getCategory.queries';
 import { ErrorFieldsMap, handleApolloError, handleUnknownError } from 'src/shared/api/errors/errors';
 
 export type CategoryErrorableField = 'name';

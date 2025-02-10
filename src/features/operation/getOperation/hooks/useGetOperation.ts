@@ -1,6 +1,6 @@
 import { useLazyQuery } from '@apollo/client';
-import { GET_OPERATION } from 'src/entities/operation/api/operation.queries';
-import { OperationQuery, Operation } from 'src/entities/operation/operation.types';
+import { GET_OPERATION } from '../api/getOperation.query';
+import { OperationQuery, Operation } from 'src/entities/operation/types/operation.types';
 
 export const useGetOperation = (id: string) => {
   const [getOperation, { loading, error }] = useLazyQuery<OperationQuery>(GET_OPERATION, {

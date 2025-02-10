@@ -1,4 +1,4 @@
-import { Operation, OperationAddInput, OperationType } from 'src/entities/operation/operation.types';
+import { Operation, OperationAddInput, OperationType } from 'src/entities/operation/types/operation.types';
 import { OperationSchemaType } from '../ui/OperationForm/operationForm.schema';
 
 export const transformOperationToFormData = (operation: Operation): OperationSchemaType => ({

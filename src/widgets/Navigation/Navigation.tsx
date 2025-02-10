@@ -19,35 +19,39 @@ export const Navigation = () => {
   const isAuthenticated = !!token;
 
   return (
-    <>
-      {isAuthenticated ? (
-        <>
-          <NavLink to={'/operations'} className={style['nav-btn']} style={getNavLinkStyle}>
-            Operations
-          </NavLink>
-          <NavLink to={'/categories'} className={style['nav-btn']} style={getNavLinkStyle}>
-            Categories
-          </NavLink>
-          <NavLink to={'/profile'} className={style['nav-btn']} style={getNavLinkStyle}>
-            Profile
-          </NavLink>
-          <SignOutButton className={style['nav-btn']} />
-          <DarkThemeButton className={style['nav-btn']} />
-          <LightThemeButton className={style['nav-btn']} />
-        </>
-      ) : (
-        <>
-          <NavLink to={'/'} className={style['nav-btn']} style={getNavLinkStyle} end>
-            Home
-          </NavLink>
-          <NavLink to={'/signin'} className={style['nav-btn']} style={getNavLinkStyle}>
-            Sign In
-          </NavLink>
-          <NavLink to={'/signup'} className={style['nav-btn']} style={getNavLinkStyle}>
-            Sign Up
-          </NavLink>
-        </>
-      )}
-    </>
+    <div className={style.gap}>
+      <div className={style['inner-block']}>
+        {isAuthenticated ? (
+          <>
+            <NavLink to={'/operations'} className={style['nav-btn']} style={getNavLinkStyle}>
+              Operations
+            </NavLink>
+            <NavLink to={'/categories'} className={style['nav-btn']} style={getNavLinkStyle}>
+              Categories
+            </NavLink>
+            <NavLink to={'/profile'} className={style['nav-btn']} style={getNavLinkStyle}>
+              Profile
+            </NavLink>
+            <SignOutButton className={style['nav-btn']} />
+          </>
+        ) : (
+          <>
+            <NavLink to={'/'} className={style['nav-btn']} style={getNavLinkStyle} end>
+              Home
+            </NavLink>
+            <NavLink to={'/signin'} className={style['nav-btn']} style={getNavLinkStyle}>
+              Sign In
+            </NavLink>
+            <NavLink to={'/signup'} className={style['nav-btn']} style={getNavLinkStyle}>
+              Sign Up
+            </NavLink>
+          </>
+        )}
+      </div>
+      <div className={style['inner-block']}>
+        <DarkThemeButton className={style['nav-btn']} />
+        <LightThemeButton className={style['nav-btn']} />
+      </div>
+    </div>
   );
 };

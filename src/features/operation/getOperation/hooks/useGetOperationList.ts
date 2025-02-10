@@ -1,6 +1,6 @@
 import { useQuery } from '@apollo/client';
-import { GET_OPERATION_LIST } from 'src/entities/operation/api/operation.queries';
-import { OperationsQuery, Operation } from 'src/entities/operation/operation.types';
+import { GET_OPERATION_LIST } from '../api/getOperation.query';
+import { OperationsQuery, Operation } from 'src/entities/operation/types/operation.types';
 
 type UseGetOperationList = {
   pageNr: number;

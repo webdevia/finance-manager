@@ -1,6 +1,6 @@
 import { useQuery } from '@apollo/client';
-import { GET_CATEGORY_LIST } from 'src/entities/category/api/category.queries';
-import { CategoriesQuery } from 'src/entities/category/category.types';
+import { GET_CATEGORY_LIST } from '../api/getCategory.queries';
+import { CategoriesQuery } from 'src/entities/category/types/category.types';
 
 export const useGetCategoryList = () => {
   const { data, loading, error } = useQuery<CategoriesQuery>(GET_CATEGORY_LIST);
