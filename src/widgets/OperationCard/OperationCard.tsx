@@ -40,7 +40,7 @@ export const OperationCard: React.FC<OperationCardProps> = ({
       )}
       <div className={style['card-header']}>
         <span className={style['category']}>{category.name}</span>
-        <span className={style['money-value']}>{amount} RUB</span>
+        <span className={style['money-value']}>{amount}</span>
       </div>
       <div className={style['card-body']}>
         <h2 className={style['name']}>{name}</h2>
