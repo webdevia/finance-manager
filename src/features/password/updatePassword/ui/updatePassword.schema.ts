@@ -1,10 +1,12 @@
 import { z } from 'zod';
 
+const requiredField = z.string().min(1, 'Required field');
+
 export const PasswordSchema = z
   .object({
-    password: z.string().nonempty(),
-    newPassword: z.string().nonempty(),
-    newPasswordConfirm: z.string().nonempty(),
+    password: requiredField,
+    newPassword: requiredField,
+    newPasswordConfirm: requiredField,
   })
   .refine((data) => data.newPassword === data.newPasswordConfirm, {
     message: 'Passwords do not match',

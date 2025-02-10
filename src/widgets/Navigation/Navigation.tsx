@@ -5,6 +5,8 @@ import { useSelector } from 'react-redux';
 import { RootState } from 'src/app/store';
 
 import style from './navigation.module.scss';
+import { DarkThemeButton } from 'src/features/theme/changeTheme/DarkThemeButton/DarkThemeButton';
+import { LightThemeButton } from 'src/features/theme/changeTheme/LightThemeButton/LightThemeButton';
 
 export const getNavLinkStyle = ({ isActive }: { isActive: boolean }) => {
   return {
@@ -30,6 +32,8 @@ export const Navigation = () => {
             Profile
           </NavLink>
           <SignOutButton className={style['nav-btn']} />
+          <DarkThemeButton className={style['nav-btn']} />
+          <LightThemeButton className={style['nav-btn']} />
         </>
       ) : (
         <>

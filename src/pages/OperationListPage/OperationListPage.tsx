@@ -28,7 +28,7 @@ const Sidebar = ({ children }: SidebarProps) => {
 export const OperationListPage: React.FC = () => {
   const [page, setPage] = useState(1);
   const [operationList, setOperationList] = useState<Operation[]>(() => []);
-  const { updatedOperation: lastOperation } = useSelector((state: RootState) => state.lastOperation);
+  const { updatedOperation: lastOperation } = useSelector((state: RootState) => state.updatedOperation);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { operations, pagination, loading } = useGetOperationList({

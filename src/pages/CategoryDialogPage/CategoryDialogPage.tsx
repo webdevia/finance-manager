@@ -36,7 +36,7 @@ const CategoryDialogPage = () => {
       const newCategory: CategoryAddInput = transformFormDataToCategoryInput(data);
       addCategory(newCategory).then(() => navigateToCategories());
     },
-    [navigateToCategories, addCategory]
+    [navigateToCategories]
   );
 
   const handleUpdateOperation = useCallback<OnSubmit>(
@@ -44,7 +44,7 @@ const CategoryDialogPage = () => {
       const updatedCategory: CategoryUpdateInput = transformFormDataToCategoryInput(data);
       updateCategory(updatedCategory).then(() => navigateToCategories());
     },
-    [navigateToCategories, updateCategory]
+    [navigateToCategories]
   );
 
   useEffect(() => {
@@ -69,7 +69,7 @@ const CategoryDialogPage = () => {
         navigateToCategories();
       }
     })();
-  }, [categoryId, canBeProcessed, getCategory, handleAddCategory, handleUpdateOperation, navigateToCategories]);
+  }, [categoryId, canBeProcessed, handleAddCategory, handleUpdateOperation, navigateToCategories]);
 
   return (
     <Modal visible={isOperationDialogOpen} onClose={navigateToCategories}>

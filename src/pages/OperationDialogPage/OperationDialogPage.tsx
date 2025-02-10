@@ -44,7 +44,7 @@ const OperationDialogPage = () => {
       const newOperation: OperationAddInput = transformFormDataToOpearionInput(data);
       addOperation(newOperation).then(() => navigateToOpeartions());
     },
-    [navigateToOpeartions, addOperation]
+    [navigateToOpeartions]
   );
 
   const handleUpdateOperation = useCallback<OnSubmit>(
@@ -52,7 +52,7 @@ const OperationDialogPage = () => {
       const updatedOperation: OperationUpdateInput = transformFormDataToOpearionInput(data);
       updateOperation(updatedOperation).then(() => navigateToOpeartions());
     },
-    [navigateToOpeartions, updateOperation]
+    [navigateToOpeartions]
   );
 
   useEffect(() => {
@@ -77,7 +77,7 @@ const OperationDialogPage = () => {
         navigateToOpeartions();
       }
     })();
-  }, [operationId, canBeProcessed, getOperation, handleAddOperation, handleUpdateOperation, navigateToOpeartions]);
+  }, [operationId, canBeProcessed, handleAddOperation, handleUpdateOperation, navigateToOpeartions]);
 
   return (
     <Modal visible={isOperationDialogOpen} onClose={navigateToOpeartions}>
