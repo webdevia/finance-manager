@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Operation } from 'src/entities/operation/operation.types';
+import { Operation } from 'src/entities/operation/types/operation.types';
 import LeftRightLayout from 'src/shared/ui/Layouts/LeftRightLayout/LeftRightLayout';
 import Button from 'src/shared/ui/Button/Button';
 import { normalizeDateString } from 'src/shared/utils/datetimeUtils';

@@ -1,6 +1,6 @@
 import { useLazyQuery } from '@apollo/client';
-import { GET_CATEGORY } from 'src/entities/category/api/category.queries';
-import { CategoryQuery, Category } from 'src/entities/category/category.types';
+import { GET_CATEGORY } from '../api/getCategory.queries';
+import { CategoryQuery, Category } from 'src/entities/category/types/category.types';
 
 export const useGetCategory = (id: string) => {
   const [getCategory, { loading, error }] = useLazyQuery<CategoryQuery>(GET_CATEGORY, {

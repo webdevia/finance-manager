@@ -1,7 +1,7 @@
 import { ApolloError, useMutation } from '@apollo/client';
-import { UPDATE_PASSWORD } from 'src/entities/password/password.mutations';
-import { UpdatePasswordInput } from 'src/entities/password/password.types';
-import { transformToProfilePasswordMutationsChangeArgsDto } from 'src/entities/password/password.lib';
+import { UPDATE_PASSWORD } from '../api/updatePassword.mutations';
+import { UpdatePasswordInput } from 'src/features/password/updatePassword/types/password.types';
+import { transformToProfilePasswordMutationsChangeArgsDto } from '../lib/updatePassword.lib';
 import { ErrorFieldsMap, handleApolloError, handleUnknownError } from 'src/shared/api/errors/errors';
 
 export type PasswordErrorableField = 'password';

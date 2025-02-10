@@ -23,3 +23,13 @@
     opacity: 0.65;
   }
 }
+
+.gap {
+  display: flex;
+  gap: 2rem;
+}
+
+.inner-block {
+  display: flex;
+  gap: 0.3rem;
+}

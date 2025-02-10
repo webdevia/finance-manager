@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { OperationCard } from './OperationCard';
-import { Operation } from 'src/entities/operation/operation.types';
+import { Operation } from 'src/entities/operation/types/operation.types';
 import { COMMAND_ID } from 'src/shared/consts';
 
 const mockOperation: Operation = {

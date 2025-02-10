@@ -1,6 +1,6 @@
 import { ApolloError, useMutation } from '@apollo/client';
-import { REMOVE_OPERATION } from 'src/entities/operation/api/operation.mutations';
-import { GET_BALANCE } from 'src/entities/operation/api/operation.queries';
+import { REMOVE_OPERATION } from '../api/deleteOperation.mutations';
+import { GET_BALANCE } from 'src/features/balance/getBalance/api/getBalance.queries';
 import { ErrorFieldsMap, handleApolloError, handleUnknownError } from 'src/shared/api/errors/errors';
 
 export type OperationErrorableField = 'name';

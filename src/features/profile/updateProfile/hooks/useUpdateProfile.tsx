@@ -1,7 +1,7 @@
 import { ApolloError, useMutation } from '@apollo/client';
-import { UPDATE_PROFILE } from 'src/entities/profile/api/profile.mutations';
-import { GET_PROFILE } from 'src/entities/profile/api/profile.queries';
-import { UpdateProfileInput } from 'src/entities/profile/profile.types';
+import { UPDATE_PROFILE } from '../api/updateProfile.mutations';
+import { GET_PROFILE } from 'src/features/profile/getProfile/api/getProfile.queries';
+import { UpdateProfileInput } from 'src/entities/profile/types/profile.types';
 import { ErrorFieldsMap, handleApolloError, handleUnknownError } from 'src/shared/api/errors/errors';
 
 export type ProfileErrorableField = 'name';

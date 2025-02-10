@@ -1,7 +1,8 @@
 import { ApolloError, useMutation } from '@apollo/client';
-import { ADD_OPERATION } from 'src/entities/operation/api/operation.mutations';
-import { GET_OPERATION_LIST, GET_BALANCE } from 'src/entities/operation/api/operation.queries';
-import { AddOperationMutation, Operation, OperationAddInput } from 'src/entities/operation/operation.types';
+import { ADD_OPERATION } from '../api/addOperation.mutations';
+import { GET_OPERATION_LIST } from 'src/features/operation/getOperation/api/getOperation.query';
+import { GET_BALANCE } from 'src/features/balance/getBalance/api/getBalance.queries';
+import { AddOperationMutation, Operation, OperationAddInput } from 'src/entities/operation/types/operation.types';
 import { ErrorFieldsMap, handleApolloError, handleUnknownError } from 'src/shared/api/errors/errors';
 
 export type OperationErrorableField = 'name';

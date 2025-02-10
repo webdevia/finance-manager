@@ -1,0 +1,6 @@
+.balance {
+  font-weight: 600;
+  &::after {
+    content: ' RUB';
+  }
+}

@@ -11,8 +11,8 @@ import Title from 'src/shared/ui/Title/Title';
 import { normalizeDateString } from 'src/shared/utils/datetimeUtils';
 
 import { OperationSchema, OperationSchemaType } from './operationForm.schema';
-import { transformCategoriesToOptions } from 'src/entities/operation/operation.lib';
-import { OperationCategoryOption } from 'src/entities/operation/operation.types';
+import { transformCategoriesToOptions } from 'src/entities/operation/lib/operation.lib';
+import { OperationCategoryOption } from 'src/entities/operation/types/operation.types';
 
 const costOperationOption: SelectOptionProps = {
   text: 'Cost',
