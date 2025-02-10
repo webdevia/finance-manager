@@ -6,9 +6,13 @@ import { normalizeDateString } from 'src/shared/utils/datetimeUtils';
 export const useGetProfile = () => {
   const [getProfile, { loading, error }] = useLazyQuery<ProfileQuery>(GET_PROFILE);
 
-  const handleGetProfile = async (): Promise<Profile | null> => {
+  const handleGetProfile = async (): Promise<Profile> => {
     const { data } = await getProfile();
-    return data?.profile ? { ...data.profile, signUpDate: normalizeDateString(data.profile.signUpDate) } : null;
+    if (data?.profile) {
+      return { ...data.profile, signUpDate: normalizeDateString(data.profile.signUpDate) };
+    } else {
+      throw new Error('User is not authenticated');
+    }
   };
 
   return { getProfile: handleGetProfile, loading, error };

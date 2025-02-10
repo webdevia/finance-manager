@@ -19,7 +19,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   useEffect(() => {
     if (!isAppInitialized) {
       if (token) {
-        getProfile();
+        getProfile().catch(() => logout());
       }
 
       dispatch(initializeApp());
@@ -29,7 +29,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   useEffect(() => {
     const handleStorageChange = (newValue: string) => {
       if (newValue) {
-        getProfile().then(() => dispatch(setToken(newValue)));
+        getProfile()
+          .then(() => dispatch(setToken(newValue)))
+          .catch(() => logout());
       } else {
         logout();
       }
